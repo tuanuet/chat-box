@@ -1,0 +1,16 @@
+stages:
+  - deploy
+
+deploy:production:
+  variables:
+    SERVER_ID: 14.225.2.84
+    APP_ROOT_DIR: /home/quan-dev/hoc/live_chat
+  stage: deploy
+  script:
+    - echo "$SSH_DEPLOY_PRIVATE_KEY" > /tmp/tmp_id_rsa
+    - chmod 600 /tmp/tmp_id_rsa
+    - ssh -i /tmp/tmp_id_rsa  -o StrictHostKeyChecking=no  -o UserKnownHostsFile=/dev/null quan-dev@14.225.2.84 "cd $APP_ROOT_DIR; sudo git fetch ;sudo git pull ; sh deploy.sh $CI_JOB_ID"
+  environment:
+    name: production
+  only:
+    - master
