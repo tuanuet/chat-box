@@ -31,7 +31,7 @@ sudo php artisan db:seed
 sudo chown -R www-data:www-data /var/www/chat/stage/current/$DIR
 sudo rm -rf /var/www/chat/stage/running
 sudo ln -s /var/www/chat/stage/current/$DIR /var/www/chat/stage/running
-sudo php artisan storage:link
+#sudo php artisan storage:link
 #sudo service supervisor restart stage_cs_long_pulling
 sudo cp -rf /var/www/chat/stage/current/$DIR/deploy/nginx_chat_stage /etc/nginx/sites-enabled/staging.chat.teko.vn
 sudo sed -i "s/NUMBER/$DIR/g" /etc/nginx/sites-enabled/staging.chat.teko.vn
