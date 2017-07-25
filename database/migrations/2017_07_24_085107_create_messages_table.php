@@ -18,7 +18,7 @@ class CreateMessagesTable extends Migration
             $table->integer('room_id')->unsigned();
             $table->integer('sender_id')->unsigned();
             $table->string('content');
-            $table->timestamps();
+            $table->timestamp('created_at')->default(\DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 
