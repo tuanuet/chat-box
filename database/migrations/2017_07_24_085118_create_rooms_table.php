@@ -18,7 +18,6 @@ class CreateRoomsTable extends Migration
             $table->integer('topic_id')->unsigned();
             $table->tinyInteger('status')->default(0);
             $table->integer('assignee')->unsigned()->default(0);
-            $table->integer('customer_id')->unsigned();
             $table->timestamp('created_at');
             $table->timestamp('closed_at')->nullable();
         });
