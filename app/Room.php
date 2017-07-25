@@ -12,6 +12,7 @@ class Room extends Model
         'status',
         'assignee',
         'created_at',
+        'customer_id',
         'closed_at'
     ];
 
