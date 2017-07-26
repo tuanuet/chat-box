@@ -4,9 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Admin;
 use Illuminate\Http\Request;
+use Mockery\Exception;
 
 class AdminController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('authenticate');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -33,69 +39,48 @@ class AdminController extends Controller
 
         #echo $name . " " . $email . " " . $phone . " " . $password;
 
-        $admin = new Admin();
-        $admin->name = $name;
-        $admin->phone = $phone;
-        $admin->email = $email;
-        $admin->password = bcrypt($password);
-        $admin->save();
+        $message = "Add new admin successfully";
+        $typeMessage = "success";
 
-        return redirect('admin');
-    }
+        if (sizeof(Admin::where('email', $email)->get()) > 0) {
+            $message = "Couldn't add new admin! Email is used!";
+            $typeMessage = "error";
+        } else {
+            $admin = new Admin();
+            $admin->name = $name;
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+            $admin->phone = $phone;
+            $admin->email = $email;
+
+            $admin->password = bcrypt($password);
+
+            $admin->save();
+        }
+
+        $notification = [
+            'message' => $message,
+            'alert-type' => $typeMessage,
+        ];
+        return redirect('admin')->with('notification', $notification);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param Request $request
      * @return \Illuminate\Http\Response
+     * @internal param int $id
      */
-    public function show($id)
+    public function profile(Request $request)
     {
-        //
-    }
+        $id = $request->query('id');
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+        $admin = Admin::where('id', $id)->get();
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        if (sizeof($admin) !== 0) {
+            return dd($admin->first());
+        } else {
+            echo "WRONG!";
+        }
     }
 }

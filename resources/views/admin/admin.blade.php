@@ -12,7 +12,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="btn-group pull-right m-t-15">
-                            <a href="#custom-modal" class="btn btn-default btn-md waves-effect waves-light m-b-30" data-animation="fadein" data-plugin="custommodal" data-overlayspeed="200" data-overlaycolor="#36404a"><i class="md md-add"></i> Add Admin</a>
+                            <a href="#custom-modal" id="btn-add-admin" class="btn btn-default btn-md waves-effect waves-light m-b-30" data-animation="fadein" data-plugin="custommodal" data-overlayspeed="200" data-overlaycolor="#36404a"><i class="md md-add"></i> Add Admin</a>
                         </div>
 
                         <h4 class="page-title">Datatable</h4>
