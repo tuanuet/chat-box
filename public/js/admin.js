@@ -1,6 +1,21 @@
 /**
  * Created by vuong on 25/07/2017.
  */
+function resetFormModal() {
+    $('#form-name').val('');
+    $('#form-email').val('');
+    $('#form-phone').val('');
+    $('#password_modal').val('');
+    $('#confirm_password_modal').val('');
+    $('#message').text('');
+    $('#warning-message').text('');
+};
+
+$('#btn-add-admin').on('click', function (e) {
+    //console.log("adding admin....");
+    resetFormModal();
+});
+
 $('#password_modal, #confirm_password_modal').on('keyup', function ()
 {
     if ($('#password_modal').val() == $('#confirm_password_modal').val()) {
@@ -23,7 +38,6 @@ $('#form-name, #form-email').on('keyup', function () {
 /**
  * validate data before submit
  */
-
 $('#form_admin').submit(function (e) {
     console.log("Validating form...");
     if ($('#form-name').val() === '') {
