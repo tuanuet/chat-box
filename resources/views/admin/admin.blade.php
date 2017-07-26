@@ -12,7 +12,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="btn-group pull-right m-t-15">
-                            <a href="#custom-modal" class="btn btn-default btn-md waves-effect waves-light m-b-30" data-animation="fadein" data-plugin="custommodal" data-overlayspeed="200" data-overlaycolor="#36404a"><i class="md md-add"></i> Add Customer</a>
+                            <a href="#custom-modal" class="btn btn-default btn-md waves-effect waves-light m-b-30" data-animation="fadein" data-plugin="custommodal" data-overlayspeed="200" data-overlaycolor="#36404a"><i class="md md-add"></i> Add Admin</a>
                         </div>
 
                         <h4 class="page-title">Datatable</h4>
@@ -42,31 +42,19 @@
                                     <th>Name</th>
                                     <th>Phone</th>
                                     <th>Email</th>
-                                    <th>Started Date</th>
-                                    <th>Attended rooms</th>
-                                    <th>Sent messages</th>
-                                    <th>Action</th>
                                 </tr>
                                 </thead>
 
 
                                 <tbody>
-                                @foreach($customers as $customer)
-                                    <tr>
-                                        <td id="customer-id">{{$customer->id}}</td>
-                                        <td id ="customer-name">{{$customer->name}}</td>
-                                        <td id ="customer-phone">{{$customer->phone}}</td>
-                                        <td id ="customer-email">{{$customer->email}}</td>
-                                        <td id ="customer-createAt">{{$customer->created_at->toDateString()}}</td>
-                                        <td>200</td>
-                                        <td>320,800</td>
-                                        <td>
-                                            <a href="#custom-modal" data-id = {{$customer->id}} data-overlayspeed="200" data-overlaycolor="#36404a" data-animation="fadein" data-plugin="custommodal" id="btn-edit" class="btn btn-default btn-sm waves-effect waves-light">
-                                                <i class="fa fa-pencil"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                @foreach($admins as $admin)
+                                <tr>
+                                    <td>{{$admin->id}}</td>
+                                    <td>{{$admin->name}}</td>
+                                    <td>{{$admin->phone}}</td>
+                                    <td>{{$admin->email}}</td>
+                                </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -95,7 +83,7 @@
         <h4 class="custom-modal-title">Add</h4>
         <div class="custom-modal-text text-left">
 
-            <form role="form" class="form_modal" id="myForm" method="post" action="/customers/add">
+            <form role="form" class="form_modal" id="form_admin" method="post" action="/admin/add">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <input type="hidden" name="id" id="form_id" value="">
                 <div class="form-group">
@@ -113,7 +101,18 @@
                     <input type="tel" class="form-control" id="form-phone" name="phone" placeholder="Enter phone number">
                 </div>
 
-                <button type="submit" data-from="admin" id="btn-submit" class="btn btn-default waves-effect waves-light">Save</button>
+                <div class="form-group">
+                    <label for="position">Password</label>
+                    <input type="password" class="form-control" id="password_modal" name="password" placeholder="Enter password">
+                </div>
+
+                <div class="form-group">
+                    <label for="position">Confirm password</label>
+                    <input type="password" class="form-control" id="confirm_password_modal" name="password" placeholder="Confirm password">
+                    <span id="warning-message"></span>
+                </div>
+
+                <button type="submit" data-from="admin" id="add-admin" class="btn btn-default waves-effect waves-light">Save</button>
                 <button type="button" class="btn btn-danger waves-effect waves-light m-l-10" onclick="Custombox.close();">Cancel</button>
                 <span id="message"></span>
             </form>
@@ -126,7 +125,7 @@
 @stop
 
 @section('script')
-    <script src="/js/customer.js"></script>
+    <script src="/js/admin.js"></script>
 @endsection
 
 
