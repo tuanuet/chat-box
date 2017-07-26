@@ -111,21 +111,10 @@
             scrollCollapse: true,
             scroller: true
         });
-        var table = $('#datatable-fixed-header').DataTable({fixedHeader: true});
-        var table = $('#datatable-fixed-col').DataTable({
-            scrollY: "300px",
-            scrollX: true,
-            scrollCollapse: true,
-            paging: false,
-            fixedColumns: {
-                leftColumns: 1,
-                rightColumns: 1
-            }
-        });
     });
     TableManageButtons.init();
 
 </script>
-
+@stack('inline_scripts')
 </body>
 </html>

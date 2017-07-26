@@ -12,3 +12,11 @@
 */
 
 Route::get('/', 'CustomerController@index');
+
+Route::get('/room', 'RoomController@index');
+
+Route::get('room/datatables', 'RoomController@getDataTable')->name('room.datatables');
+Auth::routes();
+
+
+
