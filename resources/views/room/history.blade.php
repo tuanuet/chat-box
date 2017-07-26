@@ -67,18 +67,13 @@
                                         <td>{{$room['topic']}}</td>
                                         <td>{{$room['customerName']}}</td>
                                         <td>{{$room['created_at']}}</td>
-                                        @if($room['status'] === 1)
-                                        <td><i class="fa fa-circle"></i> In-active</td>
+                                        <td>Closed</td>
                                         <td>
-                                            <a href="{{url('/chat/'.$room['id'])}}" class="btn btn-default btn-sm waves-effect waves-light">
-                                                Join
-
-                                            </a>
+                                            <a href="/room/{{$room['id']}}">Chat log</a>
                                         </td>
-                                            @else
-                                            <td><i class="fa fa-circle" style="color: #a0d269;"></i> Active</td>
-                                            <td></td>
-                                            @endif
+
+
+
                                     </tr>
                                 @endforeach
                                 </tbody>

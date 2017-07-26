@@ -48,7 +48,7 @@
 
 @yield('content')
 
-
+<span id="alert"></span>
 </div>
 <!-- END wrapper -->
 
@@ -94,30 +94,33 @@
 
 <script src="/vendor/light/assets/js/jquery.core.js"></script>
 <script src="/vendor/light/assets/js/jquery.app.js"></script>
-
+<script src="/vendor/light/assets/plugins/notifyjs/js/notify.js"></script>
+<script src="/vendor/light/assets/plugins/notifications/notify-metro.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#datatable').dataTable();
-        $('#datatable-keytable').DataTable({keys: true});
-        $('#datatable-responsive').DataTable();
-        $('#datatable-colvid').DataTable({
-            "dom": 'C<"clear">lfrtip',
-            "colVis": {
-                "buttonText": "Change columns"
-            }
-        });
-        $('#datatable-scroller').DataTable({
-            ajax: "/vendor/light/assets/plugins/datatables/json/scroller-demo.json",
-            deferRender: true,
-            scrollY: 380,
-            scrollCollapse: true,
-            scroller: true
+        $('#datatable').dataTable( {
+            "order": [[5, 'dasc'], [3, 'asc']]
         });
     });
     TableManageButtons.init();
 
+    @if (Session::has('message'))
+
+        var r = $('<a id="alert-noti" ' +
+            'onclick="$.Notification.autoHideNotify(\'{{Session::get('alert-type', 'success')}}\', \'top right\', \'{{Session::get('title', 'Notification')}}\',\'{{Session::get('message', 'OC')}}\')"/>');
+
+        $("#alert").append(r);
+        $("#alert-noti").click();
+        {{Session::forget('message')}}
+        {{Session::forget('title')}}
+        {{Session::forget('alert-type')}}
+
+    @endif
+
+
 </script>
+
 @stack('inline_scripts')
 
 

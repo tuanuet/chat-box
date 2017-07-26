@@ -2,15 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Customer;
+use App\Message;
 use App\Topic;
 use Illuminate\Http\Request;
 use App\Room;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Session;
 
 class RoomController extends Controller
 {
+
+
+    public function __construct()
+    {
+        $this->middleware('authenticate');
+    }
+
     public function index()
     {
+
         $rooms = Room::where('status', '<>', 3)->get();
         $room_array = [];
         foreach($rooms as $room) {
@@ -19,15 +31,15 @@ class RoomController extends Controller
                 ->join('messages', 'customers.id', '=', 'messages.sender_id')
                 ->where('messages.room_id', '=', $room->id)
                 ->select('customers.name')
-                ->first()->name;
+                ->first();
             if(!$customerName) {
                 $room->delete();
                 continue;
             }
-            if ($room->status === 1 || $room->assignee === 1) {//assume 1 is admin's id
+            if ($room->status === 1 || $room->assignee === Auth::user()->id) {
 
                 $room_array[] = ['id' => $room->id,
-                    'customerName' => $customerName,
+                    'customerName' => $customerName->name,
                     'topic' => Topic::find($room->topic_id)->name,
                     'status' => $room->status,
                     'created_at' => $room->created_at
@@ -35,7 +47,115 @@ class RoomController extends Controller
             }
         }
 
-        return view('room.room', ['rooms' => $room_array]);
+
+        $notification = array(
+            'message' => 'Welcome to Room',
+            'title' => 'Welcome',
+            'alert-type' => 'warning'
+        );
+        \Session::put('message', $notification['message']);
+        \Session::put('title', $notification['title']);
+        \Session::put('alert-type', $notification['alert-type']);
+
+        return view('room.room', ['rooms' => $room_array])->with($notification);
+    }
+
+
+    public function history()
+    {
+        $rooms = Room::where('status', 3)
+                        ->where('assignee', Auth::user()->id)->get();
+        $room_array = [];
+        foreach($rooms as $room) {
+
+            $customerName = DB::table('customers')
+                ->join('messages', 'customers.id', '=', 'messages.sender_id')
+                ->where('messages.room_id', '=', $room->id)
+                ->select('customers.name')
+                ->first();
+            if(!$customerName) {
+                $room->delete();
+                continue;
+            }
+
+                $room_array[] = ['id' => $room->id,
+                    'customerName' => $customerName->name,
+                    'topic' => Topic::find($room->topic_id)->name,
+                    'status' => $room->status,
+                    'created_at' => $room->created_at
+                ];
+
+        }
+
+        return view('room.history', ['rooms' => $room_array]);
+    }
+
+    public function showChatLog($room_id)
+    {
+        $admin_id = Room::find($room_id)->assignee;
+        if(!$admin_id) {
+            return "Can't find assignee of room";
+        }
+
+        $room_messages = Message::where('room_id', $room_id)->orderBy('created_at')->get();
+        $messages = [];
+        foreach ($room_messages as $message)
+        {
+            $sender_name = '';
+            if($message->sender_id !== 0) {
+                $sender_name = Customer::find($message->sender_id)->name;
+            }
+
+            $messages[] = [
+                'sender_id' => $message->sender_id,
+                'sender_name' => $sender_name,
+                'content' => $message->content,
+                'sent_time' => $message->created_at
+            ];
+        }
+//        dd(Room::find($room_id)->status);
+
+        return view('room.chatlog', ['messages' => $messages,
+            'room' => Room::find($room_id),
+            'room_type' => Topic::find(Room::find($room_id)->topic_id)->name
+        ]);
+    }
+
+    public function chat($room_id)
+    {
+        $room = Room::find($room_id);
+        if($room->assignee !== 0) {
+            $notification = [
+                'message' => 'Room has been assigned by other one!',
+                'alert-type' => 'info'
+            ];
+
+            return redirect()->back()->with('notification', $notification);
+        }
+        $room->assignee = Auth::user()->id;
+        $room->status = 2;
+        $room->save();
+
+        $room_messages = Message::where('room_id', $room_id)->orderBy('created_at')->get();
+        $messages = [];
+        foreach ($room_messages as $message)
+        {
+            $sender_name = '';
+            if($message->sender_id !== 0) {
+                $sender_name = Customer::find($message->sender_id)->name;
+            }
+
+            $messages[] = [
+                'sender_id' => $message->sender_id,
+                'sender_name' => $sender_name,
+                'content' => $message->content,
+                'sent_time' => $message->created_at
+            ];
+        }
+        return view('chat.chat', ['messages' => $messages,
+            'room' => $room,
+            'room_type' => Topic::find($room->topic_id)->name
+        ]);
     }
 
 }

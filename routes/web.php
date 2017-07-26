@@ -14,7 +14,10 @@
 Route::get('/dashboard','DashboardController@getDashboard');
 
 
-Route::get('/room', 'RoomController@index');
+Route::get('/room',['name'=>'get.room', 'uses'=>'RoomController@index']);
+Route::get('history', ['name' => 'get.history', 'uses' => 'RoomController@history']);
+Route::get('/room/{id}', 'RoomController@showChatLog');
+Route::get('/chat/{id}', 'RoomController@chat');
 
 Route::get('room/datatables', 'RoomController@getDataTable')->name('room.datatables');
 
