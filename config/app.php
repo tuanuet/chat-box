@@ -188,7 +188,7 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
-        //Yajra\Datatables\DatatablesServiceProvider::class,
+
 
     ],
 

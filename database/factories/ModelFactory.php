@@ -41,7 +41,7 @@ $factory->define(App\Message::class, function (Faker\Generator $faker) {
 
     return [
         'room_id' => rand(1, 50),
-        'sender_id' => rand(1, 50),
+        'sender_id' => rand(0, 50),
         'content' => $faker->paragraph(1),
         'created_at' => $faker-> dateTimeBetween('-2 months', 'now')
     ];

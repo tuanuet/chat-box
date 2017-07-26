@@ -17,4 +17,16 @@ class Room extends Model
     ];
 
     public $timestamps=false;
+
+    public function topic()
+    {
+        return $this->hasOne('App/Topic');
+    }
+
+    public function getBasicData()
+    {
+        $users = User::select(['id','name','email','created_at','updated_at']);
+
+        return Datatables::of($users)->make();
+    }
 }

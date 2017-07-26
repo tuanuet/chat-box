@@ -13,13 +13,19 @@
                 </li>
 
                 <li class="has_sub">
-                    <a href="javascript:void(0);" class="waves-effect"><i class="ti-menu-alt"></i><span>Tables </span> <span class="menu-arrow"></span></a>
+                    <a href="javascript:void(0);" class="waves-effect"><i class="ti-menu-alt"></i><span>Accounts </span> <span class="menu-arrow"></span></a>
                     <ul class="list-unstyled">
                         <li><a href="/admin">Admin</a></li>
                         <li><a href="/customers">Customer</a></li>
-                        <li><a href="/messages">Messages</a></li>
-                        <li><a href="/rooms">Rooms</a></li>
-                        <li><a href="/topics">Topics</a></li>
+
+                    </ul>
+                </li>
+                <li class="has_sub">
+                    <a href="javascript:void(0);" class="waves-effect"><i class="ti-share"></i><span>Room </span> <span class="menu-arrow"></span></a>
+                    <ul class="list-unstyled">
+                        <li><a href="/room">Room Chat</a></li>
+                        <li><a href="/history">History</a></li>
+
                     </ul>
                 </li>
             </ul>

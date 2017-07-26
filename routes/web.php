@@ -13,6 +13,14 @@
 ////////Dashboard/////////////////
 Route::get('/dashboard','DashboardController@getDashboard');
 
+
+Route::get('/room',['name'=>'get.room', 'uses'=>'RoomController@index']);
+Route::get('history', ['name' => 'get.history', 'uses' => 'RoomController@history']);
+Route::get('/room/{id}', 'RoomController@showChatLog');
+Route::get('/chat/{id}', 'RoomController@chat');
+
+Route::get('room/datatables', 'RoomController@getDataTable')->name('room.datatables');
+
 Route::get('/','DashboardController@getDashboard');
 ///////////////////////////////////////
 ///
@@ -38,6 +46,9 @@ Route::get('customers', 'CustomerController@index');
 
 Route::post('customers/add', 'CustomerController@add');
 Route::post('customers/edit', 'CustomerController@edit');
+
+
+
 ////////////////////////////////////////////////
 
 //////////////////ROUTE TOPIC///////////////////
@@ -47,3 +58,4 @@ Route::post('topics/delete', 'TopicController@delete');
 Route::post('topics/add', 'TopicController@add');
 Route::post('topics/edit', 'TopicController@edit');
 ///////////////////////////////////////////////
+
