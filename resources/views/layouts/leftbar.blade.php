@@ -17,6 +17,7 @@
                     <ul class="list-unstyled">
                         <li><a href="/admin">Admin</a></li>
                         <li><a href="/customers">Customer</a></li>
+                        <li><a href="/topics">Topic</a></li>
 
                     </ul>
                 </li>

@@ -78,7 +78,8 @@ class AdminController extends Controller
         $admin = Admin::where('id', $id)->get();
 
         if (sizeof($admin) !== 0) {
-            return dd($admin->first());
+//            return dd($admin->first());
+            return view('admin.profile', ['admin'=>$admin->first()]);
         } else {
             echo "WRONG!";
         }

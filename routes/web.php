@@ -47,8 +47,6 @@ Route::get('customers', 'CustomerController@index');
 Route::post('customers/add', 'CustomerController@add');
 Route::post('customers/edit', 'CustomerController@edit');
 
-
-
 ////////////////////////////////////////////////
 
 //////////////////ROUTE TOPIC///////////////////
