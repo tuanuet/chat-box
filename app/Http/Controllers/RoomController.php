@@ -106,7 +106,7 @@ class RoomController extends Controller
         foreach ($room_messages as $message)
         {
             $sender_name = '';
-            if($message->sender_id !== 0) {
+            if($message->sender_id != 0) {
                 $sender_name = Customer::find($message->sender_id)->name;
             }
 
@@ -129,25 +129,29 @@ class RoomController extends Controller
     public function chat($room_id)
     {
         $room = Room::find($room_id);
-        if($room->assignee !== 0) {
+//        dd(Auth::user()->id);
+        if($room->assignee != 0 && $room->assignee != Auth::user()->id) {
             $notification = [
                 'message' => 'Room has been assigned by other one!',
-                'alert-type' => 'info',
+                'alert-type' => 'warning',
                 'title' => 'Error'
             ];
 
-           // return redirect()->back()->with('notification', $notification);
+            return redirect('/room')->with('notification', $notification);
         }
-        $room->assignee = Auth::user()->id;
-        $room->status = 2;
-        $room->save();
+//        dd(Auth::user()->id);
+        if($room->assignne == 0) {
+            $room->assignee = Auth::user()->id;
+            $room->status = 2;
+            $room->save();
+        }
 
         $room_messages = Message::where('room_id', $room_id)->orderBy('created_at')->get();
         $messages = [];
         foreach ($room_messages as $message)
         {
             $sender_name = '';
-            if($message->sender_id !== 0) {
+            if($message->sender_id != 0) {
                 $sender_name = Customer::find($message->sender_id)->name;
             }
 

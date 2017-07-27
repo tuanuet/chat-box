@@ -100,16 +100,14 @@
 <script type="text/javascript">
 
 
-    @if (Session::has('message'))
+    @if (Session::has('notification'))
+
 
         var r = $('<a id="alert-noti" ' +
-            'onclick="$.Notification.autoHideNotify(\'{{Session::get('alert-type', 'success')}}\', \'top right\', \'{{Session::get('title', 'Notification')}}\',\'{{Session::get('message', 'OC')}}\')"/>');
+            'onclick="$.Notification.autoHideNotify(\'{{Session::get('notification.alert-type')}}\', \'top right\', \'{{Session::get('notification.title')}}\',\'{{Session::get('notification.message')}}\')"/>');
 
         $("#alert").append(r);
         $("#alert-noti").click();
-        {{Session::forget('message')}}
-        {{Session::forget('title')}}
-        {{Session::forget('alert-type')}}
 
     @endif
 

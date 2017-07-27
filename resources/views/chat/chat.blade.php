@@ -40,3 +40,9 @@
     <!-- ============================================================== -->
 
 @stop
+@push('inline_scripts')
+    <script src="/js/socket.io.js"></script>
+    <script src="/js/jquery-migrate-3.0.0.min.js"></script>
+    <script src="/js/scrollyeah.js"></script>
+    <script src="/js/chat.js"></script>
+    @endpush
