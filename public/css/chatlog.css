@@ -267,3 +267,28 @@ input.textarea {
 .emojis:active {
     opacity: 0.9;
 }
+
+
+
+.icon-send {
+    position: fixed;
+    width: 32px;
+    height: 32px;
+    right: 8px;
+    bottom: 8px;
+    z-index: 999999;
+    transition-duration: 0.4s;
+}
+.icon-send:hover{
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+
+}
+
+.icon-send:active{
+    width: 28px;
+    height: 28px;
+
+}
+

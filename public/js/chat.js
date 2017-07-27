@@ -22,7 +22,7 @@ var send_chat = function() {
     $('#chat_message').val('');
     if(msg) {
 
-        socket.emit('admin-send-message', {
+        socket.emit('client-send-message', {
             name: "Admin",
             message: msg,
             sender_id: 0,

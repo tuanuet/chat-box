@@ -140,11 +140,6 @@ class RoomController extends Controller
             return redirect('/room')->with('notification', $notification);
         }
 //        dd(Auth::user()->id);
-        if($room->assignne == 0) {
-            $room->assignee = Auth::user()->id;
-            $room->status = 2;
-            $room->save();
-        }
 
         $room_messages = Message::where('room_id', $room_id)->orderBy('created_at')->get();
         $messages = [];

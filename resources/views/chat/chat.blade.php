@@ -8,7 +8,7 @@
             <div class="container">
                 <div>Room Type: {{$room_type}}</div>
                 {{--content chat--}}
-                <ol class="chat">
+                <ol class="chat" id="chat">
                     @foreach($messages as $message)
                         @if($message['sender_id'] !== 0)
                             <li class="other">
@@ -25,7 +25,10 @@
                 </ol>
 
                 {{--end content chat --}}
-                <input class="textarea" type="text" placeholder="Type here!"/><div class="emojis"></div>
+
+                    <input class="textarea" type="text" name="message" placeholder="Type here!" id="chat_message"/>
+                    <img class="icon-send" src="/images/send-icon.png" id="icon-send" alt="">
+
             </div>
         </div>
 
@@ -45,4 +48,101 @@
     <script src="/js/jquery-migrate-3.0.0.min.js"></script>
     <script src="/js/scrollyeah.js"></script>
     <script src="/js/chat.js"></script>
-    @endpush
+    <script type="text/javascript">
+        var adminData = {
+            assignee: {{Auth::user()->id}},
+            room_id : {{$room->id}}
+        };
+
+        //send message to server
+
+
+        $(document).ready(function () {
+
+            var send_chat = function() {
+                var msg = $('#chat_message').val();
+                $('#chat_message').val('');
+                console.log(msg);
+                if(msg) {
+
+                    socket.emit('client-send-message', {
+                        name: "Admin",
+                        message: msg,
+                        sender_id: 0,
+                        room_id : adminData.room_id
+                    });
+
+                    var blockSelf = '<li class="self">';
+                    blockSelf += '<div class="msg">';
+                    blockSelf += '<p class="sender"><a href="">' + '</a></p>';
+                    blockSelf += '<p>'+ msg +'</p>';
+                    blockSelf += '<time>' + '20:10' +'</time>';
+                    blockSelf += '</div></li>';
+                    $( "#chat" ).append(blockSelf);
+                }
+                else {
+                    alert("Please enter a message");
+                }
+            };
+
+            var socket = io.connect('http://127.0.0.1:3000/chat');
+
+
+            socket.emit('admin-join-room', {
+                assignee: adminData.assignee,
+                room_id : adminData.room_id
+            });
+
+            console.log("join room successfully");
+
+            socket.on('server-confirm-join', function(data){
+                console.log(data)
+            });
+
+            socket.on('server-send-message', function(msg) {
+                console.log(msg);
+            });
+
+            $('#chat_message').keypress(function(e){
+
+                if(e.charCode === 13){
+                    send_chat();
+                    return false;
+                }
+
+
+            });
+
+            $('#icon-send').click(function(){
+                send_chat();
+            });
+
+            socket.on('server-send-message', function(data){
+
+                if (data !== null && typeof data !== 'object') {
+                    data = jQuery.parseJSON(data);
+                }
+
+
+
+                var block = '<li class="other">';
+                block += '<div class="msg">';
+                block += '<p class="sender"><a href="">' + data.name + '</a></p>';
+                block += '<p>'+data.message +'</p>';
+                block += '<time>' + '20:10' +'</time>';
+                block += '</div></li>';
+
+                $( "#chat" ).append(block);
+
+            });
+
+        });
+
+
+
+
+
+
+
+    </script>
+@endpush

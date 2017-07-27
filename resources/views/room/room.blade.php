@@ -109,40 +109,12 @@
 
 @stop
 @push('inline_scripts')
-    <script src="/js/socket.io.js"></script>
-    <script src="/js/jquery-migrate-3.0.0.min.js"></script>
-    <script src="/js/scrollyeah.js"></script>
-    <script src="/js/chat.js"></script>
-<script type="text/javascript">
-
-    $(document).ready(function () {
-        $('#datatable').dataTable( {
-            "order": [[5, 'desc'], [3, 'asc']]
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#datatable').dataTable({
+                "order": [[ 5, 'desc' ], [ 3, 'desc' ]]
+            });
         });
-    });
-    var socket = io.connect('http://127.0.0.1:3000/chat');
-    var adminData = {
-        assignee: {{Auth::user()->id}},
-        room_id : 0,
-        setRoom: function( room) {
-            this.room_id = room;
-        }
-    };
+    </script>
 
-    function joinRoom(room)
-    {
-        alert(room);
-        adminData.setRoom(room);
-        alert(adminData.room_id);
-        socket.emit('admin-join-room', {
-           'assignee': adminData.assignee,
-           'room_id' : adminData.room_id
-        });
-        console.log("join room successfully");
-    }
-
-    socket.on('server-confirm-join', function(data){
-        $('#alert-noti').click();
-    
-</script>
-@endpush
+    @endpush
