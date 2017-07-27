@@ -98,12 +98,7 @@
 <script src="/vendor/light/assets/plugins/notifications/notify-metro.js"></script>
 
 <script type="text/javascript">
-    $(document).ready(function () {
-        $('#datatable').dataTable( {
-            "order": [[5, 'dasc'], [3, 'asc']]
-        });
-    });
-    TableManageButtons.init();
+
 
     @if (Session::has('message'))
 

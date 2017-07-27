@@ -130,5 +130,10 @@
 @section('script')
     <script src="/js/customer.js"></script>
 @endsection
-
-
+@push('inline_scripts')
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#datatable').dataTable();
+    });
+</script>
+@endpush

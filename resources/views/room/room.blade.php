@@ -108,3 +108,12 @@
     <!-- ============================================================== -->
 
 @stop
+@push('inline_scripts')
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#datatable').dataTable( {
+            "order": [[5, 'desc'], [3, 'asc']]
+        });
+    });
+</script>
+@endpush

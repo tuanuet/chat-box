@@ -52,7 +52,7 @@ $factory->define(App\Room::class, function (Faker\Generator $faker) {
     return [
         'topic_id' => rand(1, 3),
         'status' => rand(1, 3),
-        'assignee' => rand(1,10),
+        'assignee' => rand(0,10),
         'created_at' => $faker-> dateTimeBetween('-2 months', 'now')
     ];
 });

@@ -23,20 +23,22 @@ class RoomController extends Controller
     public function index()
     {
 
-        $rooms = Room::where('status', '<>', 3)->get();
+        $rooms = Room::where('status', '<>', 3)
+                        ->get();
         $room_array = [];
         foreach($rooms as $room) {
 
             $customerName = DB::table('customers')
                 ->join('messages', 'customers.id', '=', 'messages.sender_id')
                 ->where('messages.room_id', '=', $room->id)
+                ->orderBy('messages.created_at')
                 ->select('customers.name')
                 ->first();
             if(!$customerName) {
                 $room->delete();
                 continue;
             }
-            if ($room->status === 1 || $room->assignee === Auth::user()->id) {
+            if (($room->status === 1 && $room->assignee === 0)|| $room->assignee === Auth::user()->id) {
 
                 $room_array[] = ['id' => $room->id,
                     'customerName' => $customerName->name,
@@ -48,16 +50,16 @@ class RoomController extends Controller
         }
 
 
-        $notification = array(
-            'message' => 'Welcome to Room',
-            'title' => 'Welcome',
-            'alert-type' => 'warning'
-        );
-        \Session::put('message', $notification['message']);
-        \Session::put('title', $notification['title']);
-        \Session::put('alert-type', $notification['alert-type']);
+//        $notification = array(
+//            'message' => 'Welcome to Room',
+//            'title' => 'Welcome',
+//            'alert-type' => 'warning'
+//        );
+//        \Session::put('message', $notification['message']);
+//        \Session::put('title', $notification['title']);
+//        \Session::put('alert-type', $notification['alert-type']);
 
-        return view('room.room', ['rooms' => $room_array])->with($notification);
+        return view('room.room', ['rooms' => $room_array]);
     }
 
 
@@ -71,6 +73,7 @@ class RoomController extends Controller
             $customerName = DB::table('customers')
                 ->join('messages', 'customers.id', '=', 'messages.sender_id')
                 ->where('messages.room_id', '=', $room->id)
+                ->orderBy('messages.created_at')
                 ->select('customers.name')
                 ->first();
             if(!$customerName) {
@@ -98,6 +101,7 @@ class RoomController extends Controller
         }
 
         $room_messages = Message::where('room_id', $room_id)->orderBy('created_at')->get();
+        $customer_id = $room_messages[0]->sender_id;
         $messages = [];
         foreach ($room_messages as $message)
         {
@@ -114,10 +118,11 @@ class RoomController extends Controller
             ];
         }
 //        dd(Room::find($room_id)->status);
-
+        $customer = Customer::find($customer_id);
         return view('room.chatlog', ['messages' => $messages,
             'room' => Room::find($room_id),
-            'room_type' => Topic::find(Room::find($room_id)->topic_id)->name
+            'room_type' => Topic::find(Room::find($room_id)->topic_id)->name,
+            'customer' => $customer
         ]);
     }
 
@@ -127,10 +132,11 @@ class RoomController extends Controller
         if($room->assignee !== 0) {
             $notification = [
                 'message' => 'Room has been assigned by other one!',
-                'alert-type' => 'info'
+                'alert-type' => 'info',
+                'title' => 'Error'
             ];
 
-            return redirect()->back()->with('notification', $notification);
+           // return redirect()->back()->with('notification', $notification);
         }
         $room->assignee = Auth::user()->id;
         $room->status = 2;
