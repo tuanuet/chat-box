@@ -142,6 +142,8 @@ class RoomController extends Controller
 //        dd(Auth::user()->id);
 
         $room_messages = Message::where('room_id', $room_id)->orderBy('created_at')->get();
+        $customer_id = $room_messages[0]->sender_id;
+        $customer = Customer::find($customer_id);
         $messages = [];
         foreach ($room_messages as $message)
         {
@@ -159,7 +161,8 @@ class RoomController extends Controller
         }
         return view('chat.chat', ['messages' => $messages,
             'room' => $room,
-            'room_type' => Topic::find($room->topic_id)->name
+            'room_type' => Topic::find($room->topic_id)->name,
+            'customer' => $customer
         ]);
     }
 
