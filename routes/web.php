@@ -30,6 +30,7 @@ Route::get('admin', 'AdminController@index');
 Route::post('admin/add', 'AdminController@add');
 
 Route::get('admin/profile', 'AdminController@profile');
+Route::post('admin/profile/update', 'AdminController@update');
 //////////////////////////////////////////////
 
 /////////////////Route login////////////////////
@@ -46,8 +47,6 @@ Route::get('customers', 'CustomerController@index');
 
 Route::post('customers/add', 'CustomerController@add');
 Route::post('customers/edit', 'CustomerController@edit');
-
-
 
 ////////////////////////////////////////////////
 

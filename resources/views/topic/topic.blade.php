@@ -53,8 +53,16 @@
                                     <tr id="{{$topic->id}}">
                                         <td>{{$topic->id}}</td>
                                         <td>{{$topic->name}}</td>
-                                        <td>{{$topic->created_at->toDateString()}}</td>
-                                        <td>{{$topic->updated_at->toDateString()}}</td>
+                                        @if(empty($topic->created_at))
+                                            <td>NULL</td>
+                                        @else
+                                            <td>{{$topic->created_at->toDateString()}}</td>
+                                        @endif
+                                        @if(empty($topic->updated_at))
+                                            <td>NULL</td>
+                                        @else
+                                            <td>{{$topic->updated_at->toDateString()}}</td>
+                                        @endif
                                         <td>
                                             <a href="#custom-modal" data-id = "{{$topic->id}}" data-overlayspeed="200" data-overlaycolor="#36404a" data-animation="fadein" data-plugin="custommodal" class="btn btn-default btn-sm waves-effect waves-light btn-edit">
                                                 <i class="fa fa-pencil"></i>
