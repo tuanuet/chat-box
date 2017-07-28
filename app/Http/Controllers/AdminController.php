@@ -60,6 +60,7 @@ class AdminController extends Controller
         $notification = [
             'message' => $message,
             'alert-type' => $typeMessage,
+            'title'=>'Notification'
         ];
         return redirect('admin')->with('notification', $notification);
     }
@@ -80,6 +81,52 @@ class AdminController extends Controller
         if (sizeof($admin) !== 0) {
 //            return dd($admin->first());
             return view('admin.profile', ['admin'=>$admin->first()]);
+        } else {
+            echo "WRONG!";
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function update(Request $request) {
+        $id = $request->query('id');
+
+        $name = $request->input('name');
+        $email = $request->input('email');
+        $phone = $request->input('phone');
+        $password = $request->input('password');
+
+        $admins = Admin::where('id', $id)->get();
+
+        $message = "Update profile successfully";
+        $typeMessage = "success";
+
+        if (sizeof($admins) !== 0) {
+//          return dd($admin->first());
+            $admin = $admins->first();
+            $oldEmail = $admin->email;
+            if (sizeof(Admin::where('email', $email)->get()) > 0 && $email != $oldEmail) {
+                $message = "Couldn't update profile! Email is used!";
+                $typeMessage = "error";
+            } else {
+                $admin->name = $name;
+
+                $admin->phone = $phone;
+                $admin->email = $email;
+
+                $admin->password = bcrypt($password);
+
+                $admin->save();
+            }
+            $url = '/admin/profile?id=' . $id;
+            $notification = [
+                'message' => $message,
+                'alert-type' => $typeMessage,
+                'title'=>'Notification'
+            ];
+            return redirect($url)->with('notification', $notification);
         } else {
             echo "WRONG!";
         }

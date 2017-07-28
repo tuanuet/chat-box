@@ -40,36 +40,41 @@
                                 <hr>
                                 <h4 class="text-uppercase font-600">About Me</h4>
 
-                                <form class="form-horizontal" role="form" style="padding-left: 20%">
+                                <form class="form-horizontal" id="myForm" method="post" role="form" style="padding-left: 20%" action="/admin/profile/update?id={{Auth::user()->id}}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <div class="form-group">
                                         <label class="col-md-2 control-label">Text</label>
                                         <div class="col-md-6">
-                                            <input type="text" disabled class="form-control" value="{{$admin->name}}">
+                                            <input type="text" required id="form-name" name="name" disabled class="form-control" value="{{$admin->name}}">
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="col-md-2 control-label" for="example-email">Email</label>
                                         <div class="col-md-6">
-                                            <input type="email" disabled id="example-email" name="example-email" class="form-control" value="{{$admin->email}}">
+                                            <input type="email" required disabled id="form-email" name="email" class="form-control" value="{{$admin->email}}">
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="col-md-2 control-label">Phone</label>
                                         <div class="col-md-6">
-                                            <input type="text" disabled class="form-control" value="{{$admin->phone}}">
+                                            <input type="text" id = "form-phone" disabled name="phone" class="form-control" value="{{$admin->phone}}">
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="col-md-2 control-label">Password</label>
                                         <div class="col-md-6">
-                                            <input type="password" disabled class="form-control" value="{{$admin->password}}">
+                                            <input type="password" required disabled id = "form-password" name="password"class="form-control" value="{{$admin->password}}">
                                         </div>
                                     </div>
 
+                                    <button type="button" id="btn-edit" class="btn btn-default waves-effect waves-light">Change</button>
+                                    <button type="submit" id="btn-save" class="btn btn-default waves-effect waves-light">Save</button>
+                                    <span id="message"></span>
                                 </form>
+
                             </div>
 
                         </div>
@@ -94,5 +99,5 @@
 @stop
 
 @section('script')
-    <script src="/js/admin.js"></script>
+    <script src="/js/profile.js"></script>
 @endsection

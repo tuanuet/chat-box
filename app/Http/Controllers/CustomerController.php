@@ -46,6 +46,7 @@ class CustomerController extends Controller
         $notification = [
             'message' => $message,
             'alert-type' => $typeMessage,
+            'title'=>'Notification'
         ];
 
         return redirect('/customers')->with('notification', $notification);
@@ -74,6 +75,7 @@ class CustomerController extends Controller
         $notification = [
             'message' => $message,
             'alert-type' => $typeMessage,
+            'title'=>'Notification'
         ];
         return redirect('/customers')->with('notification', $notification);
     }
