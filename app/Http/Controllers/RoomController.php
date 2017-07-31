@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Customer;
 use App\Message;
 use App\Topic;
-use Illuminate\Http\Request;
 use App\Room;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -13,21 +12,29 @@ use Session;
 
 class RoomController extends Controller
 {
-
-
+    /**
+     * RoomController constructor.
+     */
     public function __construct()
     {
         $this->middleware('authenticate');
     }
 
+    /**
+     * this function aims to show layout of room
+     * @return view: room.room
+     */
     public function index()
     {
-
+        //get all rooms which don't have status 3 (the room which has status 3 was closed
         $rooms = Room::where('status', '<>', 3)
                         ->get();
+        //declaration of parameters to return with view
         $room_array = [];
-        foreach($rooms as $room) {
 
+
+        foreach($rooms as $room) {
+            //get the name of customers who has been created room
             $customerName = DB::table('customers')
                 ->join('messages', 'customers.id', '=', 'messages.sender_id')
                 ->where('messages.room_id', '=', $room->id)
@@ -38,7 +45,10 @@ class RoomController extends Controller
                 $room->delete();
                 continue;
             }
-            if (($room->status === 1 && $room->assignee === 0)|| $room->assignee === Auth::user()->id) {
+
+            // set attribute to return
+            if (($room->status === 1 && $room->assignee === 0)
+                || $room->assignee === Auth::user()->id) {
 
                 $room_array[] = ['id' => $room->id,
                     'customerName' => $customerName->name,
@@ -49,20 +59,13 @@ class RoomController extends Controller
             }
         }
 
-
-//        $notification = array(
-//            'message' => 'Welcome to Room',
-//            'title' => 'Welcome',
-//            'alert-type' => 'warning'
-//        );
-//        \Session::put('message', $notification['message']);
-//        \Session::put('title', $notification['title']);
-//        \Session::put('alert-type', $notification['alert-type']);
-
         return view('room.room', ['rooms' => $room_array]);
     }
 
-
+    /**
+     * show closed rooms
+     * @return view.history
+     */
     public function history()
     {
         $rooms = Room::where('status', 3)
@@ -93,6 +96,11 @@ class RoomController extends Controller
         return view('room.history', ['rooms' => $room_array]);
     }
 
+    /**
+     * @param $room_id
+     * show chat logs of closed room
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|string
+     */
     public function showChatLog($room_id)
     {
         $admin_id = Room::find($room_id)->assignee;
@@ -100,7 +108,9 @@ class RoomController extends Controller
             return "Can't find assignee of room";
         }
 
-        $room_messages = Message::where('room_id', $room_id)->orderBy('created_at')->get();
+        $room_messages = Message::where('room_id', $room_id)
+                                ->orderBy('created_at')
+                                ->get();
         $customer_id = $room_messages[0]->sender_id;
         $messages = [];
         foreach ($room_messages as $message)
@@ -126,10 +136,15 @@ class RoomController extends Controller
         ]);
     }
 
+    /**
+     *
+     * @param $room_id
+     * @return chat.chat
+     */
     public function chat($room_id)
     {
         $room = Room::find($room_id);
-//        dd(Auth::user()->id);
+
         if($room->assignee != 0 && $room->assignee != Auth::user()->id) {
             $notification = [
                 'message' => 'Room has been assigned by other one!',
@@ -139,7 +154,7 @@ class RoomController extends Controller
 
             return redirect('/room')->with('notification', $notification);
         }
-//        dd(Auth::user()->id);
+
 
         $room_messages = Message::where('room_id', $room_id)->orderBy('created_at')->get();
         $customer_id = $room_messages[0]->sender_id;
