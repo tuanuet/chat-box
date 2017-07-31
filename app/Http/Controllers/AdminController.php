@@ -43,7 +43,7 @@ class AdminController extends Controller
         $typeMessage = "success";
 
         if (sizeof(Admin::where('email', $email)->get()) > 0) {
-            $message = "Couldn't add new admin! Email is used!";
+            $message = "Could not add new admin! Email is used!";
             $typeMessage = "error";
         } else {
             $admin = new Admin();
@@ -108,7 +108,7 @@ class AdminController extends Controller
             $admin = $admins->first();
             $oldEmail = $admin->email;
             if (sizeof(Admin::where('email', $email)->get()) > 0 && $email != $oldEmail) {
-                $message = "Couldn't update profile! Email is used!";
+                $message = "Could not update profile! Email is used!";
                 $typeMessage = "error";
             } else {
                 $admin->name = $name;

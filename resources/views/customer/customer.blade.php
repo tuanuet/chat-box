@@ -58,8 +58,16 @@
                                         <td>{{$d[0]->name}}</td>
                                         <td>{{$d[0]->phone}}</td>
                                         <td>{{$d[0]->email}}</td>
-                                        <td>{{$d[0]->created_at->toDateString()}}</td>
-                                        <td>{{$d[0]->updated_at->toDateString()}}</td>
+                                        @if (!empty($d[0]->created_at))
+                                            <td>{{$d[0]->created_at->toDateString()}}</td>
+                                        @else
+                                            <td>NULL</td>
+                                        @endif
+                                        @if (!empty($d[0]->updated_at))
+                                            <td>{{$d[0]->updated_at->toDateString()}}</td>
+                                        @else
+                                            <td>NULL</td>
+                                        @endif
                                         <td>{{$d[1]}}</td>
                                         <td>{{$d[2]}}</td>
                                         <td>
