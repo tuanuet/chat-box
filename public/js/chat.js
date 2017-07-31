@@ -1,78 +1,86 @@
-var socket = io.connect('http://127.0.0.1:3000');
-var socketID;
 
-
-var adminData = {
-    'assignee': 1,
-    'room_id' :2,
-    'sender_id' : 0
-}
-
-//event joim room
-var join_room = function(){
-    socket.emit('admin-join-room', adminData);
-    console.log('admin join to room ' + adminData.room_id);
-}
-
-socket.on('server-confirm-join');
 
 //send message to server
-var send_chat = function() {
-    var msg = $('#chat_message').val();
-    $('#chat_message').val('');
-    if(msg) {
 
-        socket.emit('client-send-message', {
-            name: "Admin",
-            message: msg,
-            sender_id: 0,
-            room_id : adminData.room_id
-        });
-    }
-    else {
-        alert("Please enter a message");
-    }
-};
 
-//event send chat
-$(document).ready(function(){
-    $('#chat_message').keypress(function(e){
-        if(e.keyCode === 13){
+$(document).ready(function () {
+
+    var send_chat = function () {
+        contentMsg = tab_id + ' .chat_message';
+        console.log(contentMsg);
+        var msg = $(contentMsg).val();
+        $(contentMsg).val('');
+        console.log(msg);
+        if (msg) {
+
+            socket.emit('client-send-message', {
+                name: "Admin",
+                message: msg,
+                sender_id: 0,
+                room_id: adminData.room_id
+            });
+
+            var blockSelf = '<li class="self">';
+            blockSelf += '<div class="msg">';
+            blockSelf += '<p class="sender"><a href="">' + '</a></p>';
+            blockSelf += '<p>' + msg + '</p>';
+            blockSelf += '<time>' + '20:10' + '</time>';
+            blockSelf += '</div></li>';
+            var contentChat = tab_id + " .chat";
+            $(contentChat).append(blockSelf);
+        }
+        else {
+            alert("Please enter a message");
+        }
+    };
+
+    var socket = io.connect('http://127.0.0.1:3000/chat');
+
+
+    socket.emit('admin-join-room', {
+        assignee: adminData.assignee,
+        room_id: adminData.room_id
+    });
+
+    console.log("join room successfully");
+
+    socket.on('server-confirm-join', function (data) {
+        console.log(data);
+    });
+
+
+
+    $(document).on('keypress','#chat_message', function (e) {
+        if (e.charCode === 13) {
             send_chat();
             return false;
         }
     });
 
-    $('#send').click(function(e){
-        e.preventDefault();
+    var btnSendId = tab_id + ' .icon-send';
+    $(document).on('click', '.icon-send', function (e) {
         send_chat();
-        return false;
     });
-});
 
-//receive message
-socket.on('server-send-message', function(data){
-    data.name;
-    data.message;
-    if (data !== null && typeof data !== 'object') {
-        data = jQuery.parseJSON(data);
-    }
+    socket.on('server-send-message', function (data) {
 
-    var block = '<div class="rowcont">';
-    block += '<p class="textchat">';
-    block += '<span class="name">'+ data.user +'</span> ' + data.message;
-    block += '</p>';
-    block += '</div>';
+        if (data !== null && typeof data !== 'object') {
+            data = jQuery.parseJSON(data);
+        }
 
-    $( "#messages" ).append(block);
 
-    var count = $("#messages > div.rowcont").length;
+        var block = '<li class="other">';
+        block += '<div class="msg">';
+        block += '<p class="sender"><a href="">' + data.name + '</a></p>';
+        block += '<p>' + data.message + '</p>';
+        block += '<time>' + '20:10' + '</time>';
+        block += '</div></li>';
 
-    if (count > 50) {
-        $("#messages > div.rowcont").slice(0, 30).remove();
-    }
+        var contentChat = tab_id + " .chat";
+        $(contentChat).append(block);
 
-    $('#messages').animate({
-        scrollTop: $('#messages .rowcont:last-child').position().top
-    }, 'slow');
+    });
+
+    // socket.on('')
+
 });

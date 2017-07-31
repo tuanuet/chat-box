@@ -47,19 +47,7 @@ a{
 
 
 /* M E S S A G E S */
-.chat-content {
-    width: 900px;
-    float:left;
-    overflow-x:hidden;
-}
 
-.customer-info {
-    width: 300px;
-    position: fixed;
-    background: white;
-    right: 0;
-
-}
 
 
 
