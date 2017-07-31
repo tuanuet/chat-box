@@ -57,3 +57,8 @@ $('#form_admin').submit(function (e) {
         $('#message').html('');
     }
 });
+
+function getRooms(id) {
+    console.log(ok);
+    return "ok";
+}
