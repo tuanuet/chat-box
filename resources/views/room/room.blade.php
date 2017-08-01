@@ -70,7 +70,7 @@
                                         @if($room['status'] === 1)
                                         <td><i class="fa fa-circle"></i> In-active</td>
                                         <td>
-                                            <a href="{{url('/chat/'.$room['id'])}}" class="btn btn-default btn-sm waves-effect waves-light">
+                                            <a href="{{url('/chat/'.$room['id'])}}" onclick="joinRoom({{$room['id']}})" class="btn btn-default btn-sm waves-effect waves-light">
                                                 Join
 
                                             </a>
@@ -109,11 +109,12 @@
 
 @stop
 @push('inline_scripts')
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#datatable').dataTable( {
-            "order": [[5, 'desc'], [3, 'asc']]
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#datatable').dataTable({
+                "order": [[ 5, 'desc' ], [ 3, 'desc' ]]
+            });
         });
-    });
-</script>
-@endpush
+    </script>
+
+    @endpush

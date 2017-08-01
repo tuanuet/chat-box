@@ -8,7 +8,7 @@
             <div class="container">
                 <div>Room Type: {{$room_type}}</div>
                 {{--content chat--}}
-                <div class="chat-content">
+
                 <ol class="chat">
                     @foreach($messages as $message)
                         @if($message['sender_id'] !== 0)
@@ -24,32 +24,7 @@
                             </li>
                         @endforeach
                 </ol>
-            </div>
-                <div class="customer-info">
-                    <div class="card-box">
-                        <ul>
-                            <h3>Customer info</h3>
-                            <li>
-                                <p>
-                                    <b>Name: </b>
-                                    {{$customer->name}}
-                                </p>
-                            </li>
-                            <li>
-                                <p>
-                                    <b>Phone: </b>
-                                    <a href="#">{{$customer->phone}}</a>
-                                </p>
-                            </li>
-                            <li>
-                                <p>
-                                    <b>Email: </b>
-                                    <a href="#">{{$customer->email}}</a>
-                                </p>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+
 
                 {{--end content chat --}}
                 <div class="close-time" style="width: 50%;">
@@ -57,7 +32,29 @@
                 </div>
             </div>
         </div>
-
+        <div class="box-info">
+            <h4 id="box-info">Customer info</h4>
+            <ul>
+                <li>
+                    <p>
+                        <b>Name: </b>
+                        {{$customer->name}}
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        <b>Phone: </b>
+                        <a href="#">{{$customer->phone}}</a>
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        <b>Email: </b>
+                        <a href="#">{{$customer->email}}</a>
+                    </p>
+                </li>
+            </ul>
+        </div>
 
         <footer class="footer">
             © 2017. All rights reserved.
@@ -69,3 +66,11 @@
     <!-- ============================================================== -->
 
 @stop
+@push('inline_scripts')
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#box-info').click(function() {
+                $(this).parent().find('ul').slideToggle();
+            });
+        });
+    @endpush
