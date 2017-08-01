@@ -9,8 +9,19 @@ $(document).ready(function () {
         var url = '/chat/' + $(this).data('roomid');
         adminData.room_id = $(this).data('roomid');
         tab_id = '#' + adminData.room_id;
-        console.log(adminData.room_id + " " + adminData.assignee);
-        /** ajax lay du lieu chat */
+
+        /** socket send join event to chat server*/
+        socket.emit('admin-join-room', {
+            assignee: adminData.assignee,
+            room_id: adminData.room_id
+        });
+
+        /** server confirm join */
+        socket.on('server-confirm-join', function (data) {
+            console.log(data);
+        });
+
+        /** ajax get chat data */
         $.ajax({
             url:url,
             type: 'get',
@@ -25,7 +36,7 @@ $(document).ready(function () {
 
                 /** append new tab with name of customer */
                 var tab = '<li class="">\n' +
-                            '<a href="#'+ adminData.room_id +'" data-toggle="tab" aria-expanded="false">'+ customer.name+
+                            '<a href="#'+ adminData.room_id +'" data-toggle="tab" aria-expanded="false" class="tab-select">'+ customer.name+
                             '<i class="close-tab btn btn-close fa fa-close"></i></a>' +
                             '</li>';
                 $('#list-room-chat').append(tab);
@@ -72,7 +83,7 @@ $(document).ready(function () {
                 var inputChat =
                             '</ol>' +
                             '<input class="textarea chat_message" type="text" name="message" id="chat_message" placeholder="Type" />' +
-                            '<img class="icon-send" src="/images/send-icon.png" alt="">' +
+                            '<img class="icon-send" src="/images/send-icon.png" alt="" id="icon-send">' +
                         '</div>' +
                     '</div>';
 
@@ -88,6 +99,11 @@ $(document).ready(function () {
                 console.log(data);
                 console.log("error");
             }
+        });
+
+        $(document).on('click', '.tab-select', function () {
+            tab_id = $(this).attr('href');
+            adminData.room_id = tab_id.substr(1);
         });
 
 

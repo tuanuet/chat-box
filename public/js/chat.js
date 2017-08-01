@@ -11,6 +11,7 @@ $(document).ready(function () {
         var msg = $(contentMsg).val();
         $(contentMsg).val('');
         console.log(msg);
+        console.log('send message to room id: ' + adminData.room_id);
         if (msg) {
 
             socket.emit('client-send-message', {
@@ -37,10 +38,10 @@ $(document).ready(function () {
     var socket = io.connect('http://127.0.0.1:3000/chat');
 
 
-    socket.emit('admin-join-room', {
-        assignee: adminData.assignee,
-        room_id: adminData.room_id
-    });
+    // socket.emit('admin-join-room', {
+    //     assignee: adminData.assignee,
+    //     room_id: adminData.room_id
+    // });
 
     console.log("join room successfully");
 
@@ -57,18 +58,17 @@ $(document).ready(function () {
         }
     });
 
-    var btnSendId = tab_id + ' .icon-send';
-    $(document).on('click', '.icon-send', function (e) {
+    $(document).on('click', '#icon-send', function (e) {
         send_chat();
     });
 
     socket.on('server-send-message', function (data) {
-
+        console.log("tao vao day roi");
         if (data !== null && typeof data !== 'object') {
-            data = jQuery.parseJSON(data);
+            data = jQuery.parseJSON(data.data);
         }
 
-
+        /** new message */
         var block = '<li class="other">';
         block += '<div class="msg">';
         block += '<p class="sender"><a href="">' + data.name + '</a></p>';
@@ -76,7 +76,9 @@ $(document).ready(function () {
         block += '<time>' + '20:10' + '</time>';
         block += '</div></li>';
 
+        /** append new message from server */
         var contentChat = tab_id + " .chat";
+        console.log('append new message from server to ' + contentChat);
         $(contentChat).append(block);
 
     });
