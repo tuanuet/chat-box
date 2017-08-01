@@ -178,6 +178,8 @@ $(document).ready(function () {
 
     $(document).on('click', '.btn-join-new-room', function () {
         var room_id = $(this).data('roomid');
+        $(this).parent().prev().html('<i class="fa fa-circle" style="color: #a0d269;"></i> Active');
+        $(this).parent().html('');
         join_room(room_id);
     });
 
