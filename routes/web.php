@@ -44,9 +44,11 @@ Route::get('admin/room', 'RoomController@index')->name('room-index');
 
 ///////////////////ROUTE CUSTOMER///////////////
 Route::get('customers', 'CustomerController@index');
+Route::get('customers/getroom', 'CustomerController@getRoom');
 
 Route::post('customers/add', 'CustomerController@add');
 Route::post('customers/edit', 'CustomerController@edit');
+
 
 ////////////////////////////////////////////////
 
