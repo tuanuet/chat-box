@@ -4,8 +4,8 @@
 
     <div class="content-page">
         <!-- Start content -->
-        <div class="content">
-            <div class="container">
+        <div class="tab-pane">
+            <div class="row">
                 <div>Room Type: {{$room_type}}</div>
                 {{--content chat--}}
                 <div>
@@ -32,31 +32,6 @@
                     <input class="textarea" type="text" name="message" placeholder="Type here!" id="chat_message"/>
                     <img class="icon-send" src="/images/send-icon.png" id="icon-send" alt="">
                 </div>
-                {{--<div class="customer-info">--}}
-                    {{--<div class="card-box">--}}
-                        {{--<ul>--}}
-                            {{--<h3>Customer info</h3>--}}
-                            {{--<li>--}}
-                                {{--<p>--}}
-                                    {{--<b>Name: </b>--}}
-                                    {{--{{$customer->name}}--}}
-                                {{--</p>--}}
-                            {{--</li>--}}
-                            {{--<li>--}}
-                                {{--<p>--}}
-                                    {{--<b>Phone: </b>--}}
-                                    {{--<a href="#">{{$customer->phone}}</a>--}}
-                                {{--</p>--}}
-                            {{--</li>--}}
-                            {{--<li>--}}
-                                {{--<p>--}}
-                                    {{--<b>Email: </b>--}}
-                                    {{--<a href="#">{{$customer->email}}</a>--}}
-                                {{--</p>--}}
-                            {{--</li>--}}
-                        {{--</ul>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
 
             </div>
         </div>
@@ -85,10 +60,6 @@
                 </li>
             </ul>
         </div>
-
-        <footer class="footer">
-            © 2017. All rights reserved.
-        </footer>
 
     </div>
     <!-- ============================================================== -->

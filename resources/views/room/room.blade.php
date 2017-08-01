@@ -1,5 +1,6 @@
 @extends('layouts.master')
 @section('content')
+    <link rel="stylesheet" href="/css/chatlog.css">
     <!-- ============================================================== -->
     <!-- Start right Content here -->
     <!-- ============================================================== -->
@@ -12,78 +13,84 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="btn-group pull-right m-t-15">
-                            <button type="button" class="btn btn-default dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-expanded="false">Settings <span class="m-l-5"><i class="fa fa-cog"></i></span></button>
-                            <ul class="dropdown-menu drop-menu-right" role="menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                            </ul>
-                        </div>
 
-                        <h4 class="page-title">Datatable</h4>
-                        <ol class="breadcrumb">
-                            <li>
-                                <a href="#">Ubold</a>
-                            </li>
-                            <li>
-                                <a href="#">Tables</a>
-                            </li>
-                            <li class="active">
-                                Datatable
-                            </li>
-                        </ol>
+
+                        </div>
                     </div>
                 </div>
 
 
                 <div class="row">
-                    <div class="col-sm-12">
-                        <div class="card-box table-responsive">
-                            <h4 class="m-t-0 header-title"><b>Default Example</b></h4>
-                            <p class="text-muted font-13 m-b-30">
-                                DataTables has most features enabled by default, so all you need to do to use it with
-                                your own tables is to call the construction function: <code>$().DataTable();</code>.
-                            </p>
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
 
-                            <table id="datatable" class="table table-striped table-bordered">
-                                <thead>
-                                <tr>
-                                    <th>No.</th>
-                                    <th>Type</th>
-                                    <th>Customer</th>
-                                    <th>Created at</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                                </thead>
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Chat Management</h3>
+                            </div>
+
+                            <div class="panel-body">
+                                <ul class="nav nav-pills m-b-30" id="list-room-chat">
+                                    <li class="active">
+                                        <a href="#room-chat" id="tab-room-chat" data-toggle="tab" aria-expanded="true">Room Chat
+                                            <span class="badge badge-xs" data-numberNewRoom="0"></span></a>
+                                    </li>
 
 
-                                <tbody>
-                                @foreach($rooms as $room)
-                                    <tr>
-                                        <td>{{$room['id']}}</td>
-                                        <td>{{$room['topic']}}</td>
-                                        <td>{{$room['customerName']}}</td>
-                                        <td>{{$room['created_at']}}</td>
-                                        @if($room['status'] === 1)
-                                        <td><i class="fa fa-circle"></i> In-active</td>
-                                        <td>
-                                            <a href="{{url('/chat/'.$room['id'])}}" onclick="joinRoom({{$room['id']}})" class="btn btn-default btn-sm waves-effect waves-light">
-                                                Join
+                                </ul>
 
-                                            </a>
-                                        </td>
-                                            @else
-                                            <td><i class="fa fa-circle" style="color: #a0d269;"></i> Active</td>
-                                            <td></td>
-                                            @endif
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
+                                <div class="tab-content br-n pn" id="list-tab">
+                                    <div id="room-chat" class="tab-pane active">
+                                        <div class="row">
+                                            <div class="card-box table-responsive">
+
+
+                                                <table id="datatable" class="table table-striped table-bordered">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th>Type</th>
+                                                        <th>Customer</th>
+                                                        <th>Created at</th>
+                                                        <th>Status</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                    </thead>
+
+
+                                                    <tbody id="room-list">
+                                                    @foreach($rooms as $room)
+                                                        <tr>
+                                                            <td>{{$room['id']}}</td>
+                                                            <td>{{$room['topic']}}</td>
+                                                            <td>{{$room['customerName']}}</td>
+                                                            <td>{{$room['created_at']}}</td>
+                                                            @if($room['status'] === 1)
+                                                                <td><i class="fa fa-circle"></i> In-active</td>
+                                                                <td>
+                                                                    <a data-roomid={{$room['id']}} class="btn btn-default btn-sm waves-effect waves-light btn-join-room">
+                                                                        Join
+
+                                                                    </a>
+                                                                </td>
+                                                            @else
+                                                                <td><i class="fa fa-circle" style="color: #a0d269;"></i> Active</td>
+                                                                <td></td>
+                                                            @endif
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                </div>
+
                     </div>
                 </div>
 
@@ -110,11 +117,19 @@
 @stop
 @push('inline_scripts')
     <script type="text/javascript">
+        var adminData = {
+            assignee: {{Auth::user()->id}},
+            room_id: ""
+        };
+    </script>
+    <script src="/js/socket.io.js"></script>
+    <script type="text/javascript">
         $(document).ready(function () {
             $('#datatable').dataTable({
                 "order": [[ 5, 'desc' ], [ 3, 'desc' ]]
             });
         });
     </script>
-
+    <script src="js/room.js"></script>
+    <script src="js/chat.js"></script>
     @endpush

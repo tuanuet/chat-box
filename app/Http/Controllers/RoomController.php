@@ -8,6 +8,7 @@ use App\Topic;
 use App\Room;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use function MongoDB\BSON\toJSON;
 use Session;
 
 class RoomController extends Controller
@@ -139,20 +140,17 @@ class RoomController extends Controller
     /**
      *
      * @param $room_id
-     * @return chat.chat
+     * @return chat data
      */
     public function chat($room_id)
     {
+        ini_set('display_errors', 1);
+        error_reporting(E_ALL);
         $room = Room::find($room_id);
 
         if($room->assignee != 0 && $room->assignee != Auth::user()->id) {
-            $notification = [
-                'message' => 'Room has been assigned by other one!',
-                'alert-type' => 'warning',
-                'title' => 'Error'
-            ];
 
-            return redirect('/room')->with('notification', $notification);
+            return 'Room has been assigned by other one!';
         }
 
 
@@ -174,11 +172,14 @@ class RoomController extends Controller
                 'sent_time' => $message->created_at
             ];
         }
-        return view('chat.chat', ['messages' => $messages,
+        $chatData = array(
+            'messages' => $messages,
             'room' => $room,
             'room_type' => Topic::find($room->topic_id)->name,
-            'customer' => $customer
-        ]);
+            'customer' => \GuzzleHttp\json_encode($customer)
+        );
+
+        return $chatData;
     }
 
 }
