@@ -24,7 +24,7 @@
                 <li class="has_sub">
                     <a href="javascript:void(0);" class="waves-effect"><i class="ti-share"></i><span>Room </span> <span class="menu-arrow"></span></a>
                     <ul class="list-unstyled">
-                        <li><a href="/room">Room Chat</a></li>
+                        <li><a href="/room">Chat Management</a></li>
                         <li><a href="/history">History</a></li>
 
                     </ul>

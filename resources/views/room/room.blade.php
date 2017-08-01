@@ -31,7 +31,8 @@
                             <div class="panel-body">
                                 <ul class="nav nav-pills m-b-30" id="list-room-chat">
                                     <li class="active">
-                                        <a href="#room-chat" id="tab-room-chat" data-toggle="tab" aria-expanded="true">Room Chat</a>
+                                        <a href="#room-chat" id="tab-room-chat" data-toggle="tab" aria-expanded="true">Room Chat
+                                            <span class="badge badge-xs" data-numberNewRoom="0"></span></a>
                                     </li>
 
 
@@ -56,7 +57,7 @@
                                                     </thead>
 
 
-                                                    <tbody>
+                                                    <tbody id="room-list">
                                                     @foreach($rooms as $room)
                                                         <tr>
                                                             <td>{{$room['id']}}</td>
