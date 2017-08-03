@@ -28,6 +28,7 @@
     <link href="/vendor/light/assets/css/icons.css" rel="stylesheet" type="text/css"/>
     <link href="/vendor/light/assets/css/pages.css" rel="stylesheet" type="text/css"/>
     <link href="/vendor/light/assets/css/responsive.css" rel="stylesheet" type="text/css"/>
+
     <!-- HTML5 Shiv and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -85,18 +86,20 @@
 <script src="/vendor/light/assets/plugins/datatables/dataTables.scroller.min.js"></script>
 <script src="/vendor/light/assets/plugins/datatables/dataTables.colVis.js"></script>
 <script src="/vendor/light/assets/plugins/datatables/dataTables.fixedColumns.min.js"></script>
+<script src="/vendor/light/assets/plugins/bootstrap-filestyle/js/bootstrap-filestyle.min.js" type="text/javascript"></script>
 
 <script src="/vendor/light/assets/pages/datatables.init.js"></script>
-
+{{--<script type="text/javascript" src="/vendor/light/assets/pages/jquery.form-advanced.init.js"></script>--}}
+<script src="/vendor/light/assets/plugins/bootstrap-filestyle/js/bootstrap-filestyle.min.js" type="text/javascript"></script>
 <!-- Modal-Effect -->
 <script src="/vendor/light/assets/plugins/custombox/js/custombox.min.js"></script>
 <script src="/vendor/light/assets/plugins/custombox/js/legacy.min.js"></script>
 
 <script src="/vendor/light/assets/js/jquery.core.js"></script>
 <script src="/vendor/light/assets/js/jquery.app.js"></script>
+
 <script src="/vendor/light/assets/plugins/notifyjs/js/notify.js"></script>
 <script src="/vendor/light/assets/plugins/notifications/notify-metro.js"></script>
-
 
 <script type="text/javascript">
 

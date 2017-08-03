@@ -60,3 +60,11 @@ Route::post('topics/add', 'TopicController@add');
 Route::post('topics/edit', 'TopicController@edit');
 ///////////////////////////////////////////////
 
+///////////////////////FILE////////////////////
+Route::get('files', 'FileController@index');
+Route::get('file', 'FileController@getfile');
+Route::get('download', 'FileController@download');
+
+Route::post('files/upload', 'FileController@upload');
+
+//////////////////////////////////////////////
