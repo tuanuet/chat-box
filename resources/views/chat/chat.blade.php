@@ -5,6 +5,7 @@
     <div class="content-page">
         <!-- Start content -->
         <div class="tab-pane">
+            <div class="content-page">
             <div class="row">
                 <div>Room Type: {{$room_type}}</div>
                 {{--content chat--}}

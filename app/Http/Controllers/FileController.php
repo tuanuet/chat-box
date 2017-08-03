@@ -30,49 +30,83 @@ class FileController extends Controller
         return view('file.file', ['files'=>$files]);
     }
 
-    public function upload(Request $request)
+    /**
+     * @param Request $request
+     * @return string
+     */
+    public function adminUpload(Request $request)
     {
-        //echo $request;
         $file = $request->file('fileToUpload');
-        if ($file == NULL) {
-            echo "No file";
-        } else {
+        if ($file != NULL) {
             if ($file->isValid()) {
-                echo 'File Name: ' . $file->getClientOriginalName();
-                echo '<br>';
-
-                //Display File Extension
-                echo 'File Extension: ' . $file->getClientOriginalExtension();
-                echo '<br>';
-
-                //Display File Real Path
-                echo 'File Real Path: ' . $file->getRealPath();
-                echo '<br>';
-
-                //Display File Size
-                echo 'File Size: ' . $file->getSize();
-                echo '<br>';
-
-                //Display File Mime Type
-                echo 'File Mime Type: ' . $file->getMimeType();
-                echo '<br>';
+                if (substr($file->getMimeType(), 0, 5) != 'image') return redirect('files');
+//                echo 'File Name: ' . $file->getClientOriginalName();
+//                echo '<br>';
+//
+//                //Display File Extension
+//                echo 'File Extension: ' . $file->getClientOriginalExtension();
+//                echo '<br>';
+//
+//                //Display File Real Path
+//                echo 'File Real Path: ' . $file->getRealPath();
+//                echo '<br>';
+//
+//                //Display File Size
+//                echo 'File Size: ' . $file->getSize();
+//                echo '<br>';
+//
+//                //Display File Mime Type
+//                echo 'File Mime Type: ' . $file->getMimeType();
+//                echo '<br>';
 
                 //            Store in disk
                 $path = $file->store('files');
-                echo 'File Path: ' . $path;
-                echo '<br>';
+//                echo 'File Path: ' . $path;
+//                echo '<br>';
 
                 $File = new File();
                 $File->name = $file->getClientOriginalName();
                 $File->url = $path;
                 $File->contentType = $file->getMimeType();
                 $File->save();
-                return redirect('/files');
-                //            Store in database
-                //$data = file_get_contents($file->getRealPath());
-//                return response()->download(storage_path('app/files/U19Gx4ouUICvOixyvVaQGjd8LlMvjnbGNHL8qjQG.png'));
             }
         }
+        return redirect('files');
+    }
+
+    /**
+     * @param Request $request
+     * @return string
+     */
+    public function upload(Request $request)
+    {
+        //return $request;
+        //echo $request;
+        $file = $request->file('fileToUpload');
+        $data = array(
+            "status" => 0,
+            "type" => "",
+            "content" => ""
+        );
+        if ($file != NULL) {
+            if ($file->isValid()) {
+                if (substr($file->getMimeType(), 0, 5) == 'image') {
+                    //            Store in disk
+                    $path = $file->store('files');
+
+                    $File = new File();
+                    $File->name = $file->getClientOriginalName();
+                    $File->url = $path;
+                    $File->contentType = $file->getMimeType();
+                    $File->save();
+
+                    $data["status"] = 1;
+                    $data["type"] = "image";
+                    $data["content"] = "http://local.chat.com/file?url=" . $path;
+                }
+            }
+        }
+        return json_encode($data);
     }
 
     /**
@@ -95,6 +129,10 @@ class FileController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
     public function download(Request $request)
     {
         $url = $request->query('url');
@@ -109,5 +147,28 @@ class FileController extends Controller
         } else {
             echo 'File doesn\'t exist!';
         }
+    }
+
+    public function delete(Request $request)
+    {
+        $id = $request->query('id');
+
+        ////get url of file from database////
+        $file = File::where('id', $id)->first();
+        if ($file == NULL) {
+            return redirect('files');
+        } else {
+            $url = $file->url;
+
+            /////Delete from storage////
+            $urlFile = storage_path('/app/'. $url);
+            if (file_exists($urlFile)) {
+                //echo 'File exists!';
+                Storage::delete($url);
+            }
+            ////Delete info in database
+            $file->delete();
+        }
+        return redirect("files");
     }
 }

@@ -26,7 +26,7 @@
                         </ol>
                         </div>
                         <div class="col-sm-4 pull-right">
-                            <form action="/files/upload" method="post" enctype="multipart/form-data">
+                            <form action="/files/AdminUpload" method="post" enctype="multipart/form-data">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 {{--<input type="file" name="fileToUpload">--}}
                                 <div class="form-group col-sm-9">
@@ -56,6 +56,7 @@
                                     <th>URL</th>
                                     <th>Uploaded_at</th>
                                     <th>Preview</th>
+                                    <th>Action</th>
                                 </tr>
                                 </thead>
 
@@ -63,13 +64,18 @@
                                 <tbody>
                                 @foreach($files as $file)
                                 <tr>
-                                    <td style="text-align: left; vertical-align: middle">{{$file->id}}</td>
-                                    <td style="text-align: left; vertical-align: middle">{{$file->name}}</td>
-                                    <td style="text-align: left; vertical-align: middle">{{$file->contentType}}</td>
-                                    <td style="text-align: left; vertical-align: middle"><a href="/download?url={{$file->url}}"> {{$file->url}} </a></td>
-                                    <td style="text-align: left; vertical-align: middle">{{$file->uploaded_at}}</td>
-                                    <td style="text-align: center">
-                                        <img src="/file?url={{$file->url}}" class="img-rounded" alt="Cinque Terre" width="100">
+                                    <td align="center" style="text-align: left; vertical-align: middle">{{$file->id}}</td>
+                                    <td align="center" style="text-align: left; vertical-align: middle">{{$file->name}}</td>
+                                    <td align="center" style="text-align: left; vertical-align: middle">{{$file->contentType}}</td>
+                                    <td align="center" style="text-align: left; vertical-align: middle"><a href="/download?url={{$file->url}}"> {{$file->url}} </a></td>
+                                    <td align="center" style="text-align: left; vertical-align: middle">{{$file->uploaded_at}}</td>
+                                    <td align="center" style="text-align: center">
+                                        <img src="/file?url={{$file->url}}" class="img-rounded" alt="Image" style="width: 100px;height: 100px">
+                                    </td>
+                                    <td align="center" style="vertical-align: middle">
+                                        <a href="#delete-modal" data-overlayspeed="200" data-overlaycolor="#36404a" data-animation="fadein" data-plugin="custommodal" data-id="{{$file->id}}" class="btn btn-default btn-sm waves-effect waves-light btn-delete">
+                                            <i class="fa fa-remove"></i>
+                                        </a>
                                     </td>
                                 </tr>
                                     @endforeach
@@ -137,6 +143,24 @@
         </div>
     </div>
 
+    <!-- DELETE Modal -->
+    <div id="delete-modal" class="modal-demo">
+        <button type="button" class="close" onclick="Custombox.close();">
+            <span>&times;</span><span class="sr-only">Close</span>
+        </button>
+        <h4 class="custom-modal-title">Confirm delete</h4>
+        <div class="custom-modal-text text-left">
+            <form role="form" class="form_modal" id="deleteForm" method="post" action="">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="id" id="form_id" value="">
+                <div class="form-group">
+                    <label for="name">Do you really want delete the selected topic</label>
+                </div>
+                <button type="submit" data-from="admin" id="btn-submit" class="btn btn-default waves-effect waves-light">Yes</button>
+                <button type="button" class="btn btn-danger waves-effect waves-light m-l-10" onclick="Custombox.close();">No</button>
+            </form>
+        </div>
+    </div>
     <!-- ============================================================== -->
     <!-- End Right content here -->
     <!-- ============================================================== -->

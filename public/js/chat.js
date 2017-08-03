@@ -3,8 +3,56 @@
 //send message to server
 
 $(document).ready(function () {
+    var token = $('meta[name="_token"]').attr('content');
+    $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+        jqXHR.setRequestHeader('X-CSRF-Token', token);
+    });
 
     var send_chat = function () {
+
+        ////
+        console.log("ajax upload file");
+        var $file = document.getElementById('file'), $formData = new FormData();
+        $formData.append('fileToUpload', $file.files[0]);
+        //console.log($formData);
+        $.ajax({
+            url: 'files/upload',
+            type: 'POST',
+            data: $formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            success: function ($data) {
+                console.log($data.status);
+                console.log($data.type);
+                console.log($data.content);
+                if ($data.status == 0) return;
+                var msg = $data.content;
+                socket.emit('client-send-message', {
+                    name: "Admin",
+                    message: msg,
+                    sender_id: 0,
+                    room_id: adminData.room_id
+                });
+                var blockSelf = '<li class="self">';
+                blockSelf += '<div class="msg">';
+                blockSelf += '<p class="sender"><a href="">' + '</a></p>';
+                blockSelf += '<p><img src="' + msg + '" class="img-rounded" alt="image" style="width: 100px; height: 100px;" </p>';
+                blockSelf += '<time>' + '20:10' + '</time>';
+                blockSelf += '</div></li>';
+                var contentChat = tab_id + " .chat";
+                $(contentChat).append(blockSelf);
+
+                /** set new message = 0*/
+                var roomIdHtml = '#room-' + tab_id.substr(1);
+                console.log(roomIdHtml);
+                $(roomIdHtml).find('span').attr('data-message', 0)
+                $(roomIdHtml).find('span').html('');
+            }
+        });
+        document.getElementById("file").value = "";
+        ///////////////////
+
         contentMsg = tab_id + ' .chat_message';
         console.log(tab_id);
         console.log(contentMsg);
@@ -13,14 +61,12 @@ $(document).ready(function () {
         console.log(msg);
         console.log('send message to room id: ' + adminData.room_id);
         if (msg) {
-
             socket.emit('client-send-message', {
                 name: "Admin",
                 message: msg,
                 sender_id: 0,
                 room_id: adminData.room_id
             });
-
             var blockSelf = '<li class="self">';
             blockSelf += '<div class="msg">';
             blockSelf += '<p class="sender"><a href="">' + '</a></p>';
@@ -37,7 +83,7 @@ $(document).ready(function () {
             $(roomIdHtml).find('span').html('');
         }
         else {
-            alert("Please enter a message");
+            //alert("Please enter a message");
         }
     };
 
@@ -113,10 +159,13 @@ $(document).ready(function () {
                     var inputChat =
                         '</ol>' +
                         '<input class="textarea chat_message" type="text" name="message" id="chat_message" placeholder="Type" />' +
+                        '<form id = "form-upload" action="files/upload" method="post" enctype="multipart/form-data">' +
+                        '<input type="hidden" name="_token" value="' + token + '">' +
                         '<div class="fileupload btn btn-purple waves-effect waves-light up-file">' +
-                            '<span><i class="ion-upload m-r-5"></i>Upload</span>' +
-                            '<input type="file" class="upload">' +
+                        '<span><i class="ion-upload m-r-5"></i>Upload</span>' +
+                        '<input type="file" class="upload" id="file" name="fileToUpload">' +
                         '</div>' +
+                        '</form>' +
                         '<img class="icon-send" src="/images/send-icon.png" alt="" id="icon-send">' +
                         '</div>' +
                         '</div>';

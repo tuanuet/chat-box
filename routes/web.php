@@ -66,5 +66,7 @@ Route::get('file', 'FileController@getfile');
 Route::get('download', 'FileController@download');
 
 Route::post('files/upload', 'FileController@upload');
+Route::post('files/AdminUpload', 'FileController@adminUpload');
+Route::post('files/delete', 'FileController@delete');
 
 //////////////////////////////////////////////
