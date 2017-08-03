@@ -113,6 +113,10 @@ $(document).ready(function () {
                     var inputChat =
                         '</ol>' +
                         '<input class="textarea chat_message" type="text" name="message" id="chat_message" placeholder="Type" />' +
+                        '<div class="fileupload btn btn-purple waves-effect waves-light up-file">' +
+                            '<span><i class="ion-upload m-r-5"></i>Upload</span>' +
+                            '<input type="file" class="upload">' +
+                        '</div>' +
                         '<img class="icon-send" src="/images/send-icon.png" alt="" id="icon-send">' +
                         '</div>' +
                         '</div>';
@@ -178,6 +182,8 @@ $(document).ready(function () {
 
     $(document).on('click', '.btn-join-new-room', function () {
         var room_id = $(this).data('roomid');
+        $(this).parent().prev().html('<i class="fa fa-circle" style="color: #a0d269;"></i> Active');
+        $(this).parent().html('');
         join_room(room_id);
     });
 
