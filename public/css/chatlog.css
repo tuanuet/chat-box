@@ -299,6 +299,17 @@ input.textarea {
     z-index: 999999;
     transition-duration: 0.4s;
 }
+
+.up-file {
+    position: fixed;
+    width: 32px;
+    height: 32px;
+    right: 60px;
+    bottom: 8px;
+    z-index: 999999;
+    transition-duration: 0.4s;
+}
+
 .icon-send:hover{
     cursor: pointer;
     width: 40px;
