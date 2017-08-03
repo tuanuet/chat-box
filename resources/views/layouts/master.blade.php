@@ -112,7 +112,6 @@
 
         $("#alert").append(r);
         $("#alert-noti").click();
-
     @endif
 
 
