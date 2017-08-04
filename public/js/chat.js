@@ -23,6 +23,7 @@ $(document).ready(function () {
             contentType: false,
             processData: false,
             success: function ($data) {
+
                 console.log($data.status);
                 console.log($data.type);
                 console.log($data.content);

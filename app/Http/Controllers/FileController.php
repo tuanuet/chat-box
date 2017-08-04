@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\File;
+use function GuzzleHttp\Psr7\_parse_message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,6 +40,7 @@ class FileController extends Controller
         $file = $request->file('fileToUpload');
         if ($file != NULL) {
             if ($file->isValid()) {
+                dd($file->getMimeType());
                 if (substr($file->getMimeType(), 0, 5) != 'image') return redirect('files');
 //                echo 'File Name: ' . $file->getClientOriginalName();
 //                echo '<br>';
@@ -90,6 +92,8 @@ class FileController extends Controller
         );
         if ($file != NULL) {
             if ($file->isValid()) {
+                $data['type'] = $file->getMimeType();
+
                 if (substr($file->getMimeType(), 0, 5) == 'image') {
                     //            Store in disk
                     $path = $file->store('files');
@@ -101,7 +105,7 @@ class FileController extends Controller
                     $File->save();
 
                     $data["status"] = 1;
-                    $data["type"] = "image";
+                    $data["type"] = config('message.types.IMAGE');
                     $data["content"] = "http://local.chat.com/file?url=" . $path;
                 }
             }
