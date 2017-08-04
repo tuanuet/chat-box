@@ -211,14 +211,14 @@ $(document).ready(function () {
         var created_at = data.created_at;
         var new_room =
             '<tr>' +
-                '<td>'+ room_id +'</td>' +
-                '<td>'+ topic +'</td>' +
-                '<td>'+ customer_name +'</td>' +
-                '<td>'+ created_at +'</td>' +
-                '<td><i class="fa fa-circle"></i> In-active</td>' +
-                '<td>' +
-                    '<a data-roomid='+ room_id +' class="btn btn-default btn-sm waves-effect waves-light btn-join-new-room">Join</a>' +
-                '</td>' +
+            '<td>'+ room_id +'</td>' +
+            '<td>'+ topic +'</td>' +
+            '<td>'+ customer_name +'</td>' +
+            '<td>'+ created_at +'</td>' +
+            '<td><i class="fa fa-circle"></i> In-active</td>' +
+            '<td>' +
+            '<a data-roomid='+ room_id +' class="btn btn-default btn-sm waves-effect waves-light btn-join-new-room">Join</a>' +
+            '</td>' +
             '</tr>';
         console.log(new_room);
         /** append new room to view*/
@@ -257,7 +257,7 @@ $(document).ready(function () {
     /** event when check new room*/
     $('#tab-room-chat').click(function () {
 
-       $(this).find('span').html('');
+        $(this).find('span').html('');
     });
 
     /** event when press Enter button to send message*/
