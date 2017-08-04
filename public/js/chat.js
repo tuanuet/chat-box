@@ -14,7 +14,8 @@ $(document).ready(function () {
         console.log("ajax upload file");
         var $file = document.getElementById('file'), $formData = new FormData();
         $formData.append('fileToUpload', $file.files[0]);
-        //console.log($formData);
+        // console.log($file.size);
+
         $.ajax({
             url: 'files/upload',
             type: 'POST',
@@ -31,7 +32,10 @@ $(document).ready(function () {
                 var msg = $data.content;
                 socket.emit('client-send-message', {
                     name: "Admin",
-                    message: msg,
+                    message: {
+                        content: $data['content'],
+                        type: $data['type']
+                    },
                     sender_id: 0,
                     room_id: adminData.room_id
                 });
@@ -64,7 +68,7 @@ $(document).ready(function () {
         if (msg) {
             socket.emit('client-send-message', {
                 name: "Admin",
-                message: msg,
+                message: {content: msg},
                 sender_id: 0,
                 room_id: adminData.room_id
             });
