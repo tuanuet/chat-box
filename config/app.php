@@ -163,6 +163,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Yajra\Datatables\DatatablesServiceProvider::class,
+        Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -251,6 +252,7 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         //'Helpers' => App\Helpers::class,
         'Datatables' => yajra\Datatables\Datatables::class,
+        'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
 
     ],
 
