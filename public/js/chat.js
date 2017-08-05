@@ -295,6 +295,7 @@ $(document).ready(function () {
         var message = parseInt($(roomIdHtml).find('span').data('message')) + 1;
         $(roomIdHtml).find('span').data('message', message);
         $(roomIdHtml).find('span').html(message);
+        //
 
     });
 
