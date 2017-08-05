@@ -82,7 +82,7 @@ class UserController extends Controller
                     "customerName" => $customer->name,
                     "customerPhone" => $customer->phone,
                     "customerEmail" => $customer->email,
-                    "roomId" => $room->id
+                    "roomId" => $room->id,
                 ])) {
                     return response()->json(['failed_to_create_token'], 500);
                 }
