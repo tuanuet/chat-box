@@ -98,12 +98,15 @@ class UserController extends Controller
     public function getAuthUser(Request $request){
 
         $data = JWTAuth::getPayload($request->input('token'));
+        $customerId = $data['sub'];
+        $messages = Message::where('sender_id', $customerId)->get();
 
         return response()->json(['customerId' => $data['sub'],
             'customerName' => $data['customerName'],
             'customerEmail' => $data['customerEmail'],
             'customerPhone' => $data['customerPhone'],
-            'roomId' => $data['roomId']]);
+            'roomId' => $data['roomId'],
+            'messages' => $messages]);
     }
 
 }
