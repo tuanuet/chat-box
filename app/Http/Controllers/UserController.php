@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -19,6 +20,8 @@ class UserController extends Controller
 
     public function createToken(Request $request)
     {
+        header("Access-Control-Allow-Origin: *");
+        header("Access-Control-Allow-Headers: *");
 
 //        $customer = $this->customer->create([
 //            'name' => $request->get('name'),
