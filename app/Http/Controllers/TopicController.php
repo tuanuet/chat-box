@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 
 class TopicController extends Controller
 {
+    public function __construct(){
+        $this->middleware('authenticate');
+    }
     /**
      * Display a listing of the resource.
      *

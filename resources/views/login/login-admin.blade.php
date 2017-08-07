@@ -18,6 +18,7 @@
 
             <div class="panel-body">
                 <form class="form-horizontal m-t-20" method="post" action="{{route('admin-login')}}">
+                {{--<form class="form-horizontal m-t-20" method="post" action="http://local.chat.com/api/login">--}}
                     {{csrf_field()}}
 
                     <div class="form-group ">

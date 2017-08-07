@@ -8,6 +8,6 @@ class MessageController extends Controller
 {
     public function __construct()
     {
-        $this.$this->middleware('authenticate');
+        $this->middleware('authenticate');
     }
 }

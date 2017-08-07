@@ -22,7 +22,7 @@ Route::group(['middleware' => 'jwt.auth'], function () {
     Route::get('getData', 'UserController@getAuthUser');
 });
 
-Route::post('login', 'AdminController@login');
+Route::post('login', 'AdminVerifyController@login');
 Route::group(['middleware' => 'jwt.authAdmin'], function () {
-    Route::get('getAdminData', 'AdminController@getAdminData');
+    Route::get('getAdminData', 'AdminVerifyController@getAdminData');
 });

@@ -92,19 +92,6 @@ class DashboardController extends Controller
     }
     public function getDashboard(Request $request)
     {
-
-//        $rooms = Room_Account::
-//        select( 'rooms.name as roomName','rooms.id as roomId',
-//            'rooms.created_at',
-//            DB::raw('count(*) as accounts, rooms.id'))->
-//
-//        join('accounts','rooms_accounts.account_id','=','accounts.id')->
-//        join('rooms','rooms.id','=','rooms_accounts.room_id')->
-//        groupBy('rooms.id')->
-//        orderBy('accounts','desc')->
-//        limit(10)->
-//        get();
-
         $rooms = Room::all();
 
         $countRoom = DB::table('rooms')->count();
