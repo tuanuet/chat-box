@@ -11,6 +11,7 @@ class Message extends Model
         'room_id',
         'sender_id',
         'content',
+        'message_type',
         'created_at'
     ];
 

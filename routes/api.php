@@ -17,12 +17,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('createToken', 'UserController@createToken');
-Route::group(['middleware' => 'jwt.auth'], function () {
-    Route::get('getData', 'UserController@getAuthUser');
-});
+Route::group(['middleware' => 'cors'], function () {
 
-Route::post('login', 'AdminVerifyController@login');
-Route::group(['middleware' => 'jwt.authAdmin'], function () {
-    Route::get('getAdminData', 'AdminVerifyController@getAdminData');
+    Route::post('createToken', 'UserController@createToken');
+    Route::group(['middleware' => 'jwt.auth'], function () {
+        Route::get('getData', 'UserController@getAuthUser');
+    });
+    Route::post('login', 'AdminVerifyController@login');
+    Route::group(['middleware' => 'jwt.authAdmin'], function () {
+        Route::get('getAdminData', 'AdminVerifyController@getAdminData');
+    });
 });

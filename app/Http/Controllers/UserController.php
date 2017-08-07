@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -19,12 +20,6 @@ class UserController extends Controller
 
     public function createToken(Request $request)
     {
-
-//        $customer = $this->customer->create([
-//            'name' => $request->get('name'),
-//            'email' => $request->get('email'),
-//            'password' => bcrypt($request->get('password'))
-//        ]);
 
         /** get customer data
          * json request must be have full of field include: "name", "email", "phone", "topicId", "message"*/
@@ -98,12 +93,15 @@ class UserController extends Controller
     public function getAuthUser(Request $request){
 
         $data = JWTAuth::getPayload($request->input('token'));
+        $customerId = $data['sub'];
+        $messages = Message::where('sender_id', $customerId)->get();
 
         return response()->json(['customerId' => $data['sub'],
             'customerName' => $data['customerName'],
             'customerEmail' => $data['customerEmail'],
             'customerPhone' => $data['customerPhone'],
-            'roomId' => $data['roomId']]);
+            'roomId' => $data['roomId'],
+            'messages' => $messages]);
     }
 
 }

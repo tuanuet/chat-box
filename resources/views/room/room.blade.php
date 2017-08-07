@@ -35,7 +35,6 @@
                                             <span class="badge badge-xs" data-numberNewRoom="0"></span></a>
                                     </li>
 
-
                                 </ul>
 
                                 <div class="tab-content br-n pn" id="list-tab">
