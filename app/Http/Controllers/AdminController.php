@@ -2,15 +2,48 @@
 
 namespace App\Http\Controllers;
 
-use App\Admin;
+namespace App\Http\Controllers;
 use Illuminate\Http\Request;
-use Mockery\Exception;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+use JWTAuth;
+use App\Admin;
+use JWTAuthException;
+use Carbon\Carbon;
+use Config;
 
 class AdminController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('authenticate');
+
+    private $admin;
+    public function __construct(Admin $admin){
+        $this->admin = $admin;
+    }
+
+    /**function check admin login
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse: jwt token
+     */
+    public function login(Request $request){
+        $credentials = $request->only('email', 'password');
+        $token = null;
+        try {
+            if (!$token = JWTAuth::attempt($credentials)) {
+                return response()->json(['invalid_email_or_password'], 422);
+            }
+        } catch (JWTAuthException $e) {
+            return response()->json(['failed_to_create_token'], 500);
+        }
+        return response()->json(compact('token'));
+    }
+
+    /**authenticate when an admin send token
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAdminData(Request $request){
+        $user = JWTAuth::toUser($request->token);
+        return response()->json(['result' => $user]);
     }
 
     /**

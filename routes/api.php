@@ -21,3 +21,8 @@ Route::post('createToken', 'UserController@createToken');
 Route::group(['middleware' => 'jwt.auth'], function () {
     Route::get('getData', 'UserController@getAuthUser');
 });
+
+Route::post('login', 'AdminController@login');
+Route::group(['middleware' => 'jwt.authAdmin'], function () {
+    Route::get('getAdminData', 'AdminController@getAdminData');
+});
