@@ -59,5 +59,6 @@ class Kernel extends HttpKernel
         'authenticate' => \App\Http\Middleware\CheckLogin::class,
         'jwt.auth' => \App\Http\Middleware\VerifyJWTToken::class,
         'jwt.authAdmin' => \App\Http\Middleware\VerifyJWTTokenAdmin::class,
+        'cors' => \App\Http\Middleware\Cors::class,
     ];
 }

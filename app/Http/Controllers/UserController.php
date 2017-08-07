@@ -20,14 +20,6 @@ class UserController extends Controller
 
     public function createToken(Request $request)
     {
-        header("Access-Control-Allow-Origin: *");
-        header("Access-Control-Allow-Headers: *");
-
-//        $customer = $this->customer->create([
-//            'name' => $request->get('name'),
-//            'email' => $request->get('email'),
-//            'password' => bcrypt($request->get('password'))
-//        ]);
 
         /** get customer data
          * json request must be have full of field include: "name", "email", "phone", "topicId", "message"*/
