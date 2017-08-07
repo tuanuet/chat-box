@@ -4,13 +4,8 @@ namespace App\Http\Controllers;
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
-use JWTAuth;
 use App\Admin;
-use JWTAuthException;
-use Carbon\Carbon;
-use Config;
+
 
 class AdminController extends Controller
 {
