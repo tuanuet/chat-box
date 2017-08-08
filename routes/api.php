@@ -19,6 +19,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['middleware' => 'cors'], function () {
 
+    Route::post('files/upload', 'FileController@upload')->name('client-upload');
+
+
     Route::post('createToken', 'UserController@createToken');
     Route::group(['middleware' => 'jwt.auth'], function () {
         Route::get('getData', 'UserController@getAuthUser');
