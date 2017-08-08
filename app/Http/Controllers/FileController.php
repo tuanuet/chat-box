@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\File;
-use function GuzzleHttp\Psr7\_parse_message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\Response;
 
 class FileController extends Controller
 {
@@ -16,7 +14,7 @@ class FileController extends Controller
      */
     function __construct()
     {
-        $this->middleware('authenticate');
+        $this->middleware('jwt.authAdmin');
     }
 
     /**
@@ -40,7 +38,7 @@ class FileController extends Controller
         $file = $request->file('fileToUpload');
         if ($file != NULL) {
             if ($file->isValid()) {
-                dd($file->getMimeType());
+                //dd($file->getMimeType());
                 if (substr($file->getMimeType(), 0, 5) != 'image') return redirect('files');
 //                echo 'File Name: ' . $file->getClientOriginalName();
 //                echo '<br>';
@@ -117,7 +115,7 @@ class FileController extends Controller
      * @param Request $request
      * @return mixed
      */
-    public function getfile(Request $request)
+    public function getFile(Request $request)
     {
         $url = $request->query('url');
         //echo 'Request to get file from '. $url;
@@ -155,8 +153,8 @@ class FileController extends Controller
 
     public function delete(Request $request)
     {
-        $id = $request->query('id');
-
+        $id = $request->input('id');
+        //dd($id);
         ////get url of file from database////
         $file = File::where('id', $id)->first();
         if ($file == NULL) {

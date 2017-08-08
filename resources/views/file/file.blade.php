@@ -26,7 +26,7 @@
                         </ol>
                         </div>
                         <div class="col-sm-4 pull-right">
-                            <form action="/files/AdminUpload" method="post" enctype="multipart/form-data">
+                            <form action="/files/adminupload" method="post" enctype="multipart/form-data">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 {{--<input type="file" name="fileToUpload">--}}
                                 <div class="form-group col-sm-9">
@@ -107,8 +107,8 @@
         <h4 class="custom-modal-title">Add</h4>
         <div class="custom-modal-text text-left">
 
-            <form role="form" class="form_modal" id="form_admin" method="post" action="/files/upload">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            <form role="form" class="form_modal" id="form_admin" method="post" action="/files/adminupload">
+                <input type="hidden" name="_token" value="{!! csrf_token() !!}">
                 <input type="hidden" name="id" id="form_id" value="">
                 <div class="form-group">
                     <label for="name">Name</label>
@@ -150,9 +150,9 @@
         </button>
         <h4 class="custom-modal-title">Confirm delete</h4>
         <div class="custom-modal-text text-left">
-            <form role="form" class="form_modal" id="deleteForm" method="post" action="">
+            <form role="form" class="form_modal" id="deleteForm" method="POST" action="{{route('delete-file')}}">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <input type="hidden" name="id" id="form_id" value="">
+                <input type="hidden" name="id" id="delete_form_id" value="">
                 <div class="form-group">
                     <label for="name">Do you really want delete the selected topic</label>
                 </div>
