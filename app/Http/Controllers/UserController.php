@@ -110,9 +110,10 @@ class UserController extends Controller
         return response()->json(['customer' => ['customerId' => $data['sub'],
             'customerName' => $data['customerName'],
             'customerEmail' => $data['customerEmail'],
-            'customerPhone' => $data['customerPhone'],
+            'customerPhone' => $data['customerPhone']
+            ],
             'roomId' => $data['roomId'],
-            'messages' => $messages],
+            'messages' => $messages,
             'admin' => $admin]);
     }
 
