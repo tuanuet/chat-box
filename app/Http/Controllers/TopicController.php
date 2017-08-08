@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class TopicController extends Controller
 {
     public function __construct(){
-        $this->middleware('authenticate');
+        $this->middleware('jwt.authAdmin');
     }
     /**
      * Display a listing of the resource.

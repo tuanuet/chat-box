@@ -18,7 +18,7 @@ class RoomController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('authenticate');
+        $this->middleware('jwt.authAdmin');
     }
 
     /**

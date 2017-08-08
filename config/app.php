@@ -253,7 +253,7 @@ return [
         //'Helpers' => App\Helpers::class,
         'Datatables' => yajra\Datatables\Datatables::class,
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
-
+        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
     ],
 
 ];

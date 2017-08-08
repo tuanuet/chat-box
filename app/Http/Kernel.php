@@ -60,6 +60,5 @@ class Kernel extends HttpKernel
         'jwt.auth' => \App\Http\Middleware\VerifyJWTToken::class,
         'jwt.authAdmin' => \App\Http\Middleware\VerifyJWTTokenAdmin::class,
         'cors' => \App\Http\Middleware\Cors::class,
-        'adminVerify' => \App\Http\Middleware\AdminVerify::class,
     ];
 }

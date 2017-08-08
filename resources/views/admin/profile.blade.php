@@ -40,7 +40,7 @@
                                 <hr>
                                 <h4 class="text-uppercase font-600">About Me</h4>
 
-                                <form class="form-horizontal" id="myForm" method="post" role="form" style="padding-left: 20%" action="/admin/profile/update?id={{Auth::user()->id}}">
+                                <form class="form-horizontal" id="myForm" method="post" role="form" style="padding-left: 20%" action="/admin/profile/update?id={{$admin->id}}">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <div class="form-group">
                                         <label class="col-md-2 control-label">Text</label>
