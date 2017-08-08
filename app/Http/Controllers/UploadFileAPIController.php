@@ -37,7 +37,7 @@ class UploadFileAPIController extends Controller
 
                     $data["status"] = 1;
                     $data["type"] = config('message.types.IMAGE');
-                    $data["content"] = "http://local.chat.com/file?url=" . $path;
+                    $data["content"] = "http://local.chat.com/api/file?url=" . $path;
                 }
             }
         }
