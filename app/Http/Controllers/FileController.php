@@ -117,7 +117,7 @@ class FileController extends Controller
      * @param Request $request
      * @return mixed
      */
-    public function getfile(Request $request)
+    public function getFile(Request $request)
     {
         $url = $request->query('url');
         //echo 'Request to get file from '. $url;

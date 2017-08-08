@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,14 +20,19 @@ class AdminLogin extends Controller
 //            dd($res->getBody());
             return view('login.login-admin');
         } else {
-            $client = new Client();
-            $res = $client->request('GET','http://local.chat.com/api/getAdminData?token=' . $token)->getBody();
-            //do with res
-            //dd(\GuzzleHttp\json_decode($res) -> result -> id);
-            $id = \GuzzleHttp\json_decode($res) -> result -> id;
-            Auth::loginUsingId($id);
-            $cookie = cookie('token', $token);
-            return redirect('/dashboard')->withCookie($cookie);
+            try {
+                $client = new Client();
+                $res = $client->request('GET', 'http://local.chat.com/api/getAdminData?token=' . $token)->getBody();
+                //do with res
+                //dd(\GuzzleHttp\json_decode($res) -> result -> id);
+                $id = \GuzzleHttp\json_decode($res)->result->id;
+                //Auth::loginUsingId($id);
+                $cookie = cookie('token', $token);
+                return redirect('/dashboard')->withCookie($cookie);
+            } catch (ClientException $e) {
+                $cookie = \Cookie::forget('token');
+                return redirect('login')->withCookie($cookie);
+            }
         }
     }
 
@@ -48,6 +54,8 @@ class AdminLogin extends Controller
             $token = \GuzzleHttp\json_decode($res)->token;
             $cookie = cookie('token', $token);
             return redirect('/dashboard')->withCookie($cookie);
+        } catch (ClientException $e) {
+            return redirect('login');
         } catch (RequestException $e) {
             return redirect('login')->with('result', 'fail');
         }
@@ -56,7 +64,7 @@ class AdminLogin extends Controller
     public function logout()
     {
         $cookie = \Cookie::forget('token');
-        Auth::logout();
+        //Auth::logout();
         //echo "logout";
         return redirect('/')->withCookie($cookie);
     }

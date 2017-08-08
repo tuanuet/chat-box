@@ -23,7 +23,7 @@ Route::get('room/datatables', 'RoomController@getDataTable')->name('room.datatab
 
 Route::get('/','DashboardController@getDashboard');
 ///////////////////////////////////////
-///
+
 ///////////////Route of Admin/////////////////
 Route::get('admin', 'AdminController@index');
 
@@ -34,7 +34,7 @@ Route::post('admin/profile/update', 'AdminController@update');
 //////////////////////////////////////////////
 
 /////////////////Route login////////////////////
-Route::get('login', 'AdminLogin@index');
+Route::get('login', 'AdminLogin@index')->name('login-admin');
 Route::post('login', 'AdminLogin@login')->name('admin-login');
 
 Route::get('admin/logout', 'AdminLogin@logout')->name('admin-logout');
@@ -60,10 +60,10 @@ Route::post('topics/edit', 'TopicController@edit');
 
 ///////////////////////FILE////////////////////
 Route::get('files', 'FileController@index');
-Route::get('file', 'FileController@getfile');
+Route::get('file', 'FileController@getFile');
 Route::get('download', 'FileController@download');
 
 Route::post('files/upload', 'FileController@upload');
-Route::post('files/AdminUpload', 'FileController@adminUpload');
+Route::post('files/adminupload', 'FileController@adminUpload');
 Route::post('files/delete', 'FileController@delete');
 //////////////////////////////////////////////
