@@ -23,7 +23,6 @@
     <link href="/vendor/light/assets/plugins/custombox/css/custombox.css" rel="stylesheet">
 
     <link href="/vendor/light/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-    {{--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">--}}
     <link href="/vendor/light/assets/css/core.css" rel="stylesheet" type="text/css"/>
     <link href="/vendor/light/assets/css/components.css" rel="stylesheet" type="text/css"/>
     <link href="/vendor/light/assets/css/icons.css" rel="stylesheet" type="text/css"/>

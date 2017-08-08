@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Admin;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -11,6 +12,8 @@ use App\Message;
 use JWTAuthException;
 use Carbon\Carbon;
 use Config;
+use Mockery\Exception;
+
 class UserController extends Controller
 {
     private $customer;
@@ -24,7 +27,6 @@ class UserController extends Controller
         /** get customer data
          * json request must be have full of field include: "name", "email", "phone", "topicId", "message"*/
         $credentials = $request->json()->all();
-        //authenticate json from client
         if ($credentials == null ) {
             $credentials = $request->only('name', 'email', 'phone', 'topicId', 'message');
         }
@@ -36,15 +38,15 @@ class UserController extends Controller
         $topicId = $credentials['topicId'];
 
         /** validate data*/
-        if(!$name || !$phone || !$email || !$msg || !$topicId) {
+        if(!$name || !$topicId) {
             return response()->json(['error' => 'invalid input'], 422);
         }
 
         /** add new customer to db*/
         $customer = new Customer;
         $customer->name = $name;
-        $customer->phone = $phone;
-        $customer->email = $email;
+        $customer->phone = ($phone? $phone : "");
+        $customer->email = ($email? $email : "");
 
         /** create a new room */
         $room = new Room;
@@ -60,7 +62,7 @@ class UserController extends Controller
             $message = new Message;
             $message->room_id = $room->id;
             $message->sender_id = $customer->id;
-            $message->content = $msg;
+            $message->content = ($msg? $msg : "");
             $message->created_at = Carbon::now();
 
             if (!$message->save()) {
@@ -84,24 +86,34 @@ class UserController extends Controller
             } catch (JWTAuthException $e) {
                 return response()->json(['failed_to_create_token_error'], 500);
             }
-            return response()->json(compact('token'));
+            return response()->json(["token" => $token, "customer" => $customer]);
         }
         else response()->json(['failed_to_create_token_db'], 500);
 
 
     }
     public function getAuthUser(Request $request){
-
         $data = JWTAuth::getPayload($request->input('token'));
         $customerId = $data['sub'];
         $messages = Message::where('sender_id', $customerId)->get();
+        $roomId = $messages[0]->room_id;
 
-        return response()->json(['customerId' => $data['sub'],
+        $admin = null;
+        try{
+            $room = Room::find($roomId);
+            $admin = Admin::find($room->assignee);
+
+        }catch (Exception $e) {
+            return $e;
+        }
+
+        return response()->json(['customer' => ['customerId' => $data['sub'],
             'customerName' => $data['customerName'],
             'customerEmail' => $data['customerEmail'],
             'customerPhone' => $data['customerPhone'],
             'roomId' => $data['roomId'],
-            'messages' => $messages]);
+            'messages' => $messages],
+            'admin' => $admin]);
     }
 
 }

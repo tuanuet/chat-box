@@ -21,8 +21,8 @@ class DatabaseSeeder extends Seeder
             'name' => "Other",
         ]);
         factory(App\Admin::class, 10)->create()->make();
-        factory(App\Message::class, 10000)->create()->make();
-        factory(App\Customer::class, 500)->create()->make();
-        factory(App\Room::class, 200)->create()->make();
+//        factory(App\Message::class, 10000)->create()->make();
+//        factory(App\Customer::class, 500)->create()->make();
+//        factory(App\Room::class, 200)->create()->make();
     }
 }
