@@ -76,43 +76,6 @@ class FileController extends Controller
 
     /**
      * @param Request $request
-     * @return string
-     */
-    public function upload(Request $request)
-    {
-        //return $request;
-        //echo $request;
-        $file = $request->file('fileToUpload');
-        $data = array(
-            "status" => 0,
-            "type" => "",
-            "content" => ""
-        );
-        if ($file != NULL) {
-            if ($file->isValid()) {
-                $data['type'] = $file->getMimeType();
-
-                if (substr($file->getMimeType(), 0, 5) == 'image') {
-                    //            Store in disk
-                    $path = $file->store('files');
-
-                    $File = new File();
-                    $File->name = $file->getClientOriginalName();
-                    $File->url = $path;
-                    $File->contentType = $file->getMimeType();
-                    $File->save();
-
-                    $data["status"] = 1;
-                    $data["type"] = config('message.types.IMAGE');
-                    $data["content"] = "http://local.chat.com/file?url=" . $path;
-                }
-            }
-        }
-        return json_encode($data);
-    }
-
-    /**
-     * @param Request $request
      * @return mixed
      */
     public function getFile(Request $request)
