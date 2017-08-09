@@ -285,12 +285,15 @@ $(document).ready(function () {
         if (data !== null && typeof data !== 'object') {
             data = jQuery.parseJSON(data.data);
         }
-
+        //console.log("anh vuong oc: ");
+        //console.log(data);
+        var msg = data.type == 103?'<img src="' + data.message + '" class="img-rounded" alt="image" style="height: 300px;">'
+            : data.message;
         /** new message */
         var block = '<li class="other">';
         block += '<div class="msg">';
         block += '<p class="sender"><a href="">' + data.name + '</a></p>';
-        block += '<p>' + data.message + '</p>';
+        block += '<p>' + msg + '</p>';
         block += '<time>' + '20:10' + '</time>';
         block += '</div></li>';
 
