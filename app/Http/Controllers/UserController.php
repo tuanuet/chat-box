@@ -51,8 +51,6 @@ class UserController extends Controller
         /** create a new room */
         $room = new Room;
         $room->topic_id = $topicId;
-        $room->status = 0;
-        $room->assignee = 0;
         $room->created_at = Carbon::now();
 
 
@@ -86,7 +84,7 @@ class UserController extends Controller
             } catch (JWTAuthException $e) {
                 return response()->json(['failed_to_create_token_error'], 500);
             }
-            return response()->json(["token" => $token, "customer" => $customer]);
+            return response()->json(["token" => $token, "customer" => $customer, 'room' => $room]);
         }
         else response()->json(['failed_to_create_token_db'], 500);
 
@@ -94,11 +92,11 @@ class UserController extends Controller
     }
     public function getAuthUser(Request $request){
         $data = JWTAuth::getPayload($request->input('token'));
-        $customerId = $data['sub'];
-        $messages = Message::where('sender_id', $customerId)->get();
-        $roomId = $messages[0]->room_id;
+        $roomId = $data['roomId'];
+        $messages = Message::where('room_id', $roomId)->get();
 
         $admin = null;
+        $room = null;
         try{
             $room = Room::find($roomId);
             $admin = Admin::find($room->assignee);
@@ -112,7 +110,7 @@ class UserController extends Controller
             'customerEmail' => $data['customerEmail'],
             'customerPhone' => $data['customerPhone']
             ],
-            'roomId' => $data['roomId'],
+            'room' => $room,
             'messages' => $messages,
             'admin' => $admin]);
     }
