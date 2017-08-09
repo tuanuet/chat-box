@@ -169,6 +169,7 @@ class RoomController extends Controller
                 'sender_id' => $message->sender_id,
                 'sender_name' => $sender_name,
                 'content' => $message->content,
+                'message_type' => $message->message_type,
                 'sent_time' => $message->created_at
             ];
         }

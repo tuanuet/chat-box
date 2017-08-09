@@ -61,6 +61,8 @@ Route::group(['middleware' => 'jwt.authAdmin'], function () {
     Route::get('files', 'FileController@index');
     Route::get('file', 'FileController@getFile');
     Route::get('download', 'FileController@download');
+
+    Route::post('files/upload', 'UploadFileAPIController@upload')->name('uploadIMG');
     Route::post('files/adminupload', 'FileController@adminUpload')->name('admin-upload');
     Route::post('files/delete', 'FileController@delete')->name('delete-file');
     //////////////////////////////////////////////

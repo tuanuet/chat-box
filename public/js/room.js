@@ -30,11 +30,21 @@ $(document).ready(function () {
 
     }
 
+
     $(document).on('click', '.btn-join-room', function () {
         var room_id = $(this).data('roomid');
         console.log(room_id);
 
         $(this).parent().prev().html('<i class="fa fa-circle" style="color: #a0d269;"></i> Active');
+        $(this).parent().html('');
+
+        join_room(room_id);
+    });
+
+    $(document).on('click', '.btn-rejoin-room', function () {
+        var room_id = $(this).data('roomid');
+        console.log(room_id);
+
         $(this).parent().html('');
 
         join_room(room_id);

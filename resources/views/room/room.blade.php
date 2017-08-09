@@ -73,7 +73,11 @@
                                                                 </td>
                                                             @else
                                                                 <td><i class="fa fa-circle" style="color: #a0d269;"></i> Active</td>
-                                                                <td></td>
+                                                                <td>
+                                                                    <a data-roomid={{$room['id']}} class="btn-rejoin-room">
+                                                                    Re-join
+                                                                    </a>
+                                                                </td>
                                                             @endif
                                                         </tr>
                                                     @endforeach

@@ -12,51 +12,55 @@ $(document).ready(function () {
 
         ////
         console.log("ajax upload file");
-        var $file = document.getElementById('file'), $formData = new FormData();
-        $formData.append('fileToUpload', $file.files[0]);
-        // console.log($file.size);
+        var file = document.getElementById('file'), $formData = new FormData();
+        if (file.files.length > 0) {
+            $formData.append('fileToUpload', file.files[0]);
+            // console.log($file.size);
 
-        $.ajax({
-            url: 'files/upload',
-            type: 'POST',
-            data: $formData,
-            dataType: 'json',
-            contentType: false,
-            processData: false,
-            success: function ($data) {
+            $.ajax({
+                url: 'files/upload',
+                type: 'POST',
+                data: $formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function ($data) {
+                    console.log($data.status);
+                    console.log($data.type);
+                    console.log($data.content);
+                    if ($data.status === 0) {
+                        console.log('File is wrong!');
+                        return;
+                    }
+                    var msg = $data.content;
+                    socket.emit('client-send-message', {
+                        name: "Admin",
+                        message: {
+                            content: $data['content'],
+                            type: $data['type']
+                        },
+                        sender_id: 0,
+                        room_id: adminData.room_id
+                    });
+                    var blockSelf = '<li class="self">';
+                    blockSelf += '<div class="msg">';
+                    blockSelf += '<p class="sender"><a href="">' + '</a></p>';
+                    blockSelf += '<p><img src="' + msg + '" class="img-rounded" alt="image" style="height: 300px;"></p>';
+                    blockSelf += '<time>' + '20:10' + '</time>';
+                    blockSelf += '</div></li>';
+                    var contentChat = tab_id + " .chat";
+                    $(contentChat).append(blockSelf);
 
-                console.log($data.status);
-                console.log($data.type);
-                console.log($data.content);
-                if ($data.status == 0) return;
-                var msg = $data.content;
-                socket.emit('client-send-message', {
-                    name: "Admin",
-                    message: {
-                        content: $data['content'],
-                        type: $data['type']
-                    },
-                    sender_id: 0,
-                    room_id: adminData.room_id
-                });
-                var blockSelf = '<li class="self">';
-                blockSelf += '<div class="msg">';
-                blockSelf += '<p class="sender"><a href="">' + '</a></p>';
-                blockSelf += '<p><img src="' + msg + '" class="img-rounded" alt="image" style="width: 100px; height: 100px;" </p>';
-                blockSelf += '<time>' + '20:10' + '</time>';
-                blockSelf += '</div></li>';
-                var contentChat = tab_id + " .chat";
-                $(contentChat).append(blockSelf);
-
-                /** set new message = 0*/
-                var roomIdHtml = '#room-' + tab_id.substr(1);
-                console.log(roomIdHtml);
-                $(roomIdHtml).find('span').attr('data-message', 0)
-                $(roomIdHtml).find('span').html('');
-            }
-        });
-        document.getElementById("file").value = "";
-        ///////////////////
+                    /** set new message = 0*/
+                    var roomIdHtml = '#room-' + tab_id.substr(1);
+                    console.log(roomIdHtml);
+                    $(roomIdHtml).find('span').attr('data-message', 0)
+                    $(roomIdHtml).find('span').html('');
+                }
+            });
+            document.getElementById("file").value = "";
+            ///////////////////
+        }
 
         contentMsg = tab_id + ' .chat_message';
         console.log(tab_id);
@@ -112,7 +116,7 @@ $(document).ready(function () {
                 type: 'get',
 
                 success: function(data){
-                    console.log(data);
+                    //console.log(data);
                     /** get data from ajax */
                     var room_type = data['room_type'];
                     var messages = data['messages'];
@@ -138,6 +142,7 @@ $(document).ready(function () {
                     var contentChat="";
 
                     $.each(messages, function (index, value) {
+                        console.log(value);
                         /** determine a message of admin or customer*/
                         var selfOther;
                         if(value["sender_id"] != 0) {
@@ -146,12 +151,14 @@ $(document).ready(function () {
                             selfOther = '<li class="self">';
                         }
                         /** list of messages **/
+                        var p = '<img src="' + value["content"] + '" class="img-rounded" alt="image" style="height: 300px;">';
+                        //console.log(value["message_type"]);
                         var listMsg =
                             '<div class="msg">' +
                             '<p class="sender">' +
                             '<a href="#">'+ value["sender_name"] +'</a>' +
                             '</p>' +
-                            '<p>'+ value["content"] +'</p>' +
+                            '<p>'+ (value["message_type"] == 103 ? p : value["content"]) +'</p>' +
                             '<time>'+ value["sent_time"] +'</time>' +
                             '</div>' +
                             '</li>';
