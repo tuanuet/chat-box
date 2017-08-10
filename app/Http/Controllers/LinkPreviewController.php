@@ -48,8 +48,7 @@ class LinkPreviewController extends Controller
             "meta" => array(
                 "url" => $url,
                 "title" => "",
-                "favicon" => "http://local.chat.com/api/file?url=files/default-favicon.png",
-                "image" => "http://local.chat.com/api/file?url=files/default-favicon.png",
+                "image" => null,
                 "description" => ""
             ));
         ////////////Check link is valid or not////////////////
@@ -79,11 +78,15 @@ class LinkPreviewController extends Controller
             if (strpos(strtolower($key), 'description') !== false) {
                 $res["meta"]["description"] = $value;
             }
+
+            if (strpos(strtolower($key), 'image') !== false) {
+                $res["meta"]["image"] = $value;
+            }
         }
 
-        ////////////////////FAVICON////////////////////////////////
-        $res["meta"]["favicon"] = 'https://www.google.com/s2/favicons?domain=' . $url;
-        $res["meta"]["image"] = 'https://www.google.com/s2/favicons?domain=' . $url;
+        ////////////////////Image////////////////////////////////
+        if ($res["meta"]["image"] === null)
+            $res["meta"]["image"] = 'https://www.google.com/s2/favicons?domain=' . $url;
 
         $res["meta"]["title"] = $this->getTitleHTML($url);
         return response()->json($res);
