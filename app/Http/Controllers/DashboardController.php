@@ -27,4 +27,6 @@ class DashboardController extends Controller
 
         return view('dashboard.index',['rooms'=>$rooms,'countRoom'=>$countRoom,'countAccount'=>$countAccount]);
     }
+
+
 }

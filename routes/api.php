@@ -23,7 +23,7 @@ Route::get('download', 'UploadFileAPIController@download');
 Route::group(['middleware' => 'cors'], function () {
     Route::post('files/upload', 'UploadFileAPIController@upload')->name('client-upload');
 
-
+    Route::get('getlink', 'LinkPreviewController@getLink');
 
     Route::post('createToken', 'UserController@createToken');
     Route::group(['middleware' => 'jwt.auth'], function () {

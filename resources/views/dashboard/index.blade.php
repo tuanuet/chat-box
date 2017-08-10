@@ -1,11 +1,20 @@
 @extends('layouts.master')
 
-@section('content-page')
+@section('content')
     <div class="content-page">
         <!-- Start content -->
         <div class="content">
             <div class="container">
                 <!-- Page-Title -->
+                <div class="row">
+                    <form action="/getlink" method="post">
+                        <div class="form-group">
+                            <input type="text" id="linkAdd" name="link">
+                            <input type ="submit" class="btn btn-default btn-success" value="GO">
+                        </div>
+                    </form>
+                </div>
+
                 <div class="row">
                     <div class="col-sm-12">
                         <h4 class="page-title">Welcome to Dashboard</h4>
