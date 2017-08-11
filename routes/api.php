@@ -17,13 +17,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('file', 'UploadFileAPIController@getFile');
-Route::get('download', 'UploadFileAPIController@download');
+Route::get('file', 'APIController@getFile');
+Route::get('download', 'APIController@download');
 
 Route::group(['middleware' => 'cors'], function () {
-    Route::post('files/upload', 'UploadFileAPIController@upload')->name('client-upload');
+    Route::post('files/upload', 'APIController@upload')->name('client-upload');
 
-    Route::get('getlink', 'LinkPreviewController@getLink');
+    Route::get('getlink', 'APIController@getLink');
+    Route::get('islink', 'APIController@isLink');
+    Route::get('gettopics', 'APIController@getTopics');
 
     Route::post('createToken', 'UserController@createToken');
     Route::group(['middleware' => 'jwt.auth'], function () {

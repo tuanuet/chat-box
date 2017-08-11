@@ -1,6 +1,8 @@
 @extends('layouts.master')
 @section('content')
     <link rel="stylesheet" href="/css/chatlog.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.scss">
 
     <div class="content-page">
         <!-- Start content -->

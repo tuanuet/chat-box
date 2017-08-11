@@ -42,11 +42,12 @@ $(document).ready(function () {
                         sender_id: 0,
                         room_id: adminData.room_id
                     });
+                    var now = new Date();
                     var blockSelf = '<li class="self">';
                     blockSelf += '<div class="msg">';
                     blockSelf += '<p class="sender"><a href="">' + '</a></p>';
                     blockSelf += '<p><img src="' + msg + '" class="img-rounded" alt="image" style="height: 300px;"></p>';
-                    blockSelf += '<time>' + '20:10' + '</time>';
+                    blockSelf += '<time>' + now.getFullYear() + "-" + (now.getMonth().toString().length === 2 ? "" : "0") + now.getMonth() + "-" + (now.getDay().toString().length === 2 ? "" : "0") + now.getDay() + " " + (now.getHours().toString().length === 2 ? "" : "0") + now.getHours() + ":" + (now.getMinutes().toString().length === 2 ? "" : "0") + now.getMinutes() + '</time>';
                     blockSelf += '</div></li>';
                     var contentChat = tab_id + " .chat";
                     $(contentChat).append(blockSelf);
@@ -76,11 +77,12 @@ $(document).ready(function () {
                 sender_id: 0,
                 room_id: adminData.room_id
             });
+            var now = new Date();
             var blockSelf = '<li class="self">';
             blockSelf += '<div class="msg">';
             blockSelf += '<p class="sender"><a href="">' + '</a></p>';
             blockSelf += '<p>' + msg + '</p>';
-            blockSelf += '<time>' + '20:10' + '</time>';
+            blockSelf += '<time>' + now.getFullYear() + "-" + (now.getMonth().toString().length === 2 ? "" : "0") + now.getMonth() + "-" + (now.getDay().toString().length === 2 ? "" : "0") + now.getDay() + " " + (now.getHours().toString().length === 2 ? "" : "0") + now.getHours() + ":" + (now.getMinutes().toString().length === 2 ? "" : "0") + now.getMinutes() + '</time>';
             blockSelf += '</div></li>';
             var contentChat = tab_id + " .chat";
             $(contentChat).append(blockSelf);
@@ -90,6 +92,34 @@ $(document).ready(function () {
             console.log(roomIdHtml);
             $(roomIdHtml).find('span').attr('data-message', 0)
             $(roomIdHtml).find('span').html('');
+
+            $.ajax({
+                url: 'http://local.chat.com/api/islink?url=' + msg,
+                dataType: 'json',
+                error: function (xhr, status) {
+                    console.log(status);
+                },
+                success: function (data) {
+                    console.log(data);
+                    if (data.result === true) {
+                        var element = '<li class="self">' +
+                            '<div class="meta-box msg">' +
+                            '<div class="font-weight-bold">' + data.meta.title + '</div>' +
+                            '<div>' + data.meta.description + '</div>' +
+                            '<img src=' + data.meta.image + '/>' +
+                            '</div>' +
+                            '</li>';
+                        /** append new message */
+                        var contentChat = tab_id + " .chat";
+                        console.log('append new message from server to ' + contentChat);
+                        $(contentChat).append(element);
+                        var roomIdHtml = '#room-' + tab_id.substr(1);
+                        var message = parseInt($(roomIdHtml).find('span').data('message')) + 1;
+                        $(roomIdHtml).find('span').data('message', message);
+                        $(roomIdHtml).find('span').html(message);
+                    }
+                }
+            });
         }
         else {
             //alert("Please enter a message");
@@ -158,7 +188,7 @@ $(document).ready(function () {
                             '<p class="sender">' +
                             '<a href="#">'+ value["sender_name"] +'</a>' +
                             '</p>' +
-                            '<p>'+ (value["message_type"] == 103 ? p : value["content"]) +'</p>' +
+                            '<p>'+ (value["message_type"] === 103 ? p : value["content"]) +'</p>' +
                             '<time>'+ value["sent_time"] +'</time>' +
                             '</div>' +
                             '</li>';
@@ -285,19 +315,19 @@ $(document).ready(function () {
         if (data !== null && typeof data !== 'object') {
             data = jQuery.parseJSON(data.data);
         }
-        //console.log("anh vuong oc: ");
         //console.log(data);
-        var msg = data.type == 103?'<img src="' + data.message + '" class="img-rounded" alt="image" style="height: 300px;">'
+        var msg = data.type === 103?'<img src="' + data.message + '" class="img-rounded" alt="image" style="height: 300px;">'
             : data.message;
-        /** new message */
+        /** make new message */
+        var now = new Date();
         var block = '<li class="other">';
         block += '<div class="msg">';
         block += '<p class="sender"><a href="">' + data.name + '</a></p>';
         block += '<p>' + msg + '</p>';
-        block += '<time>' + '20:10' + '</time>';
+        block += '<time>' + now.getFullYear() + "-" + (now.getMonth().toString().length === 2 ? "" : "0") + now.getMonth() + "-" + (now.getDay().toString().length === 2 ? "" : "0") + now.getDay() + " " + (now.getHours().toString().length === 2 ? "" : "0") + now.getHours() + ":" + (now.getMinutes().toString().length === 2 ? "" : "0") + now.getMinutes() + '</time>';
         block += '</div></li>';
 
-        /** append new message from server */
+        /** append new message */
         var contentChat = tab_id + " .chat";
         console.log('append new message from server to ' + contentChat);
         $(contentChat).append(block);
@@ -307,6 +337,33 @@ $(document).ready(function () {
         $(roomIdHtml).find('span').html(message);
         //
 
+        $.ajax({
+            url: 'http://local.chat.com/api/islink?url=' + data.message,
+            dataType: 'json',
+            error: function (xhr, status) {
+                console.log(status);
+            },
+            success: function (data) {
+                console.log(data);
+                if (data.result === true) {
+                    var element = '<li class="other">' +
+                                    '<div class="meta-box msg">' +
+                                        '<div class="font-weight-bold">' + data.meta.title + '</div>' +
+                                        '<div>' + data.meta.description + '</div>' +
+                                        '<img src=' + data.meta.image + '/>' +
+                                    '</div>' +
+                                  '</li>';
+                    /** append new message */
+                    var contentChat = tab_id + " .chat";
+                    console.log('append new message from server to ' + contentChat);
+                    $(contentChat).append(element);
+                    var roomIdHtml = '#room-' + tab_id.substr(1);
+                    var message = parseInt($(roomIdHtml).find('span').data('message')) + 1;
+                    $(roomIdHtml).find('span').data('message', message);
+                    $(roomIdHtml).find('span').html(message);
+                }
+            }
+        });
     });
 
     /** listen when successfully roin to default room*/
