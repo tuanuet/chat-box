@@ -17,10 +17,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
 Route::get('file', 'APIController@getFile');
 Route::get('download', 'APIController@download');
 
 Route::group(['middleware' => 'cors'], function () {
+    Route::get('get-all-rooms', 'RoomApiController@getAllRooms');
+    Route::get('get-messages', 'MessageApiController@getMessages');
+
     Route::post('files/upload', 'APIController@upload')->name('client-upload');
 
     Route::get('getlink', 'APIController@getLink');
