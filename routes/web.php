@@ -22,12 +22,6 @@ Route::group(['middleware' => 'jwt.authAdmin'], function () {
     Route::get('/dashboard','DashboardController@getDashboard');
 
 
-    Route::get('/room',['name'=>'get.room', 'uses'=>'RoomController@index']);
-    Route::get('history', ['name' => 'get.history', 'uses' => 'RoomController@history']);
-    Route::get('/room/{id}', 'RoomController@showChatLog');
-    Route::get('/chat/{id}', 'RoomController@chat');
-
-    Route::get('room/datatables', 'RoomController@getDataTable')->name('room.datatables');
     Route::get('admin/room', 'RoomController@index')->name('room-index');
 
     Route::get('/','DashboardController@getDashboard');
@@ -70,6 +64,19 @@ Route::group(['middleware' => 'jwt.authAdmin'], function () {
 
     /// Admin-logout///
     Route::get('admin/logout', 'AdminLogin@logout')->name('admin-logout');
-    ///
+
+
+    Route::get('/room', function () {
+        return view('index');
+    });
+
+
+    Route::get( '/_debugbar/assets/stylesheets', '\Barryvdh\Debugbar\Controllers\AssetController@css' );
+    Route::get( '/_debugbar/assets/javascript', '\Barryvdh\Debugbar\Controllers\AssetController@js' );
+
+
+//Route::get('{reactRoutes}', function () {
+//    return view('index'); // your start view
+//})->where('reactRoutes', '^((?!api).)*$');
 });
 

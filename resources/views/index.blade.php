@@ -16,6 +16,8 @@
     <link href="/vendor/light/assets/css/icons.css" rel="stylesheet" type="text/css"/>
     <link href="/vendor/light/assets/css/pages.css" rel="stylesheet" type="text/css"/>
     <link href="/vendor/light/assets/css/responsive.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="/css/chatlog.css" type="text/css">
+
 
     <!-- HTML5 Shiv and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -29,7 +31,7 @@
 </head>
 <body>
 <div id="app"></div>
-<script src="http://localhost:3000/bundle.js"></script>
+<script src="http://localhost:9005/bundle.js"></script>
 
 <script>
     var resizefunc = [];
