@@ -28,7 +28,8 @@ class MessageApiController extends Controller
                 "id" => $message->id,
                 "senderId" => $message->sender_id,
                 "senderName" => $senderName,
-                "content" => $message->content,
+                "message" => ["content" => $message->content,
+                                "type" => $message->message_type],
                 "time" => $message->created_at
             ];
         }

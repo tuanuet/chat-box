@@ -3,6 +3,8 @@ import * as messageTypes from '../../../config/messageTypes';
 
 const MessageListRow = ({message, messageId, getMetaLink}) => {
     let content = null;
+    console.log("messageeeeeee");
+    console.log(message);
     if (message.message.type == messageTypes.DEFAULT_MESSAGE) {
         content = <p>{message.message.content}</p>
     } else if (message.message.type == messageTypes.IMAGE_MESSAGE) {
