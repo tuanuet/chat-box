@@ -3,8 +3,9 @@ import * as messageTypes from '../../../config/messageTypes';
 
 const MessageListRow = ({message, messageId, getMetaLink}) => {
     let content = null;
-    console.log("messageeeeeee");
-    console.log(message);
+    let metaLink = null;
+
+
     if (message.message.type == messageTypes.DEFAULT_MESSAGE) {
         content = <p>{message.message.content}</p>
     } else if (message.message.type == messageTypes.IMAGE_MESSAGE) {
@@ -16,7 +17,23 @@ const MessageListRow = ({message, messageId, getMetaLink}) => {
 
     let className = message.message.type != messageTypes.IMAGE_MESSAGE? "li-chat":"li-image";
 
+    if (typeof message.metaLink === 'object') {
+        metaLink = <li
+            className={message.senderId == 0? `self ${className}`:`other ${className}`}
+            data-toggle="tooltip"
+            data-placement="left"
+            title={message.createdAt?message.createdAt:"time sent error"}
+            >
+            <div class="meta-box">
+                <div class="font-weight-bold">{message.metaLink.title}</div>
+                <div>{message.metaLink.description}</div>
+                <img src={message.metaLink.image}/>
+            </div>
+        </li>
+    }
+
     return(
+        <span>
         <li key={messageId}
             className={message.senderId == 0? `self ${className}`:`other ${className}`}
             data-toggle="tooltip"
@@ -25,6 +42,8 @@ const MessageListRow = ({message, messageId, getMetaLink}) => {
         >
             {content}
         </li>
+        {metaLink}
+        </span>
     );
 };
 

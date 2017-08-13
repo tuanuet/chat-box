@@ -30,6 +30,7 @@ class MessageApiController extends Controller
                 "senderName" => $senderName,
                 "message" => ["content" => $message->content,
                                 "type" => $message->message_type],
+                "metaLink" => false,
                 "time" => $message->created_at
             ];
         }

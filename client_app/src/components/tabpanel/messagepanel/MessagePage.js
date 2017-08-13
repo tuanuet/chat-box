@@ -12,7 +12,11 @@ const MessagePage = ({messages, topicName, roomId, onChange, messageInput, onKey
                         <div>
                             <div>{roomType}</div>
                         </div>
-                        <MessageList messages={messages}/>
+                        <MessageList
+                            messages={messages}
+                            getMetaLink={getMetaLink}
+                            roomId = {roomId}
+                        />
 
                         <ChatInput
                             onChange={onChange}

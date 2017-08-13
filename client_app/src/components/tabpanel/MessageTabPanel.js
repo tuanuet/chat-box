@@ -12,6 +12,7 @@ const MessageTabPanel = ({messages, tabId, topicName, onChange, messageInput, on
             messageInput={messageInput}
             onKeyUp={onKeyUp}
             fileUpload={fileUpload}
+            getMetaLink={getMetaLink}
         />
     );
 };

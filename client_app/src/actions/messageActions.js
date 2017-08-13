@@ -16,6 +16,35 @@ export function adminSendMessage(message) {
     return {type: types.ADMIN_SEND_MESSAGE, message};
 }
 
+function updateMessageMetaLink(roomId, id, metaLink) {
+    return {type: types.UPDATE_MESSAGE_META_LINK, roomId, id, metaLink};
+}
+
+export function getMetaLink(message, roomId) {
+    return function (dispatch) {
+        MessageApi.getMetaLink(message)
+            .then(res => res.data)
+            .then(data => {
+                let metaLink = null;
+                    if(data.result == true) {
+                        metaLink= {
+                            title: data.meta.title,
+                            description: data.meta.description,
+                            image: data.meta.image
+                        }
+                    } else {
+                        metaLink = true;
+                    }
+
+                dispatch(updateMessageMetaLink(roomId, message.id, metaLink));
+
+            })
+            .catch(error => {
+                throw (error);
+            })
+    }
+}
+
 export function adminUploadFile(data, roomId) {
     console.log("admin uploads file");
     return function (dispatch) {

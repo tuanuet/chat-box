@@ -127,7 +127,17 @@ class ManageRoomPage extends React.Component {
         this.props.actions.adminUploadFile(data, this.state.activeTabId);
     }
 
-    getMetaLink(url, messageId) {}
+    /**
+     * get meta link of http message
+     * @param message
+     */
+    getMetaLink(message, roomId) {
+        if(message.message.content.includes('http://') ||
+            message.message.content.includes('https://')||
+            message.message.content.includes('www.')) {
+            this.props.actions.getMetaLink(message, roomId);
+        }
+    }
 
     /**
      *
@@ -152,6 +162,7 @@ class ManageRoomPage extends React.Component {
                     messageInput={this.state.message}
                     onKeyUp={this.handleOnKeyUp}
                     fileUpload={this.handleFileUpload}
+                    getMetaLink={this.getMetaLink.bind(this)}
                 />;
         }
 

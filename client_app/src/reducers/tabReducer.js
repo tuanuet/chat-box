@@ -43,27 +43,6 @@ export default function tabReducer(state = initialState.tabs, action) {
                 );
             });
 
-        case types.ADMIN_SEND_MESSAGE:
-            return state.map( tab => {
-                if (tab.id !== action.message.roomId) {
-
-                    // This isn't the item we care about - keep it as-is
-                    return tab;
-                }
-
-                // Otherwise, this is the one we want - return an updated value
-                return Object.assign(
-                    {},
-                    tab,
-                    {
-                        messages: [
-                            ...tab.messages,
-                            action.message
-                        ]
-                    }
-                );
-            });
-
         case types.SERVER_SEND_MESSAGE:
             return state.map( tab => {
                 if (tab.id !== action.roomId) {
@@ -85,6 +64,27 @@ export default function tabReducer(state = initialState.tabs, action) {
                 );
             });
 
+        case types.UPDATE_MESSAGE_META_LINK:
+            return state.map( tab => {
+                if (tab.id !== action.roomId) {
+
+                    // This isn't the item we care about - keep it as-is
+                    return tab;
+                }
+
+                // Otherwise, this is the one we want - return an updated value
+                return tab.messages.map( message => {
+                   if(message.id !== action.id) {
+                       return message;
+                   }
+
+                   return Object.assign(
+                       {},
+                       message,
+                       {metaLink: action.metaLink}
+                   )
+                });
+            });
 
 
         default:

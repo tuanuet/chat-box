@@ -30,6 +30,6 @@ app.listen(port, function(err) {
     console.log(err);
   }
   else {
-    open(`http://localhost:8000`);
+    open(`http://local.chat.com/room`);
   }
 });

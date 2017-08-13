@@ -14,7 +14,7 @@ export function chatMiddleware() {
         if (socket && action.type === types.ADMIN_SEND_MESSAGE) {
             console.log(action.message);
             console.log('admin send message: "' + action.message.message.content + '" to room id ' + action.message.roomId);
-            socket.emit('client-send-message', action.message);
+            socket.emit('admin-send-message', action.message);
         } else if (socket && action.type === types.ADMIN_JOIN_ROOM) {
             console.log('admin send request join to room ' + action.room.id);
             socket.emit('admin-join-room', {room: action.room, assignee: 1}); //hard code assignee
@@ -38,17 +38,11 @@ export default function createSocket(store) {
 
     socket.on('server-send-message', data => {
         console.log("New message from server", data);
-        let message = {
-            id: data.id,
-            senderId: data.senderId,
-            senderName: data.name,
-            message: {
-                content: data.message,
-                type: data.type
-            },
-            createdAt: data.createdAt
-        };
-        store.dispatch(messageActions.serverSendMessage(message, data.roomId));
+        addNewMessage(data);
+    });
+
+    socket.on('admin-send-message', data => {
+        addNewMessage(data);
     });
 
     socket.on('server-confirm-join', data => {
@@ -71,4 +65,21 @@ export default function createSocket(store) {
 
         store.dispatch(roomActions.addNewRoom(room));
     })
+
+    function addNewMessage(data) {
+        let message = {
+            id: data.id,
+            senderId: data.senderId,
+            senderName: data.name,
+            message: {
+                content: data.message,
+                type: data.type
+            },
+            metaLink: null,
+            createdAt: data.createdAt
+        };
+        store.dispatch(messageActions.serverSendMessage(message, data.roomId));
+    }
 }
+
+
