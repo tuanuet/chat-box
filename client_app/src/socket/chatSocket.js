@@ -26,12 +26,10 @@ export default function createSocket(store) {
     socket = io(config.SOCKET_SERVER);
 
 
-    socket.emit('admin-join-default-room');
-
-    socket.on('server-send-join-default-room', data => {
-        console.log("connect thanh cong");
-
+    socket.emit('admin-join-default-room',{},function (success) {
+        console.log('admin join default room',success);
     });
+
 
     socket.on('server-send-message', data => {
         addNewMessage(data);
