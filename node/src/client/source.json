@@ -1,0 +1,9 @@
+{
+  "registers" : ["name","email","phone","Vương "],
+  "topics" : [
+    {"name":"Technique","id":1},
+    {"name":"sale","id":2},
+    {"name":"Other1","id":3},
+    {"name":"sale","id":4}
+  ]
+}
