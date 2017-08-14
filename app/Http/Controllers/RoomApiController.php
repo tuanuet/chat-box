@@ -8,24 +8,25 @@ use App\Topic;
 use Illuminate\Http\Request;
 use App\Room;
 use Illuminate\Support\Facades\Auth;
+use JWTAuth;
 use function PHPSTORM_META\type;
 
 class RoomApiController extends Controller
 {
-
     public function getAllRooms(Request $request)
     {
-
-        if (!$request->input('id')) {
-            return null;
-        }
+        //dd($request->cookie('token'));
+        $user = JWTAuth::toUser($request->cookie('token'));
+        //dd($user);
+        $id = \GuzzleHttp\json_decode($user)->id;
+        //dd(Auth::user());
         $result = [];
         // get all in-active room
         $inActiveRooms = Room::where('status', 1)->get();
 
         // get active of current admin
         $activeRooms = Room::where('status', 2)
-            ->where('assignee', $request->input('id'))
+            ->where('assignee', $id)
             ->get();
 
         foreach ($inActiveRooms as $inActiveRoom)

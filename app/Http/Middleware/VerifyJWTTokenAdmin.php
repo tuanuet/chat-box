@@ -17,7 +17,15 @@ class VerifyJWTTokenAdmin
     public function handle($request, Closure $next)
     {
         try{
-            $user = JWTAuth::toUser($request->cookie('token'));
+
+            if (isset($_COOKIE['token'])) {
+                $token = $_COOKIE['token'];
+                $user = JWTAuth::toUser($token);
+            } else {
+                Auth::logout();
+                return redirect(route('login-admin'));
+                //return response()->json(['error'=>'Token is required']);
+            }
         }catch (JWTException $e) {
             if($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
                 Auth::logout();

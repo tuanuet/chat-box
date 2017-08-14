@@ -11,8 +11,12 @@ class FileController extends Controller
 
     /** Extension array */
     const EXT_ARRAY = array(
-        'image' => "IMAGE",
-        'application/pdf' => "PDF",
+        'image' => "IMAGE", //image
+        'application/pdf' => "PDF", //pdf
+        'application/msword' => "WORD", //doc
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => "WORD", //docx
+        'application/vnd.ms-excel' => "EXCEL", //xls
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => "EXCEL", //xlsx
     );
 
     /**
@@ -28,8 +32,9 @@ class FileController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        //dd($request->cookie('token'));
         $files = File::all();
         return view('file.file', ['files'=>$files]);
     }
@@ -161,6 +166,7 @@ class FileController extends Controller
             'type' => null,
         );
         $file = $request->file('fileToUpload');
+
         if ($file != NULL && $file->isValid()) {
             $res['type'] = $this->isValidType($file->getMimeType());
             if ($res['type'] !== null) {

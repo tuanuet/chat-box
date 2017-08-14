@@ -31,8 +31,9 @@ class AdminLogin extends Controller
 
             //dd(\GuzzleHttp\json_decode($res));
             $token = \GuzzleHttp\json_decode($res)->token;
-            $cookie = cookie('token', $token);
-            return redirect('/dashboard')->withCookie($cookie);
+            //dd($token);
+            setcookie('token', $token);
+            return redirect('/dashboard');
             //return redirect('/dashboard');
         } catch (RequestException $e) {
             //dd("wrong!");
