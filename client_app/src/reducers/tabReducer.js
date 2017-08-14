@@ -63,9 +63,6 @@ export default function tabReducer(state = initialState.tabs, action) {
             });
 
         case types.UPDATE_MESSAGE_META_LINK:
-            console.log(action.roomId);
-            console.log(action.metaLink);
-            console.log(action.id);
             return state.map( tab => {
                 if (tab.id !== action.roomId) {
 
@@ -79,7 +76,6 @@ export default function tabReducer(state = initialState.tabs, action) {
                    if(message.id !== action.id) {
                        return message;
                    }
-                   console.log(message);
 
                    return Object.assign(
                        {},

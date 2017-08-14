@@ -3,9 +3,6 @@ import MessageApi from '../api/messageApi';
 import toastr from 'toastr'
 
 export function serverSendMessage(message, roomId) {
-    console.log("server send message");
-    console.log(message);
-    console.log(roomId);
     return {type: types.SERVER_SEND_MESSAGE, message, roomId};
 }
 
