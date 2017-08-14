@@ -59,7 +59,7 @@ Route::group(['middleware' => 'jwt.authAdmin'], function () {
 
     Route::post('files/upload', 'FileController@upload')->name('uploadIMG');
     Route::post('files/adminupload', 'FileController@adminUpload')->name('admin-upload');
-    Route::post('files/delete', 'FileController@delete')->name('delete-file');
+    Route::post('files/delete', 'FileController@delete')->name('delete-a-file');
     //////////////////////////////////////////////
 
     /// Admin-logout///
