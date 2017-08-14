@@ -32,8 +32,9 @@ class FileController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        //dd($request->cookie('token'));
         $files = File::all();
         return view('file.file', ['files'=>$files]);
     }
