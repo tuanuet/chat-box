@@ -2,7 +2,15 @@
 
 //send message to server
 
+function scrollAUTO() {
+    console.log('ok');
+
+    $('body').scrollTop($('body').height());
+}
+
 $(document).ready(function () {
+    //setInterval( scrollAUTO, 5000);
+    scrollAUTO();
     var token = $('meta[name="_token"]').attr('content');
     $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
         jqXHR.setRequestHeader('X-CSRF-Token', token);
@@ -57,6 +65,8 @@ $(document).ready(function () {
                     console.log(roomIdHtml);
                     $(roomIdHtml).find('span').attr('data-message', 0)
                     $(roomIdHtml).find('span').html('');
+
+                    scrollAUTO();
                 }
             });
             document.getElementById("file").value = "";
@@ -93,6 +103,7 @@ $(document).ready(function () {
             $(roomIdHtml).find('span').attr('data-message', 0)
             $(roomIdHtml).find('span').html('');
 
+            scrollAUTO();
             $.ajax({
                 url: 'http://local.chat.com/api/islink?url=' + msg,
                 dataType: 'json',
@@ -117,6 +128,7 @@ $(document).ready(function () {
                         var message = parseInt($(roomIdHtml).find('span').data('message')) + 1;
                         $(roomIdHtml).find('span').data('message', message);
                         $(roomIdHtml).find('span').html(message);
+                        scrollAUTO();
                     }
                 }
             });
@@ -167,8 +179,8 @@ $(document).ready(function () {
                         '<div class="tab-pane" id='+ adminData.room_id +'>' +
                         '<div class="row">' +
                         '<div>Room Type: ' + room_type + '</div>' +'<button type="button" data-id="'+ adminData.room_id +'" class="btn btn-inverse waves-effect waves-light btn-rating">Require Rating</button>' +
-                        '<ol class="chat">';
-
+                        '<ol id = "thuanoc" class="chat">';
+                    scrollAUTO();
                     var contentChat="";
 
                     $.each(messages, function (index, value) {
@@ -194,7 +206,7 @@ $(document).ready(function () {
                             '</li>';
 
                         contentChat +=selfOther + listMsg;
-
+                        scrollAUTO();
                     });
 
 
@@ -219,6 +231,8 @@ $(document).ready(function () {
                     $(document).on('click', '.tab-select', function () {
                         tab_id = $(this).attr('href');
                         adminData.room_id = tab_id.substr(1);
+
+                        scrollAUTO();
                     });
 
 
@@ -266,7 +280,7 @@ $(document).ready(function () {
         $('#tab-room-chat span').attr('data-numberNewRoom', numberNewRoom);
         $('#tab-room-chat span').html(numberNewRoom);
 
-
+        scrollAUTO();
     });
 
 
@@ -336,7 +350,7 @@ $(document).ready(function () {
         $(roomIdHtml).find('span').data('message', message);
         $(roomIdHtml).find('span').html(message);
         //
-
+        scrollAUTO();
         $.ajax({
             url: 'http://local.chat.com/api/islink?url=' + data.message,
             dataType: 'json',
@@ -361,6 +375,8 @@ $(document).ready(function () {
                     var message = parseInt($(roomIdHtml).find('span').data('message')) + 1;
                     $(roomIdHtml).find('span').data('message', message);
                     $(roomIdHtml).find('span').html(message);
+
+                    scrollAUTO();
                 }
             }
         });

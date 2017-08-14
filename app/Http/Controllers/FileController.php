@@ -9,10 +9,16 @@ use Illuminate\Support\Facades\Storage;
 class FileController extends Controller
 {
 
+    /** Extension array */
+    const EXT_ARRAY = array(
+        'image' => "IMAGE",
+        'application/pdf' => "PDF",
+    );
+
     /**
      * FileController constructor.
      */
-    function __construct()
+    public function __construct()
     {
         $this->middleware('jwt.authAdmin');
     }
@@ -25,102 +31,58 @@ class FileController extends Controller
     public function index()
     {
         $files = File::all();
-//        dd($files);
         return view('file.file', ['files'=>$files]);
     }
 
     /**
+     * admin upload file
+     *
      * @param Request $request
      * @return string
      */
     public function adminUpload(Request $request)
     {
-        $file = $request->file('fileToUpload');
-        if ($file != NULL) {
-            if ($file->isValid()) {
-                //dd($file->getMimeType());
-                if (substr($file->getMimeType(), 0, 5) != 'image') return redirect('files');
-//                echo 'File Name: ' . $file->getClientOriginalName();
-//                echo '<br>';
-//
-//                //Display File Extension
-//                echo 'File Extension: ' . $file->getClientOriginalExtension();
-//                echo '<br>';
-//
-//                //Display File Real Path
-//                echo 'File Real Path: ' . $file->getRealPath();
-//                echo '<br>';
-//
-//                //Display File Size
-//                echo 'File Size: ' . $file->getSize();
-//                echo '<br>';
-//
-//                //Display File Mime Type
-//                echo 'File Mime Type: ' . $file->getMimeType();
-//                echo '<br>';
-
-                //            Store in disk
-                $path = $file->store('files');
-//                echo 'File Path: ' . $path;
-//                echo '<br>';
-
-                $File = new File();
-                $File->name = $file->getClientOriginalName();
-                $File->url = $path;
-                $File->contentType = $file->getMimeType();
-                $File->save();
-            }
-        }
+        $path = $this->saveFile($request);
         return redirect('files');
     }
 
+    /**
+     * upload a file
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function upload(Request $request)
     {
-        //return $request;
-        //echo $request;
-        $file = $request->file('fileToUpload');
         $data = array(
             "status" => 0,
             "type" => "",
             "content" => ""
         );
-        if ($file != NULL) {
-            if ($file->isValid()) {
-                $data['type'] = $file->getMimeType();
 
-                if (substr($file->getMimeType(), 0, 5) == 'image') {
-                    //            Store in disk
-                    $path = $file->store('files');
-
-                    $File = new File();
-                    $File->name = $file->getClientOriginalName();
-                    $File->url = $path;
-                    $File->contentType = $file->getMimeType();
-                    $File->save();
-
-                    $data["status"] = 1;
-                    $data["type"] = config('message.types.IMAGE');
-                    $data["content"] = "http://local.chat.com/api/file?url=" . $path;
-                }
-            }
+        $res = $this->saveFile($request);
+        if ($res['path'] !== null) {
+            $data["status"] = 1;
+            $data["type"] = config('message.types.' . $res['type']);
+            $data["content"] = "http://local.chat.com/api/file?url=" . $res['path'];
         }
-        return json_encode($data);
+
+        return response()->json($data);
     }
     
     /**
+     * response a file
+     *
      * @param Request $request
      * @return mixed
      */
     public function getFile(Request $request)
     {
         $url = $request->query('url');
-        //echo 'Request to get file from '. $url;
-        //echo '<br>';
 
         $filename = storage_path('/app/'. $url);
-        //$file = File::where('url', $url)->first();
+
         if (file_exists($filename)) {
-            //echo 'File exists!';
             return response()->file($filename);
         } else {
             echo 'File doesn\'t exist!';
@@ -128,45 +90,92 @@ class FileController extends Controller
     }
 
     /**
+     * download a file
+     *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function download(Request $request)
     {
         $url = $request->query('url');
-        //echo 'Request to get file from '. $url;
-        //echo '<br>';
 
         $filename = storage_path('/app/'. $url);
-        //$file = File::where('url', $url)->first();
         if (file_exists($filename)) {
-            //echo 'File exists!';
             return response()->download($filename);
         } else {
             echo 'File doesn\'t exist!';
         }
     }
 
+    /**
+     * delete a file and its information
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function delete(Request $request)
     {
         $id = $request->input('id');
-        //dd($id);
-        ////get url of file from database////
         $file = File::where('id', $id)->first();
         if ($file == NULL) {
             return redirect('files');
         } else {
             $url = $file->url;
 
-            /////Delete from storage////
+            /** delete file in storage if file exist*/
             $urlFile = storage_path('/app/'. $url);
             if (file_exists($urlFile)) {
-                //echo 'File exists!';
                 Storage::delete($url);
             }
-            ////Delete info in database
+            /** Delete info in database*/
             $file->delete();
         }
         return redirect("files");
+    }
+
+    /**
+     * return type in config or null
+     *
+     * @param $type
+     * @return bool
+     */
+    public function isValidType($type)
+    {
+        foreach (FileController::EXT_ARRAY as $key=>$val) {
+            if (strpos($type, $key) !== false) return $val;
+        }
+        return null;
+    }
+
+    /**
+     * save file and return path if file is valid
+     *
+     * @param Request $request
+     * @return null
+     * @internal param $file
+     */
+    public function saveFile(Request $request)
+    {
+        $res = array(
+            'path' => null,
+            'type' => null,
+        );
+        $file = $request->file('fileToUpload');
+        $path = null;
+        if ($file != NULL && $file->isValid()) {
+            $res['type'] = $this->isValidType($file->getMimeType());
+            if ($res['type'] !== null) {
+                /** storage and return a path of file */
+                $res['path'] = $file->store('files');
+
+                /** save info of file in database */
+                $File = new File();
+                $File->name = $file->getClientOriginalName();
+                $File->url = $path;
+                $File->contentType = $file->getMimeType();
+                $File->save();
+            }
+        }
+        return $res;
     }
 }

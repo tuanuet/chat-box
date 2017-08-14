@@ -7,13 +7,30 @@ use App\Topic;
 use DOMDocument;
 use Illuminate\Http\Request;
 
-class APIController extends Controller
+class APIController extends FileController
 {
+    /**
+     * APIController constructor.
+     */
+    public function __construct()
+    {
+        //Not call from parent
+    }
+
+    /**
+     * return all topic
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getTopics() {
         $topics = Topic::all();
         return response()->json($topics);
     }
 
+    /**
+     * @param $url
+     * @return mixed: content of page
+     */
     public function file_get_contents_curl($url)
     {
         $ch = curl_init();
@@ -29,6 +46,10 @@ class APIController extends Controller
         return $data;
     }
 
+    /**
+     * @param $url
+     * @return string: Title of page
+     */
     public function getTitleHTML($url)
     {
         $html = $this->file_get_contents_curl($url);
@@ -44,6 +65,31 @@ class APIController extends Controller
         return $title;
     }
 
+    public function isValidLink($url) {
+        /**
+         * First check if string is a link or not
+         */
+        if (!filter_var($url, FILTER_VALIDATE_URL)) {
+            //echo "Link is invalid";
+            return false;
+        }
+
+        /**
+         * Second check if string is link or not by get header
+         */
+        $header = get_headers($url);
+        if ($header[0].containsString('200 OK')) {
+            return true;
+        }
+
+        return false;
+    }
+    /**
+     * Check a string is a link or not
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function isLink(Request $request)
     {
         $url = $request->query('url');
@@ -57,15 +103,15 @@ class APIController extends Controller
             )
         );
 
-        if (!filter_var($url, FILTER_VALIDATE_URL)) {
-            //echo "Link is invalid";
-            $res["result"] = false;
-        }
+        $res["result"] = $this->isValidLink($url);
+
         if ($res["result"] === true) {
             $meta = null;
             //return response()->json($header);
             $meta = get_meta_tags($url);
-            /////////////////////Description///////////////////////////
+            /**
+             * get description, title in meta of a page
+             */
             foreach ($meta as $key=>$value) {
                 if (strpos(strtolower($key), 'description') !== false) {
                     $res["meta"]["description"] = $value;
@@ -77,16 +123,23 @@ class APIController extends Controller
                 }
             }
 
-            ////////////////////Image////////////////////////////////
+            /** get favicon if there is no image in current result */
             if ($res["meta"]["image"] === null)
                 $res["meta"]["image"] = 'https://www.google.com/s2/favicons?domain=' . $url;
 
+            /** get title */
             $res["meta"]["title"] = $this->getTitleHTML($url);
         }
         return response()->json($res);
 //        return $meta;
     }
 
+    /**
+     * Get metadata of link
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getLink(Request $request)
     {
 
@@ -101,31 +154,20 @@ class APIController extends Controller
                 "image" => null,
                 "description" => ""
             ));
-        ////////////Check link is valid or not////////////////
-        if (!filter_var($url, FILTER_VALIDATE_URL)) {
-            //echo "Link is invalid";
+        if (!$this->isValidLink($url)) {
             $res["result"]["status"] = 'ERROR';
             return response()->json($res);
-        }
-        $header = get_headers($url);
-        $meta = null;
-        //return response()->json($header);
-
-        ////////////////////////STATUS//////////////////////////////////
-        if ($header[0].containsString('200 OK')) {
-            $res["result"]["status"] = 'OK';
-            $meta = get_meta_tags($url);
         } else {
-            $res["result"]["status"] = 'ERROR';
+            $res["result"]["status"] = 'OK';
         }
-        //$i = strpos("description", "description");
-        //dd($i);
-        /////////////////////Description///////////////////////////
+
+        $meta = get_meta_tags($url);
+
+        /**
+         * get description, title in meta of a page
+         */
         foreach ($meta as $key=>$value) {
-            //echo ($key . PHP_EOL);
-            //$str = $key . " " . strpos(strtolower($key), "description") . $value . PHP_EOL;
-            //echo $str;
-            //echo strtolower($key) . PHP_EOL;
+
             if (strpos(strtolower($key), 'description') !== false) {
                 $res["meta"]["description"] = $value;
                 //echo $key . PHP_EOL . $value;
@@ -136,90 +178,12 @@ class APIController extends Controller
             }
         }
 
-        ////////////////////Image////////////////////////////////
+        /** get favicon if there is no image in current result */
         if ($res["meta"]["image"] === null)
             $res["meta"]["image"] = 'https://www.google.com/s2/favicons?domain=' . $url;
 
+        /** get title */
         $res["meta"]["title"] = $this->getTitleHTML($url);
         return response()->json($res);
-        //        return $meta;
-        //return $meta;
-    }
-
-    /**
-     * @param Request $request
-     * @return string
-     */
-    public function upload(Request $request)
-    {
-        //return $request;
-        //echo $request;
-        $file = $request->file('fileToUpload');
-        $data = array(
-            "status" => 0,
-            "type" => "",
-            "content" => ""
-        );
-        if ($file != NULL) {
-            if ($file->isValid()) {
-                $data['type'] = $file->getMimeType();
-
-                if (substr($file->getMimeType(), 0, 5) == 'image') {
-                    //            Store in disk
-                    $path = $file->store('files');
-
-                    $File = new File();
-                    $File->name = $file->getClientOriginalName();
-                    $File->url = $path;
-                    $File->contentType = $file->getMimeType();
-                    $File->save();
-
-                    $data["status"] = 1;
-                    $data["type"] = config('message.types.IMAGE');
-                    $data["content"] = "http://local.chat.com/api/file?url=" . $path;
-                }
-            }
-        }
-        return response()->json($data);
-    }
-
-    /**
-     * @param Request $request
-     * @return mixed
-     */
-    public function getFile(Request $request)
-    {
-        $url = $request->query('url');
-        //echo 'Request to get file from '. $url;
-        //echo '<br>';
-
-        $filename = storage_path('/app/'. $url);
-        //$file = File::where('url', $url)->first();
-        if (file_exists($filename)) {
-            //echo 'File exists!';
-            return response()->file($filename);
-        } else {
-            echo 'File doesn\'t exist!';
-        }
-    }
-
-    /**
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
-     */
-    public function download(Request $request)
-    {
-        $url = $request->query('url');
-        //echo 'Request to get file from '. $url;
-        //echo '<br>';
-
-        $filename = storage_path('/app/'. $url);
-        //$file = File::where('url', $url)->first();
-        if (file_exists($filename)) {
-            //echo 'File exists!';
-            return response()->download($filename);
-        } else {
-            echo 'File doesn\'t exist!';
-        }
     }
 }
