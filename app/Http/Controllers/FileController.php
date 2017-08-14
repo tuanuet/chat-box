@@ -16,6 +16,7 @@ class FileController extends Controller
         'application/msword' => "WORD", //doc
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => "WORD", //docx
         'application/vnd.ms-excel' => "EXCEL", //xls
+        'application/vnd.ms-office' => "EXCEL", //xls
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => "EXCEL", //xlsx
     );
 
@@ -62,7 +63,8 @@ class FileController extends Controller
         $data = array(
             "status" => 0,
             "type" => "",
-            "content" => ""
+            "content" => "",
+            "name" => ""
         );
 
         $res = $this->saveFile($request);
@@ -70,6 +72,7 @@ class FileController extends Controller
             $data["status"] = 1;
             $data["type"] = config('message.types.' . $res['type']);
             $data["content"] = "http://local.chat.com/api/file?url=" . $res['path'];
+            $data['name'] = $res['name'];
         }
 
         return response()->json($data);
@@ -164,15 +167,15 @@ class FileController extends Controller
         $res = array(
             'path' => null,
             'type' => null,
+            'name' => null,
         );
         $file = $request->file('fileToUpload');
-
         if ($file != NULL && $file->isValid()) {
             $res['type'] = $this->isValidType($file->getMimeType());
             if ($res['type'] !== null) {
                 /** storage and return a path of file */
                 $res['path'] = $file->store('files');
-
+                $res['name'] = $file->getClientOriginalName();
                 /** save info of file in database */
                 $File = new File();
                 $File->name = $file->getClientOriginalName();

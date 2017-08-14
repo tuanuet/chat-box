@@ -5,14 +5,19 @@ const MessageListRow = ({message, messageId, getMetaLink}) => {
     let content = null;
     let metaLink = null;
 
-
     if (message.message.type == messageTypes.DEFAULT_MESSAGE) {
-        content = <p>{message.message.content}</p>
+        content = <p>{message.message.content}</p>;
     } else if (message.message.type == messageTypes.IMAGE_MESSAGE) {
         content =
             <a href={message.message.content}>
                 <img src={message.message.content} width={320} height={240}/>
-            </a>
+            </a>;
+    } else if(message.message.type == messageTypes.PDF_MESSAGE) {
+        content = <a href={message.message.content}><p><img src={"/images/pdf.icon.jpg"} width={15} height={15}/>{message.message.content}</p></a>;
+    } else if(message.message.type == messageTypes.WORD_MESSAGE) {
+        content = <p>{message.message.content}</p>;
+    } else if(message.message.type == messageTypes.EXCEL_MESSAGE) {
+        content = <p>{message.message.content}</p>;
     }
 
     let className = message.message.type != messageTypes.IMAGE_MESSAGE? "li-chat":"li-image";

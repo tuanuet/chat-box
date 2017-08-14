@@ -48,12 +48,14 @@ export function adminUploadFile(data, roomId) {
         MessageApi.uploadFile(data)
             .then(res => res.data)
             .then(response => {
+                console.log(response);
                 let message = {
                     senderId: 0,
                     senderName: data.name,
                     message: {
                         content: response.content,
-                        type: response.type
+                        type: response.type,
+                        name: response.name
                     },
                     roomId: roomId,
                     createdAt: new Date().toLocaleString()
