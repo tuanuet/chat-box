@@ -70,7 +70,9 @@ Route::group(['middleware' => 'jwt.authAdmin'], function () {
         return view('index');
     });
 
+    ////////////////////Config chat//////////////////////////////
 
+    ////////////////////////////////////////////////////////////
     Route::get( '/_debugbar/assets/stylesheets', '\Barryvdh\Debugbar\Controllers\AssetController@css' );
     Route::get( '/_debugbar/assets/javascript', '\Barryvdh\Debugbar\Controllers\AssetController@js' );
 

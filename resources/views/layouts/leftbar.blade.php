@@ -19,6 +19,7 @@
                         <li><a href="/customers">Customer</a></li>
                         <li><a href="/topics">Topic</a></li>
                         <li><a href="/files">File</a></li>
+                        <li><a href="/configchat">Config Chat</a></li>
 
                     </ul>
                 </li>
