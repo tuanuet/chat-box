@@ -151,14 +151,10 @@ class ManageRoomPage extends React.Component {
         const {rooms} = this.props;
         let listOfTabs = [{id: 0, title: "Room Chat"}, ...tabs];
         let tabPanel = null;
-        console.log("1. now active tab: " + this.state.activeTabId);
         if (this.state.activeTabId == 0) {
             tabPanel = <RoomTabPanel tabId={0} rooms={rooms} joinRoom={this.adminSendRequestJoinRoom}/>;
         } else {
-            console.log(tabs);
-            console.log("2. now active tab: "   + this.state.activeTabId);
             let currentTab = Helper.getTabById(this.state.activeTabId, tabs);
-            console.log(currentTab);
             tabPanel =
                 <MessageTabPanel
                     tabId={currentTab.id}

@@ -7,7 +7,6 @@ const MessageList = ({messages, getMetaLink, roomId}) => {
 
         <ol className="chat">
             {messages.map((message) =>{
-                console.log(message.metaLink);
                 if(typeof message.metaLink === 'boolean' && message.metaLink == false) {
                     getMetaLink(message, roomId);
                 }

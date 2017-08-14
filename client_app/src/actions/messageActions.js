@@ -3,12 +3,13 @@ import MessageApi from '../api/messageApi';
 import toastr from 'toastr'
 
 export function serverSendMessage(message, roomId) {
+    console.log("server send message");
+    console.log(message);
+    console.log(roomId);
     return {type: types.SERVER_SEND_MESSAGE, message, roomId};
 }
 
 export function loadMessagesSuccess(messages, roomId) {
-    console.log("load messages success");
-    console.log(messages);
     return {type: types.LOAD_MESSAGES_SUCCESS, messages, roomId};
 }
 
@@ -26,8 +27,6 @@ export function getMetaLink(message, roomId) {
             .then(res => res.data)
             .then(data => {
                 let metaLink = null;
-                console.log("data response");
-                console.log(data);
                     if(data.result == true) {
                         metaLink= {
                             title: data.meta.title,

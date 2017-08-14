@@ -1,7 +1,6 @@
 import React, {PropTypes} from 'react';
 
 const TabListRow = ({tab, active, changeTab, deleteTab}) => {
-    console.log("active on tab list row: " + active + " tab: " + tab.title);
 
     return (
         <li key={tab.id} className={active? "active my-tab" : "my-tab"}>

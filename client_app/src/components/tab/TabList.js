@@ -7,7 +7,6 @@ const TabList = ({tabs, activeTabId, changeTab, deleteTab}) => {
     let tabChat = tabs.filter(tab => {
        return tab.id != 0;
     });
-    console.log("active tab id on tab list: " + activeTabId);
 
     return (
 
@@ -18,7 +17,6 @@ const TabList = ({tabs, activeTabId, changeTab, deleteTab}) => {
                 changeTab={changeTab}
                 active={activeTabId == 0}/>
             {tabChat.map(tab => {
-                console.log(tab.id);
                 return(
                     <Tab key={tab.id}
                          tab={tab}

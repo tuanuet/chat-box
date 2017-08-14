@@ -9,6 +9,10 @@ export function adminJoinRoom(room) {
     return {type: types.ADMIN_JOIN_ROOM, room};
 }
 
+export function adminSendRequestJoinRoomSocket(room) {
+    return {type: types.ADMIN_SEND_REQUEST_SOCKET, room};
+}
+
 export function adminJoinRoomSuccess(room) {
     return {type: types.ADMIN_JOIN_ROOM_SUCCESS, room};
 }
@@ -22,7 +26,9 @@ export function adminSendRequestJoinRoom(room) {
         return roomApi.sendRequestJoinRoom(room)
             .then(res => res.data)
             .then(data => {
-
+                if (data.result) {
+                    dispatch(adminSendRequestJoinRoomSocket(room));
+                }
             })
             .catch(error => {
                 throw(error);
@@ -40,8 +46,6 @@ export function loadRooms(adminId) {
         return roomApi.getAllRooms(adminId)
             .then(res => res.data)
             .then(rooms => {
-                console.log("rooms from server: ");
-                console.log(rooms);
                 dispatch(loadRoomsSuccess(rooms));
             })
             .catch(error => {

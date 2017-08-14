@@ -16,7 +16,7 @@ class RoomApi {
     }
 
     static sendRequestJoinRoom(room) {
-        return axios.get(`${config.SEND_REQUEST_JOIN_ROOM}`, room.id);
+        return axios.get(`${config.SEND_REQUEST_JOIN_ROOM}?roomid=${room.id}`);
     }
 }
 

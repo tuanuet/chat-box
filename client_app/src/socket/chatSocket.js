@@ -14,12 +14,22 @@ export function chatMiddleware() {
         const result = next(action);
 
         if (socket && action.type === types.ADMIN_SEND_MESSAGE) {
-            socket.emit('admin-send-message', action.message, function (data) {
-                console.log(data);
+            socket.emit('client-send-message', action.message, function (data) {
+                let message = {
+                    id: data.messageId,
+                    senderId: data.senderId,
+                    senderName: data.name,
+                    message: {
+                        content: data.message,
+                        type: data.type
+                    },
+                    metaLink: false,
+                    createdAt: data.createdAt
+                };
+                addNewMessage(message, action.message.roomId);
             });
         } else if (socket && action.type === types.ADMIN_SEND_REQUEST_SOCKET) {
             socket.emit('admin-join-room', action.room,function (ackValidation) {
-                console.log(ackValidation);
                 if (!ackValidation)    return;
                 Store.dispatch(roomActions.adminJoinRoomSuccess(action.room));
                 Store.dispatch(tabActions.createTab(action.room));
@@ -29,6 +39,11 @@ export function chatMiddleware() {
 
         return result;
     };
+}
+
+function addNewMessage(message, roomId) {
+
+    Store.dispatch(messageActions.serverSendMessage(message, roomId));
 }
 
 
@@ -42,11 +57,20 @@ export default function createSocket(store) {
 
 
     socket.on('server-send-message', data => {
-        addNewMessage(data);
-    });
-
-    socket.on('admin-send-message', data => {
-        addNewMessage(data);
+        console.log("client send message");
+        console.log(data);
+        let message = {
+            id: data.id,
+            senderId: data.senderId,
+            senderName: data.name,
+            message: {
+                content: data.message,
+                type: data.type
+            },
+            metaLink: false,
+            createdAt: data.createdAt
+        };
+        addNewMessage(message, data.roomId);
     });
 
     socket.on('server-confirm-join', data => {
@@ -66,20 +90,7 @@ export default function createSocket(store) {
         store.dispatch(roomActions.addNewRoom(room));
     })
 
-    function addNewMessage(data) {
-        let message = {
-            id: data.id,
-            senderId: data.senderId,
-            senderName: data.name,
-            message: {
-                content: data.message,
-                type: data.type
-            },
-            metaLink: false,
-            createdAt: data.createdAt
-        };
-        store.dispatch(messageActions.serverSendMessage(message, data.roomId));
-    }
+
 }
 
 
