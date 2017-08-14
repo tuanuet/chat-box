@@ -57,8 +57,6 @@ export default function createSocket(store) {
 
 
     socket.on('server-send-message', data => {
-        console.log("client send message");
-        console.log(data);
         let message = {
             id: data.id,
             senderId: data.senderId,
