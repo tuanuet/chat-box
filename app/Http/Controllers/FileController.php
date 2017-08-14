@@ -161,7 +161,6 @@ class FileController extends Controller
             'type' => null,
         );
         $file = $request->file('fileToUpload');
-        $path = null;
         if ($file != NULL && $file->isValid()) {
             $res['type'] = $this->isValidType($file->getMimeType());
             if ($res['type'] !== null) {
@@ -171,7 +170,7 @@ class FileController extends Controller
                 /** save info of file in database */
                 $File = new File();
                 $File->name = $file->getClientOriginalName();
-                $File->url = $path;
+                $File->url = $res['path'];
                 $File->contentType = $file->getMimeType();
                 $File->save();
             }
