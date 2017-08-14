@@ -26,6 +26,8 @@ export function getMetaLink(message, roomId) {
             .then(res => res.data)
             .then(data => {
                 let metaLink = null;
+                console.log("data response");
+                console.log(data);
                     if(data.result == true) {
                         metaLink= {
                             title: data.meta.title,
@@ -46,13 +48,10 @@ export function getMetaLink(message, roomId) {
 }
 
 export function adminUploadFile(data, roomId) {
-    console.log("admin uploads file");
     return function (dispatch) {
         MessageApi.uploadFile(data)
             .then(res => res.data)
             .then(response => {
-                console.log("response");
-                console.log(response);
                 let message = {
                     senderId: 0,
                     senderName: data.name,
@@ -73,7 +72,6 @@ export function adminUploadFile(data, roomId) {
 }
 
 export function loadMessages(roomId) {
-    console.log("run function load messages from server");
     return function (dispatch) {
         MessageApi.getMessages(roomId)
             .then(res => res.data)

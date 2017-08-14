@@ -22,7 +22,7 @@ class ManageRoomPage extends React.Component {
 
     this.changeTab = this.changeTab.bind(this);
     this.deleteTab = this.deleteTab.bind(this);
-    this.adminJoinRoom = this.adminJoinRoom.bind(this);
+    this.adminSendRequestJoinRoom = this.adminSendRequestJoinRoom.bind(this);
     this.handleMessageInput = this.handleMessageInput.bind(this);
     this.handleOnKeyUp = this.handleOnKeyUp.bind(this);
     this.handleFileUpload = this.handleFileUpload.bind(this);
@@ -74,10 +74,10 @@ class ManageRoomPage extends React.Component {
      * event when click join room
      * @param event
      */
-    adminJoinRoom(event) {
+    adminSendRequestJoinRoom(event) {
         let roomId = event.target.value;
         let room = Helper.findRoomById(roomId, this.props.rooms);
-        this.props.actions.adminJoinRoom(room);
+        this.props.actions.adminSendRequestJoinRoom(room);
     }
 
     /**
@@ -132,6 +132,9 @@ class ManageRoomPage extends React.Component {
      * @param message
      */
     getMetaLink(message, roomId) {
+        if(message.message.content.includes('local.chat.com')) {
+            return;
+        }
         if(message.message.content.includes('http://') ||
             message.message.content.includes('https://')||
             message.message.content.includes('www.')) {
@@ -147,12 +150,15 @@ class ManageRoomPage extends React.Component {
         const {tabs} = this.props;
         const {rooms} = this.props;
         let listOfTabs = [{id: 0, title: "Room Chat"}, ...tabs];
-        console.log("message: "+this.state.message);
         let tabPanel = null;
+        console.log("1. now active tab: " + this.state.activeTabId);
         if (this.state.activeTabId == 0) {
-            tabPanel = <RoomTabPanel tabId={0} rooms={rooms} joinRoom={this.adminJoinRoom}/>;
+            tabPanel = <RoomTabPanel tabId={0} rooms={rooms} joinRoom={this.adminSendRequestJoinRoom}/>;
         } else {
+            console.log(tabs);
+            console.log("2. now active tab: "   + this.state.activeTabId);
             let currentTab = Helper.getTabById(this.state.activeTabId, tabs);
+            console.log(currentTab);
             tabPanel =
                 <MessageTabPanel
                     tabId={currentTab.id}

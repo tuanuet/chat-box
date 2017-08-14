@@ -7,10 +7,17 @@ use App\Message;
 use App\Topic;
 use Illuminate\Http\Request;
 use App\Room;
+use Illuminate\Support\Facades\Auth;
 use function PHPSTORM_META\type;
 
 class RoomApiController extends Controller
 {
+    private static $id;
+    function __construct()
+    {
+        dd(Auth::user()->id);
+    }
+
     public function getAllRooms(Request $request)
     {
         if (!$request->input('id')) {
@@ -70,9 +77,15 @@ class RoomApiController extends Controller
                 "status" => $activeRoom->status
             ];
         }
-
         return $result;
+    }
 
+    /**
+     * handle event admin send request join a room
+     */
+    public function handleRequestJoinRoom(Request $request)
+    {
+        if
     }
 
 }

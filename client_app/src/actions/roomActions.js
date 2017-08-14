@@ -17,6 +17,19 @@ export function addNewRoom(room) {
     return {type: types.ADD_NEW_ROOM, room}
 }
 
+export function adminSendRequestJoinRoom(room) {
+    return function (dispatch) {
+        return roomApi.sendRequestJoinRoom(room)
+            .then(res => res.data)
+            .then(data => {
+
+            })
+            .catch(error => {
+                throw(error);
+            })
+    }
+}
+
 /**
  * load all rooms of admin
  * @param adminId

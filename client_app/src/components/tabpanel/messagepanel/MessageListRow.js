@@ -17,7 +17,7 @@ const MessageListRow = ({message, messageId, getMetaLink}) => {
 
     let className = message.message.type != messageTypes.IMAGE_MESSAGE? "li-chat":"li-image";
 
-    if (typeof message.metaLink === 'object') {
+    if (typeof message.metaLink === 'object' && message.metaLink != null) {
         metaLink = <li
             className={message.senderId == 0? `self ${className}`:`other ${className}`}
             data-toggle="tooltip"

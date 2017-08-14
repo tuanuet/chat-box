@@ -12,7 +12,11 @@ import * as config from '../config/config';
 
 class RoomApi {
     static getAllRooms(adminId) {
-        return axios.get(`${config.HOST}${config.GET_ALL_ROOMS}?id=1`);
+        return axios.get(`${config.GET_ALL_ROOMS}?id=1`);
+    }
+
+    static sendRequestJoinRoom(room) {
+        return axios.get(`${config.SEND_REQUEST_JOIN_ROOM}`, room.id);
     }
 }
 

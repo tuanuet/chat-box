@@ -12,11 +12,8 @@ export function chatMiddleware() {
         const result = next(action);
 
         if (socket && action.type === types.ADMIN_SEND_MESSAGE) {
-            console.log(action.message);
-            console.log('admin send message: "' + action.message.message.content + '" to room id ' + action.message.roomId);
             socket.emit('admin-send-message', action.message);
         } else if (socket && action.type === types.ADMIN_JOIN_ROOM) {
-            console.log('admin send request join to room ' + action.room.id);
             socket.emit('admin-join-room', {room: action.room, assignee: 1}); //hard code assignee
         }
 
@@ -37,7 +34,6 @@ export default function createSocket(store) {
     });
 
     socket.on('server-send-message', data => {
-        console.log("New message from server", data);
         addNewMessage(data);
     });
 
@@ -46,8 +42,6 @@ export default function createSocket(store) {
     });
 
     socket.on('server-confirm-join', data => {
-        console.log("result join room: " + data.success);
-        console.log("room id from server" + data.room.id);
         store.dispatch(roomActions.adminJoinRoomSuccess(data.room));
         store.dispatch(tabActions.createTab(data.room));
         store.dispatch(messageActions.loadMessages(data.room.id));
@@ -75,7 +69,7 @@ export default function createSocket(store) {
                 content: data.message,
                 type: data.type
             },
-            metaLink: null,
+            metaLink: false,
             createdAt: data.createdAt
         };
         store.dispatch(messageActions.serverSendMessage(message, data.roomId));

@@ -32,8 +32,6 @@ export default function tabReducer(state = initialState.tabs, action) {
                     return tab;
                 }
 
-                console.log("room da load messages: " + action.roomId);
-                console.log(action.messages);
 
                 // Otherwise, this is the one we want - return an updated value
                 return Object.assign(
@@ -65,6 +63,9 @@ export default function tabReducer(state = initialState.tabs, action) {
             });
 
         case types.UPDATE_MESSAGE_META_LINK:
+            console.log(action.roomId);
+            console.log(action.metaLink);
+            console.log(action.id);
             return state.map( tab => {
                 if (tab.id !== action.roomId) {
 
@@ -73,17 +74,20 @@ export default function tabReducer(state = initialState.tabs, action) {
                 }
 
                 // Otherwise, this is the one we want - return an updated value
-                return tab.messages.map( message => {
+                let currentTab = Object.assign({}, tab);
+                let messages = currentTab.messages.map( message => {
                    if(message.id !== action.id) {
                        return message;
                    }
+                   console.log(message);
 
                    return Object.assign(
                        {},
                        message,
                        {metaLink: action.metaLink}
-                   )
+                   );
                 });
+                return Object.assign({}, tab, Object.assign({},currentTab, {messages: messages}));
             });
 
 
