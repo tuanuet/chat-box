@@ -12,14 +12,10 @@ use function PHPSTORM_META\type;
 
 class RoomApiController extends Controller
 {
-    private static $id;
-    function __construct()
-    {
-        dd(Auth::user()->id);
-    }
 
     public function getAllRooms(Request $request)
     {
+
         if (!$request->input('id')) {
             return null;
         }
@@ -85,7 +81,14 @@ class RoomApiController extends Controller
      */
     public function handleRequestJoinRoom(Request $request)
     {
-        if
+        $roomid = $request->input('roomid');
+        $room = Room::find($roomid);
+        if($room->assignee != 0 && $roomid != 1) {
+            return response()->json(["result"=>false]);
+        }
+        else {
+            return response()->json(["result"=>true]);
+        }
     }
 
 }

@@ -7,14 +7,24 @@ import * as config from '../config/config';
 
 let socket = null;
 
+let Store = null;
+
 export function chatMiddleware() {
     return next => (action) => {
         const result = next(action);
 
         if (socket && action.type === types.ADMIN_SEND_MESSAGE) {
-            socket.emit('admin-send-message', action.message);
-        } else if (socket && action.type === types.ADMIN_JOIN_ROOM) {
-            socket.emit('admin-join-room', {room: action.room, assignee: 1}); //hard code assignee
+            socket.emit('admin-send-message', action.message, function (data) {
+                console.log(data);
+            });
+        } else if (socket && action.type === types.ADMIN_SEND_REQUEST_SOCKET) {
+            socket.emit('admin-join-room', action.room,function (ackValidation) {
+                console.log(ackValidation);
+                if (!ackValidation)    return;
+                Store.dispatch(roomActions.adminJoinRoomSuccess(action.room));
+                Store.dispatch(tabActions.createTab(action.room));
+                Store.dispatch(messageActions.loadMessages(action.room.id));
+            }); //hard code assignee
         }
 
         return result;
@@ -23,15 +33,13 @@ export function chatMiddleware() {
 
 
 export default function createSocket(store) {
+    Store = store;
     socket = io(config.SOCKET_SERVER);
 
 
-    socket.emit('admin-join-default-room');
-
-    socket.on('server-send-join-default-room', data => {
-        console.log("connect thanh cong");
-
+    socket.emit('admin-join-default-room',{}, function (ack) {
     });
+
 
     socket.on('server-send-message', data => {
         addNewMessage(data);
@@ -42,9 +50,7 @@ export default function createSocket(store) {
     });
 
     socket.on('server-confirm-join', data => {
-        store.dispatch(roomActions.adminJoinRoomSuccess(data.room));
-        store.dispatch(tabActions.createTab(data.room));
-        store.dispatch(messageActions.loadMessages(data.room.id));
+
 
     });
 
