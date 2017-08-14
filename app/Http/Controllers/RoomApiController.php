@@ -77,12 +77,19 @@ class RoomApiController extends Controller
         return $result;
     }
 
-//    /**
-//     * handle event admin send request join a room
-//     */
-//    public function handleRequestJoinRoom(Request $request)
-//    {
-//        if
-//    }
+    /**
+     * handle event admin send request join a room
+     */
+    public function handleRequestJoinRoom(Request $request)
+    {
+        $roomid = $request->input('roomid');
+        $room = Room::find($roomid);
+        if($room->assignee != 0 && $roomid != 1) {
+            return response()->json(["result"=>false]);
+        }
+        else {
+            return response()->json(["result"=>true]);
+        }
+    }
 
 }
