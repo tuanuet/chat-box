@@ -104,12 +104,14 @@ module.exports = (io) => {
                     name, message, type, senderId,
                     messageId : newMessage.id,
                     createdAt: newMessage.created_at,
+                    roomId: roomId
                 });
 
                 return ack({
                     name, message, type, senderId,
                     messageId : newMessage.id,
                     createdAt: newMessage.created_at,
+                    roomId: roomId
                 });
             }
             catch (err) {

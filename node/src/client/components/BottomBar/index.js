@@ -34,11 +34,13 @@ class BottomBar extends React.Component {
             let formData = new FormData();
 
             formData.append('fileToUpload', input.files[0]);
+            $('input[type="file"]').val('');
 
             console.log('bottom bar index');
             this.props.uploadImage({formData, name});
             this.refs.attach.value = '';
         }
+        console.log('test', input.files);
         this.refs.chat.focus();
     }
 
