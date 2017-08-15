@@ -142,18 +142,18 @@ module.exports = (io) => {
         });
 
 
-        socket.on('disconnecting', (reason) => {
+        socket.on('client-request-close', async (ack) => {
+            try {
+                //todo: how many socket in socket.room
 
-            // try {
-            //     //todo: how many socket in socket.room
-            //     console.log(socket.rooms)
-            //
-            //     //todo : admin and customer exit room -> update rooms status = 3
-            //     if (isUpdate)
-            //         return await Room.update({status: 3}, {where: {id: socket.room}});
-            // } catch (err) {
-            //     console.log(err);
-            // }
+                //todo : admin and customer exit room -> update rooms status = 3
+
+                let x = await Room.update({status: 3}, {where: {id: socket.room}});
+                socket.broadcast.to(socket.room).emit('client-close-room');
+                return ack({success: true});
+            } catch (err) {
+                console.log(err);
+            }
         });
         socket.on('disconnect', async () => {
             console.log(`có người ${socket.id} thoát kết nối nè`);
