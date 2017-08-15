@@ -25,9 +25,13 @@ export default class Default extends React.Component {
 function Metabox(props) {
     return (
         <div className="meta-box">
-            <div className="font-weight-bold">{props.metadata.title}</div>
-            <div>{props.metadata.description}</div>
-            <img src={props.metadata.image}/>
+            <div className="box-image">
+                <img src={props.metadata.image}/>
+            </div>
+            <div className="box-content">
+                <div className="font-weight-bold">{props.metadata.title}</div>
+                <div>{props.metadata.description}</div>
+            </div>
         </div>
     );
 }
