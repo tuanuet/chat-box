@@ -1,5 +1,6 @@
 import React from 'react';
 import EmojiBoard from "../EmojiBoard/index";
+import {setImage} from "../../actions/action";
 
 class BottomBar extends React.Component {
 
@@ -27,6 +28,7 @@ class BottomBar extends React.Component {
     }
 
     uploadImage() {
+        console.log('upload');
         let input = this.refs.attach;
         let name = this.props.customer.name;
         //todo : validate input
@@ -35,7 +37,6 @@ class BottomBar extends React.Component {
 
             formData.append('fileToUpload', input.files[0]);
 
-            console.log('bottom bar index');
             this.props.uploadImage({formData, name});
             this.refs.attach.value = '';
         }
@@ -55,6 +56,7 @@ class BottomBar extends React.Component {
                 senderId,
                 name
             });
+            this.props.dispatch(setImage({url : null}));
         }
     }
 

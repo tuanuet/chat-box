@@ -31,7 +31,7 @@ module.exports = (io) => {
                 socket.join(room.id);
 
                 // emit broadcast to room admin joined
-                socket.broadcast.to(room.id).emit('server-send-admin-joined',{name : socket.user.name});
+                // socket.broadcast.to(room.id).emit('server-send-admin-joined',{name : socket.user.name});
 
                 //ack callback
                 return ack(true);
@@ -104,12 +104,14 @@ module.exports = (io) => {
                     name, message, type, senderId,
                     messageId : newMessage.id,
                     createdAt: newMessage.created_at,
+                    roomId: roomId
                 });
 
                 return ack({
                     name, message, type, senderId,
                     messageId : newMessage.id,
                     createdAt: newMessage.created_at,
+                    roomId: roomId
                 });
             }
             catch (err) {
