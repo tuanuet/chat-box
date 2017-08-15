@@ -1,6 +1,29 @@
 import React, {PropTypes} from 'react';
 
 class App extends React.Component {
+    // componentWillMount() {
+    //     const script = document.createElement("script");
+    //
+    //     script.src = "/js/myScript.js";
+    //     script.async = true;
+    //
+    //     document.body.appendChild(script);
+    //
+    //     const script1 = document.createElement("script");
+    //
+    //     script1.src = "/vendor/light/assets/plugins/isotope/js/isotope.pkgd.min.js";
+    //     script1.async = true;
+    //
+    //     document.body.appendChild(script1);
+    //
+    //     const script2 = document.createElement("script");
+    //
+    //     script2.src = "/vendor/light/assets/plugins/magnific-popup/js/jquery.magnific-popup.min.js";
+    //     script2.async = true;
+    //
+    //     document.body.appendChild(script2);
+    // }
+
     render() {
         return(
             <div className="wrapper">

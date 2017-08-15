@@ -12,8 +12,9 @@ class AdminConfigureController extends Controller
     //
     public function runConfigure(Request $request)
     {
-        $registers = $request->input('registers');
-        $topics = $request->input('topics');
+        $jsonData = $request->json()->all();
+        $registers = $jsonData('registers');
+        $topics = $jsonData('topics');
         $configData = \GuzzleHttp\json_encode(["register" => $registers,
             "topics" => $topics]);
         $fp = fopen('config.json', 'w');

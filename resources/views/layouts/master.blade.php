@@ -100,6 +100,8 @@
 
 <script src="/vendor/light/assets/plugins/notifyjs/js/notify.js"></script>
 <script src="/vendor/light/assets/plugins/notifications/notify-metro.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.20/jquery.fancybox.min.js"></script>
+
 
 <script type="text/javascript">
 
