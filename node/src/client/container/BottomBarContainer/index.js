@@ -38,7 +38,7 @@ function mapDispatchToProps(dispatch) {
         },
         uploadImage : ({formData}) => {
             dispatch(uploadImage(formData));
-            dispatch(setImage({url : null}));
+            // dispatch(setImage({url : null}));
         }
     };
 }

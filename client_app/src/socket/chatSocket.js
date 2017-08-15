@@ -58,7 +58,7 @@ export default function createSocket(store) {
 
     socket.on('server-send-message', data => {
         let message = {
-            id: data.id,
+            id: data.messageId,
             senderId: data.senderId,
             senderName: data.name,
             message: {
@@ -68,6 +68,7 @@ export default function createSocket(store) {
             metaLink: false,
             createdAt: data.createdAt
         };
+        console.log(message);
         addNewMessage(message, data.roomId);
     });
 

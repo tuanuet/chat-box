@@ -17,6 +17,7 @@ export function hideForm(formStatus) {
     };
 }
 
+//tuanoc
 export function f5(status) {
     return {
         type: Types.F5,

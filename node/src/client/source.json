@@ -1,5 +1,5 @@
 {
-  "registers" : ["name","email","phone","Vương "],
+  "registers" : ["name","email","phone"],
   "topics" : [
     {"name":"Technique","id":1},
     {"name":"sale","id":2},

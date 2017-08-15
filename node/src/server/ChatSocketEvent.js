@@ -24,9 +24,7 @@ module.exports = (io) => {
          * socket-admin join room when complete constructor room
          */
         socket.on('admin-join-room', (room,ack) => {
-            console.log(room.id);
             try {
-
                 if (!room) throw new Error('Invalid Input!');
 
                 // join room
@@ -39,7 +37,6 @@ module.exports = (io) => {
                 return ack(true);
 
             } catch (err) {
-              console.log(err.message)
                 return ack(false);
             }
         });
@@ -107,14 +104,14 @@ module.exports = (io) => {
                     name, message, type, senderId,
                     messageId : newMessage.id,
                     createdAt: newMessage.created_at,
-                    roomId: newMessage.room_id
+                    roomId: roomId
                 });
 
                 return ack({
                     name, message, type, senderId,
                     messageId : newMessage.id,
                     createdAt: newMessage.created_at,
-                    roomId: newMessage.room_id
+                    roomId: roomId
                 });
             }
             catch (err) {
