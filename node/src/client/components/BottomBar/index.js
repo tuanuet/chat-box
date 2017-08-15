@@ -28,6 +28,7 @@ class BottomBar extends React.Component {
     }
 
     uploadImage() {
+        console.log('upload');
         let input = this.refs.attach;
         let name = this.props.customer.name;
         //todo : validate input
@@ -35,9 +36,7 @@ class BottomBar extends React.Component {
             let formData = new FormData();
 
             formData.append('fileToUpload', input.files[0]);
-            $('input[type="file"]').val('');
 
-            console.log('bottom bar index');
             this.props.uploadImage({formData, name});
             this.refs.attach.value = '';
         }
@@ -58,7 +57,6 @@ class BottomBar extends React.Component {
                 name
             });
             this.props.dispatch(setImage({url : null}));
-
         }
     }
 
