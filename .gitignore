@@ -52,3 +52,4 @@ uploads/
 /node/node_modules/
 /node/static/dist/
 /node/.env
+/storage/app/files
