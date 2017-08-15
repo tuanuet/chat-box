@@ -19,8 +19,6 @@
                         <li><a href="/customers">Customer</a></li>
                         <li><a href="/topics">Topic</a></li>
                         <li><a href="/files">File</a></li>
-                        <li><a href="/configchat">Config Chat</a></li>
-
                     </ul>
                 </li>
                 <li class="has_sub">
@@ -28,7 +26,7 @@
                     <ul class="list-unstyled">
                         <li><a href="/room">Chat Management</a></li>
                         <li><a href="/history">History</a></li>
-
+                        <li><a href="/configchat">Config Chat</a></li>
                     </ul>
                 </li>
             </ul>
