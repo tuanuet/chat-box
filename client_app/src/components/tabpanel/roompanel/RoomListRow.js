@@ -4,7 +4,7 @@ const RoomListRow = ({room, joinRoom}) => {
     let status, action;
     if (room.status == 1) {
         status = <td><i className="fa fa-circle"></i> In-active</td>;
-        action = <td><a value={room.id} className="btn btn-default btn-sm waves-effect waves-light" onClick={joinRoom}>
+        action = <td><a value={room.id} className="btn btn-default btn-sm waves-effect waves-light btn-join-room" onClick={joinRoom}>
                 Join</a></td>;
     }
     else {

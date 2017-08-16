@@ -72,11 +72,6 @@ export default function createSocket(store) {
         addNewMessage(message, data.roomId);
     });
 
-    socket.on('server-confirm-join', data => {
-
-
-    });
-
     socket.on('server-send-inactive-room', function (data) {
         let room = {
             id: data.roomId,
@@ -89,6 +84,22 @@ export default function createSocket(store) {
         store.dispatch(roomActions.addNewRoom(room));
     })
 
+    socket.on('client-close-room', function (roomId) {
+        toastr.info("Client has just left the room!");
+        let message = {
+            id: 0,
+            senderId: 0,
+            senderName: "System",
+            message: {
+                content: "Client has just left the room.\nPlease give the tag of the room (Resolved, Resolving or Can't resolve).",
+                type: 100
+            },
+            metaLink: false,
+            createdAt: new Date().toLocaleString()
+        };
+
+        ddNewMessage(message, roomId);
+    });
 
 }
 

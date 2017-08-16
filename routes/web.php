@@ -16,8 +16,12 @@ Route::get('login', 'AdminLogin@index')->name('login-admin');
 Route::post('login', 'AdminLogin@login')->name('admin-login');
 ////////////////////////////////////////////////
 
+Route::post('getBundle', 'AdminConfigureController@runConfigure');
+
+
 //Route::post('getlink', 'DashboardController@getLink')->name('get-link');
 Route::group(['middleware' => 'jwt.authAdmin'], function () {
+
     ////////Dashboard/////////////////
     Route::get('/dashboard','DashboardController@getDashboard');
 
