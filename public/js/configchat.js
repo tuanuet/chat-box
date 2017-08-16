@@ -54,10 +54,10 @@ $(document).ready(function () {
         try {
             let $temp = $("<input>");
             let s = $('#link').val();
-            console.log();
+            $("body").append($temp);
             $temp.val(s).select();
             document.execCommand("copy");
-            console.log($temp.val());
+            $temp.remove();
             console.log('Copied to clipboard');
         } catch (ex){
             console.log("Can't copy to clipboard");
