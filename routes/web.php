@@ -71,7 +71,10 @@ Route::group(['middleware' => 'jwt.authAdmin'], function () {
     });
 
     ////////////////////Config chat//////////////////////////////
-
+    Route::get('configchat','AdminConfigureController@show');
+    Route::post('configchat/addtopic', 'AdminConfigureController@addtopic');
+    Route::post('configchat/delete','AdminConfigureController@delete');
+    Route::post('configchat/edit','AdminConfigureController@edit');
     ////////////////////////////////////////////////////////////
     Route::get( '/_debugbar/assets/stylesheets', '\Barryvdh\Debugbar\Controllers\AssetController@css' );
     Route::get( '/_debugbar/assets/javascript', '\Barryvdh\Debugbar\Controllers\AssetController@js' );

@@ -12,7 +12,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="btn-group pull-right m-t-15">
-                            <a href="#custom-modal" id="btn-add-customer" class="btn btn-default btn-md waves-effect waves-light m-b-30" data-animation="fadein" data-plugin="custommodal" data-overlayspeed="200" data-overlaycolor="#36404a">
+                            <a href="#custom-modal" id="btn-add-topic" class="btn btn-default btn-md waves-effect waves-light m-b-30" data-animation="fadein" data-plugin="custommodal" data-overlayspeed="200" data-overlaycolor="#36404a">
                                 <i class="md md-add"></i> Add Topic </a>
                         </div>
 
@@ -41,8 +41,7 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Name</th>
-                                    <th>Started Date</th>
-                                    <th>Updated Date</th>
+
                                     <th>Action</th>
                                 </tr>
                                 </thead>
@@ -53,16 +52,7 @@
                                     <tr id="{{$topic->id}}">
                                         <td>{{$topic->id}}</td>
                                         <td>{{$topic->name}}</td>
-                                        @if(empty($topic->created_at))
-                                            <td>NULL</td>
-                                        @else
-                                            <td>{{$topic->created_at->toDateString()}}</td>
-                                        @endif
-                                        @if(empty($topic->updated_at))
-                                            <td>NULL</td>
-                                        @else
-                                            <td>{{$topic->updated_at->toDateString()}}</td>
-                                        @endif
+
                                         <td>
                                             <a href="#custom-modal" data-id = "{{$topic->id}}" data-overlayspeed="200" data-overlaycolor="#36404a" data-animation="fadein" data-plugin="custommodal" class="btn btn-default btn-sm waves-effect waves-light btn-edit">
                                                 <i class="fa fa-pencil"></i>
@@ -102,7 +92,7 @@
         <h4 class="custom-modal-title">Add</h4>
         <div class="custom-modal-text text-left">
 
-            <form role="form" class="form_modal" id="myForm" method="post" action="/topics/add">
+            <form role="form" class="form_modal" id="myForm" method="post" action="">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <input type="hidden" name="id" id="form_id" value="">
                 <div class="form-group">
