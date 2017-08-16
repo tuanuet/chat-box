@@ -49,6 +49,21 @@ $(document).ready(function () {
         $(this).parent().remove();
 
     });
+    $('#btn-copy-link').on('click', function (e) {
+
+        try {
+            let $temp = $("<input>");
+            let s = $('#link').val();
+            console.log();
+            $temp.val(s).select();
+            document.execCommand("copy");
+            console.log($temp.val());
+            console.log('Copied to clipboard');
+        } catch (ex){
+            console.log("Can't copy to clipboard");
+        }
+    });
+
     $('#btn-send').on('click',function(e){
        // console.log("Okbcs");
         var res = {"registers": null, "topics":null};
@@ -73,7 +88,7 @@ $(document).ready(function () {
             alert("Chưa chọn trường!");
             return;
         }
-
+        $('#link').val('Waiting...');
         $.ajax({
             url: 'getBundle',
             type: 'post',
@@ -81,6 +96,7 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (data) {
                 console.log(data);
+                $('#link').val(data.url);
             },
             error: function (err) {
                 console.log("Loi r", err);

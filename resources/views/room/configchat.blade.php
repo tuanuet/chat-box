@@ -72,8 +72,8 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="input-group m-t-10">
-                            <input type="email" id="example-input2-group1" name="example-input2-group1" class="form-control">
-                            <span style="background: greenyellow" class="btn input-group-addon" data-toggle="tooltip" title="Copy this link"><i class="fa fa-copy"></i></span>
+                            <input type="text" id="link" disabled name="example-input2-group1" class="form-control">
+                            <span style="background: greenyellow" id="btn-copy-link" class="btn input-group-addon" data-toggle="tooltip" title="Copy this link"><i class="fa fa-copy"></i></span>
                         </div>
                         <br>
                         <div class="col-sm-offset-5">

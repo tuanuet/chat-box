@@ -16,15 +16,15 @@ class AdminConfigureController extends Controller
     public function runConfigure(Request $request)
     {
         try {
-            $jsonData = $request->json()->all();
-            return $jsonData;
-            $registers = $jsonData['registers'];
-            $topics = $jsonData['topics'];
+//            return $request['registers'];
+            $registers = $request['registers'];
+            $topics = $request['topics'];
 
             $resultTopics = [];
 
             //todo: check duplicate and add topic to database
             $topics = array_unique($topics, SORT_STRING);
+            Topic::truncate();
             foreach ($topics as $topic) {
                 $newTopic = new Topic;
                 $newTopic->name = $topic;
@@ -59,16 +59,16 @@ class AdminConfigureController extends Controller
                 throw new ProcessFailedException($processBuildWebpack);
             }
 
-            echo "webpack build successfully";
+            //echo "webpack build successfully";
 
             $processRunServerNode = new Process('npm start');
             $processRunServerNode->setWorkingDirectory($serverNode);
             $processRunServerNode->run();
             if (!$processRunServerNode->isSuccessful()) {
-                echo $processRunServerNode->getOutput();
+                //echo $processRunServerNode->getOutput();
             }
-            echo "run server successfully";
-            return response()->json(["success" => true, url => "http://localhost:3000/dist/bundle.js"]);
+            //echo "run server successfully";
+            return response()->json(["success" => true, 'url' => "http://localhost:3000/dist/bundle.js"]);
         } catch (Exception $e) {
             return response()->json(["success" => false]);
         }
