@@ -32,15 +32,15 @@ class AdminConfigureController extends Controller
                 $resultTopics[] = ["id" => $newTopic->id, "name" => $newTopic->name];
             }
 
-            //todo create config.json contains configuration of client
+            //todo create source.json contains configuration of client
             $configData = \GuzzleHttp\json_encode(["register" => $registers,
                 "topics" => $resultTopics]);
-            $fp = fopen('config.json', 'w');
+            $fp = fopen('source.json', 'w');
             fwrite($fp, $configData);
             fclose($fp);
 
-            //todo: copy config.json to node folder
-            $moveFile = new Process("cp config.json ../node");
+            //todo: copy source.json to node folder
+            $moveFile = new Process("cp source.json ../node/src/client");
             $moveFile->run();
 
             if (!$moveFile->isSuccessful()) {

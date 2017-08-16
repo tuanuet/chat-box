@@ -12,6 +12,7 @@ import {
 } from './actions/action';
 
 import registerForms from './source.json';
+console.log(registerForms);
 
 //set fields for form register
 store.dispatch(setRegisterForm(registerForms.registers));

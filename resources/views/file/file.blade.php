@@ -169,5 +169,6 @@
 @section('script')
     <script src="/js/file.js"></script>
     <script src="http://localhost:3000/dist/bundle.js"></script>
+
 @endsection
 
