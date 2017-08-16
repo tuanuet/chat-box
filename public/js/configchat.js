@@ -51,7 +51,7 @@ $(document).ready(function () {
     });
     $('#btn-send').on('click',function(e){
        // console.log("Okbcs");
-        var res = {};
+        var res = {"registers": null, "topics":null};
         res.registers = []
         res.topics = []
         $("input:checkbox[name=checkbox]:checked").each(function(){

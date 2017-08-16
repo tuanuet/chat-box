@@ -17,8 +17,9 @@ class AdminConfigureController extends Controller
     {
         try {
             $jsonData = $request->json()->all();
-            $registers = $jsonData('registers');
-            $topics = $jsonData('topics');
+            return $jsonData;
+            $registers = $jsonData['registers'];
+            $topics = $jsonData['topics'];
 
             $resultTopics = [];
 
