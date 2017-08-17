@@ -108,8 +108,13 @@ export function setMessages(messages) {
 
 export function setImage(image) {
     return {
-        type : Types.SET_IMAGE,
+        type: Types.SET_IMAGE,
         image
     };
 }
 
+export function destroyStore() {
+    return {
+        type: Types.DESTROY_STORE,
+    };
+}
