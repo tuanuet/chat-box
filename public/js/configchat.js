@@ -66,25 +66,30 @@ $(document).ready(function () {
 
     $('#btn-send').on('click',function(e){
        // console.log("Okbcs");
-        var res = {"registers": null, "topics":null};
-        res.registers = []
-        res.topics = []
-        $("input:checkbox[name=checkbox]:checked").each(function(){
-            var id = $(this).attr("id");
-            // console.log(id);
+        var res = {"registers": [], "topics":[]};
 
-            res.registers.push($("label[for='"+id+"']").text().trim());
+        $("input:checkbox[name=checkbox]:checked").each(function(){
+            var name = $(this).attr("id");
+            // console.log(id);
+            var comment = $(this).data('comment');
+
+
+
+            var obj = {};
+            obj[name] = comment;
+            res.registers.push(obj);
+
+
         });
+
 
         $("input:text[name=topic]").each(function(){
             var topic = $(this).val().trim();
             if (topic !== '') res.topics.push(standardized(topic));
         });
-        // console.log(res.registers);
-        // console.log(res.topics);
-        console.log(res);
 
-        if (res.registers.length === 0) {
+
+        if (res.registers.length == 0) {
             alert("Chưa chọn trường!");
             return;
         }

@@ -18,9 +18,9 @@ class AdminConfigureController extends Controller
     public function runConfigure(Request $request)
     {
         try {
-//            return $request['registers'];
             $registers = $request['registers'];
             $topics = $request['topics'];
+
 
             $resultTopics = [];
 
@@ -35,7 +35,7 @@ class AdminConfigureController extends Controller
             }
 
             //todo create source.json contains configuration of client
-            $configData = \GuzzleHttp\json_encode(["register" => $registers,
+            $configData = \GuzzleHttp\json_encode(["registers" => $registers,
                 "topics" => $resultTopics]);
             $fp = fopen('source.json', 'w');
             fwrite($fp, $configData);
@@ -80,12 +80,15 @@ class AdminConfigureController extends Controller
     public function show()
     {
         $topics = Topic::all();
-        $customerColumn = DB::getSchemaBuilder()->getColumnListing('customers');
+        $customerColumn = DB::select(DB::raw( 'SELECT COLUMN_NAME, COLUMN_COMMENT
+                                    FROM INFORMATION_SCHEMA.COLUMNS
+                                    WHERE table_name = "customers" and 
+                                    table_schema = "local_chat"'));
         $newArray = array_slice($customerColumn, 1, count($customerColumn) - 3);
-
+//        dd($newArray);
 
 //        echo "TOPIC PAGE";
         //  return view('topic.topic', ['topics' => $topics]);
-        return view('room.configchat', ['topics' => $topics]);
+        return view('room.configchat', ['topics' => $topics, "registers" => $newArray]);
     }
 }
