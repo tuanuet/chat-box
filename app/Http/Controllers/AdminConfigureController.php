@@ -33,7 +33,7 @@ class AdminConfigureController extends Controller
             }
 
             //todo create source.json contains configuration of client
-            $configData = \GuzzleHttp\json_encode(["register" => $registers,
+            $configData = \GuzzleHttp\json_encode(["registers" => $registers,
                 "topics" => $resultTopics]);
             $fp = fopen('source.json', 'w');
             fwrite($fp, $configData);

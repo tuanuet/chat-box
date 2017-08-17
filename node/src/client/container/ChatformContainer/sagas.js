@@ -5,17 +5,13 @@ import {takeLatest} from 'redux-saga';
 import {REGISTER_TOKEN} from './constants';
 import {registerTokenFailure, registerTokenSuccess} from './actions';
 
+
+
 function fetchToken(params) {
-    const postParams =
-        Object.keys(params).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(params[key])).join('&');
 
     return fetch(API_CREATE_TOKEN_URL, {
         method: 'POST',
-        mode: 'cors',
-        body: postParams,
-        headers: new Headers({
-            'Content-Type': 'application/x-www-form-urlencoded ',
-        })
+        body: JSON.stringify(params)
     }).then( resolve => resolve.json());
 }
 
@@ -23,6 +19,7 @@ function fetchToken(params) {
 function* handleFetchToken(action) {
     try{
         const {customer,room,token} = yield call(fetchToken,action.params);
+        console.log('handle',{customer,room,token})
         yield put(registerTokenSuccess({customer,room,token}));
 
 
@@ -38,14 +35,12 @@ function* handleFetchToken(action) {
         yield put(hideForm(true));
 
     }catch (err) {
-        console.log(err.message)
         put(registerTokenFailure(err.message));
     }
 
 }
 
 function* fetchTokenSagas() {
-    console.log('chay vao saga')
     yield* takeLatest(REGISTER_TOKEN,handleFetchToken);
 }
 

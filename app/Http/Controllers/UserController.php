@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Admin;
+use Log;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -13,6 +14,7 @@ use JWTAuthException;
 use Carbon\Carbon;
 use Config;
 use Mockery\Exception;
+use Tymon\JWTAuth\Claims\Custom;
 
 class UserController extends Controller
 {
@@ -25,35 +27,33 @@ class UserController extends Controller
     {
 
         /** get customer data
-         * json request must be have full of field include: "name", "email", "phone", "topicId", "message"*/
+         * json request must be have full of field include: "customer", "topicId", "message"*/
         $credentials = $request->json()->all();
         if ($credentials == null ) {
-            $credentials = $request->only('name', 'email', 'phone', 'topicId', 'message');
+            $credentials = $request->only('customer', 'topicId', 'message');
         }
 
-        $name = $credentials['name'];
-        $phone = $credentials['phone'];
-        $email = $credentials['email'];
+        $infoCustomer=$credentials['customer'];
         $msg = $credentials['message'];
         $topicId = $credentials['topicId'];
 
-        /** validate data*/
-        if(!$name || !$topicId) {
+        //save customer
+        $customer = new Customer;
+        foreach($infoCustomer as $key => $value) {
+            $customer[$key] = $value;
+        }
+
+//        /** validate data*/
+        if(!$customer['name'] ||!$customer['phone'] || !$topicId) {
             return response()->json(['error' => 'invalid input'], 422);
         }
 
-        /** add new customer to db*/
-        $customer = new Customer;
-        $customer->name = $name;
-        $customer->phone = ($phone? $phone : "");
-        $customer->email = ($email? $email : "");
-
-        /** create a new room */
+//        /** create a new room */
         $room = new Room;
         $room->topic_id = $topicId;
         $room->created_at = Carbon::now();
-
-
+//
+//
         if ($customer->save() && $room->save()) {
 
             /** create first message of customer*/
@@ -73,10 +73,10 @@ class UserController extends Controller
 
             try {
                 Config::set('auth.providers.customers.model', Customer::class);
+
                 if (!$token = JWTAuth::fromUser($customer,[
                     "customerName" => $customer->name,
                     "customerPhone" => $customer->phone,
-                    "customerEmail" => $customer->email,
                     "roomId" => $room->id,
                 ])) {
                     return response()->json(['failed_to_create_token'], 500);

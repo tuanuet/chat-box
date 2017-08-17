@@ -1,1 +1,1 @@
-{"registers":["Name","Email","Phone number"],"topics":[{"id":1,"name":"Technique"},{"id":2,"name":"Sale"},{"id":3,"name":"Other"},{"id":4,"name":"Customer"}]}
+{"registers":[{"name":"Name"},{"email":"Email"},{"phone":"Phone number"}],"topics":[{"id":1,"name":"Technique"},{"id":2,"name":"Sale"},{"id":3,"name":"Other"},{"id":4,"name":"Customer"}]}
