@@ -49,18 +49,20 @@ export function adminUploadFile(data, roomId) {
             .then(res => res.data)
             .then(response => {
                 console.log(response);
-                let message = {
-                    senderId: 0,
-                    senderName: data.name,
-                    message: {
-                        content: response.content,
-                        type: response.type,
-                        name: response.name
-                    },
-                    roomId: roomId,
-                    createdAt: new Date().toLocaleString()
-                };
-                dispatch(adminSendMessage(message))
+                if(response.status !== 0) {
+                    let message = {
+                        senderId: 0,
+                        senderName: data.name,
+                        message: {
+                            content: response.content,
+                            type: response.type,
+                            name: response.name
+                        },
+                        roomId: roomId,
+                        createdAt: new Date().toLocaleString()
+                    };
+                    dispatch(adminSendMessage(message))
+                }
             })
             .catch(error => {
                 toastr.error("Upload file failed");

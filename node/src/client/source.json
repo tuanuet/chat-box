@@ -1,9 +1,1 @@
-{
-  "registers" : ["name","email","phone"],
-  "topics" : [
-    {"name":"Technique","id":1},
-    {"name":"sale","id":2},
-    {"name":"Other1","id":3},
-    {"name":"sale","id":4}
-  ]
-}
+{"registers":["Phone number"],"topics":[{"id":1,"name":"Technique"},{"id":2,"name":"Sale"},{"id":3,"name":"Other"}]}

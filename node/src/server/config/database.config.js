@@ -7,8 +7,8 @@ var pool = mysql.createPool({
     connectionLimit: 10,
     host: 'localhost',
     user: 'root',
-    password: '1234',
-    database: 'toanweb'
+    password: '1',
+    database: 'local_chat'
 });
 var getConnection = function () {
     return pool.getConnectionAsync().disposer(function (connection) {

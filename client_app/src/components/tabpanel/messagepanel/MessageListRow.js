@@ -9,11 +9,13 @@ const MessageListRow = ({message, messageId, getMetaLink}) => {
         content = <p>{message.message.content}</p>;
     } else if (message.message.type == messageTypes.IMAGE_MESSAGE) {
         content =
-            <a href={message.message.content}>
-                <img src={message.message.content} width={320} height={240}/>
-            </a>;
+            <div>
+                <a data-fancybox="gallery" href={message.message.content}>
+                    <img src={message.message.content} width={320} height={240}/>
+                </a>
+            </div>
     } else if(message.message.type == messageTypes.PDF_MESSAGE) {
-        content = <a href={message.message.content}><p><img src={"/images/pdf.icon.jpg"} width={15} height={15}/>{message.message.content}</p></a>;
+        content = <a href={message.message.content} className="image-popup"><p><img src={"/images/pdf.icon.jpg"} width={15} height={15}/>{message.message.content}</p></a>;
     } else if(message.message.type == messageTypes.WORD_MESSAGE) {
         content = <p>{message.message.content}</p>;
     } else if(message.message.type == messageTypes.EXCEL_MESSAGE) {

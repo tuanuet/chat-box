@@ -4,8 +4,7 @@ import ChatBoxContainer from '../../container/ChatboxContainer';
 import ChatTitle from '../../components/ChatTitle';
 import {connect} from 'react-redux';
 
-require('../../css/main.scss');
-
+require('../../css/cssGroup');
 
 class App extends React.Component {
 
