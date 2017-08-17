@@ -41,7 +41,7 @@
                                 </label>
                             </div>
                             <div class="checkbox checkbox-info checkbox-circle" >
-                                <input id="checkbox3" type="checkbox" name="checkbox">
+                                <input id="checkbox3" type="checkbox" name="checkbox" value="name">
                                 <label for="checkbox3">
                                     Phone number
                                 </label>

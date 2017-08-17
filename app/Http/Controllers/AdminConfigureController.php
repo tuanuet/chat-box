@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 
 use App\Topic;
+use Doctrine\DBAL\Schema\Schema;
 use Illuminate\Http\Request;
 use Mockery\Exception;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Illuminate\Support\Facades\DB;
 
 class AdminConfigureController extends Controller
 {
@@ -78,6 +80,10 @@ class AdminConfigureController extends Controller
     public function show()
     {
         $topics = Topic::all();
+        $customerColumn = DB::getSchemaBuilder()->getColumnListing('customers');
+        $newArray = array_slice($customerColumn, 1, count($customerColumn) - 3);
+
+
 //        echo "TOPIC PAGE";
         //  return view('topic.topic', ['topics' => $topics]);
         return view('room.configchat', ['topics' => $topics]);
