@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {closeChat, hideForm} from "../../actions/action";
+import {closeChat, destroyStore, hideForm} from "../../actions/action";
 import socket from "../../reducers/socket";
 
 
@@ -28,6 +28,7 @@ class ChatTitle extends React.Component {
             this.props.socket.emit('client-request-close', ack => {
                 console.log('CLOSE EVENT:', ack.success);
                 window.sessionStorage.removeItem('jwtToken');
+                dispatch(destroyStore());
                 dispatch(hideForm(false));
             });
         }
