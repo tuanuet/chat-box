@@ -1,5 +1,4 @@
 import * as Types from '../constants/ActionTypes';
-import {API_CREATE_TOKEN_URL, API_UPLOAD_IMAGE_URL} from '../constants/Server';
 
 
 export function setCustomerInfo(customerId, name, email, phone,) {
@@ -22,6 +21,12 @@ export function f5(status) {
     return {
         type: Types.F5,
         isF5: status
+    };
+}
+
+export function closeChat() {
+    return {
+        type: CLOSE_CHAT
     };
 }
 
@@ -103,8 +108,13 @@ export function setMessages(messages) {
 
 export function setImage(image) {
     return {
-        type : Types.SET_IMAGE,
+        type: Types.SET_IMAGE,
         image
     };
 }
 
+export function destroyStore() {
+    return {
+        type: Types.DESTROY_STORE,
+    };
+}

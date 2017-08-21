@@ -25,3 +25,6 @@ export const SET_IMAGE = 'SET_IMAGE';
 export const SET_INPUT_REGISTER = 'SET_INPUT_REGISTER';
 
 
+export const CLOSE_CHAT = 'CLOSE_CHAT';
+
+export const DESTROY_STORE = 'DESTROY_STORE';
