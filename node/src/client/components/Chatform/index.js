@@ -5,16 +5,18 @@ class ChatForm extends React.Component {
 
     submit(e) {
         e.preventDefault();
-        let name = this.refs.name.value;
-        let email = this.refs.email.value;
-        let phone = this.refs.phone.value;
+        let infoCustomer = {};
+        this.props.inputRegisters.map( item => {
+            const key = Object.keys(item)[0];
+            infoCustomer[key] = this.refs[key].value;
+        });
+
         let topicId = this.props.topic.selected;
         let message = this.refs.question.value;
         let topicName = this.props.topic.topics[topicId - 1].name;
-
         // Send first message and init welcome message
-        this.props.sendMessageAndInitWelcome({message, name});
-        this.props.sendRegister({name, email, phone, topicId, topicName, message});
+        this.props.sendMessageAndInitWelcome({message, name : infoCustomer.name});
+        this.props.sendRegister({customer: infoCustomer, topicId, topicName, message});
     }
 
     render() {
@@ -24,10 +26,11 @@ class ChatForm extends React.Component {
                     <div className="content">
 
                         {this.props.inputRegisters.map((e, i) => {
+                            const key = Object.keys(e)[0];
                             return (
                                 <div className="box-input" key={i}>
-                                    <input className="" type="text" ref={e.toLowerCase()} placeholder={'Enter your ' + e}/>
-                                    <div className="box"><i className={'icon-lio-' + e.toLowerCase()}/></div>
+                                    <input className="" type="text" ref={key} placeholder={'Enter your ' + e[key]}/>
+                                    <div className="box"><i className={'icon-lio-' + key}/></div>
                                 </div>
                             );
                         })}
