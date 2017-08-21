@@ -18,7 +18,6 @@ class ChatForm extends React.Component {
     }
 
     render() {
-        console.log('Data', this.props);
         return (
             <form className="chat-form d-flex flex-column" onSubmit={this.submit.bind(this)}>
                 <div className="body">
@@ -27,7 +26,7 @@ class ChatForm extends React.Component {
                         {this.props.inputRegisters.map((e, i) => {
                             return (
                                 <div className="box-input" key={i}>
-                                    <input className="" type="text" ref={e.toLowerCase().split(' ')[0]} placeholder={'Enter your ' + e}/>
+                                    <input className="" type="text" ref={e.toLowerCase()} placeholder={'Enter your ' + e}/>
                                     <div className="box"><i className={'icon-lio-' + e.toLowerCase()}/></div>
                                 </div>
                             );

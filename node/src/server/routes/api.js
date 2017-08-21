@@ -3,7 +3,7 @@ var router = express.Router();
 /**
  * Test Sequelize
  */
-const { Topic,Room,Admin,Customer,Message } = require('../models/index');
+// const { Topic,Room,Admin,Customer,Message } = require('../models/index');
 
 // router.get('/room',async (req,res) => {
 //     try{
@@ -45,18 +45,5 @@ const { Topic,Room,Admin,Customer,Message } = require('../models/index');
 //     }
 // });
 
-/**
- * API topic
- */
-router.get('/topic', async (req, res) => {
-
-    try{
-        let topics = await Topic.findAll({});
-        res.json(topics);
-    }catch (err) {
-        res.json(err);
-    }
-
-});
 
 module.exports = router;

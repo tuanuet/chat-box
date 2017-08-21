@@ -6,8 +6,7 @@ const bodyParser = require('body-parser');
 require('dotenv').config({ path: '.env' });
 const ChatSocketEvent = require('./ChatSocketEvent');
 const chalk = require('chalk');
-const index = require('./routes/index');
-const api = require('./routes/api');
+const Webhook = require('./routes/index');
 /**
  * Create Express server.
  */
@@ -31,9 +30,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use('/', express.static(path.join(__dirname, '../..', 'static')));
 
-// DECLARE ROUTER
-app.use('/',index);
-app.use('/api',api);
 
 // RUN SERVER
 const server = app.listen(app.get('port'), () => {
@@ -47,4 +43,6 @@ const io = require('socket.io').listen(server);
 const redis = require('socket.io-redis');
 io.adapter(redis({host : process.env.REDIS_HOST, port : process.env.REDIS_PORT}));
 ChatSocketEvent(io);
+
+Webhook(app,io);
 
