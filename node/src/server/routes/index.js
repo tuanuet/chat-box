@@ -9,7 +9,6 @@ module.exports = (app,io) => {
      * Get request
      */
     app.get('/', (req, res) => {
-        console.log(io);
 
         res.status(200).end(renderFullPage());
     });
@@ -27,7 +26,7 @@ module.exports = (app,io) => {
 // Message processing
     app.post('/webhook', function (req, res) {
         var data = req.body;
-        console.log('data',JSON.stringify(data));
+
         // Iterate over each entry - there may be multiple if batched
         data.entry.forEach(function(entry) {
             var pageID = entry.id;
@@ -35,11 +34,11 @@ module.exports = (app,io) => {
             // Iterate over each messaging event
             entry.messaging.forEach(function(event) {
                 if (event.message) {
-                    receivedMessage(event);
                     console.log('receivedMessage',event);
+                    receivedMessage(event);
                 } else if (event.postback) {
-                    receivedPostback(esvent);
                     console.log('receivedPostback',event);
+                    receivedPostback(event);
                 } else {
                     console.log('Webhook received unknown event: ', event);
                 }
@@ -63,7 +62,7 @@ module.exports = (app,io) => {
 
         console.log('Received message for user %d and page %d at %d with message:',
             senderID, recipientID, timeOfMessage);
-        console.log(JSON.stringify(message));
+        console.log('message',JSON.stringify(message));
 
         var messageId = message.mid;
 
