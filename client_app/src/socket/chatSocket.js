@@ -92,7 +92,7 @@ export default function createSocket(store) {
             senderName: "System",
             message: {
                 content: "Client has just left the room.\nPlease give the tag of the room (Resolved, Resolving or Can't resolve).",
-                type: 100
+                type: 900
             },
             metaLink: false,
             createdAt: new Date().toLocaleString()

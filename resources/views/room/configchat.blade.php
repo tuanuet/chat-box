@@ -28,24 +28,16 @@
                     <div class="col-lg-6">
                         <div class="card-box">
                             <h4 class="m-t-0 m-b-30 header-title"><b>Fields</b></h4>
+{{--                            {{dd($registers[0]->COLUMN_NAME)}}--}}
+                            @foreach($registers as $register)
+
                             <div class="checkbox checkbox-custom checkbox-circle">
-                                <input id="checkbox1"type="checkbox" name="checkbox">
-                                <label for="checkbox1">
-                                    Name
+                                <input type="checkbox" name="checkbox" data-comment={{$register->COLUMN_COMMENT}} value={{$register->COLUMN_NAME}} id={{$register->COLUMN_NAME}}>
+                                <label for={{$register->COLUMN_NAME}}>
+                                    {{$register->COLUMN_COMMENT}}
                                 </label>
                             </div>
-                            <div class="checkbox checkbox-custom checkbox-circle">
-                                <input id="checkbox2" type="checkbox" name="checkbox" >
-                                <label for="checkbox2">
-                                    Email
-                                </label>
-                            </div>
-                            <div class="checkbox checkbox-info checkbox-circle" >
-                                <input id="checkbox3" type="checkbox" name="checkbox">
-                                <label for="checkbox3">
-                                    Phone number
-                                </label>
-                            </div>
+                                @endforeach
                         </div>
                     </div>
 

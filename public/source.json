@@ -1,1 +1,5 @@
+<<<<<<< HEAD
+{"registers":[{"name":"Name"},{"phone":"Phone"},{"email":"Email"}],"topics":[{"id":1,"name":"Technique"},{"id":2,"name":"Sale"},{"id":3,"name":"Other"}]}
+=======
 {"registers":["Name","Email","Phone number"],"topics":[{"id":1,"name":"Technique"},{"id":2,"name":"Sale"},{"id":3,"name":"Other"},{"id":4,"name":"Customer"}]}
+>>>>>>> e964decca95e5eb159c70e5a4c476ab3a403de91
