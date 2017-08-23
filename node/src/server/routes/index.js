@@ -17,10 +17,10 @@ module.exports = (app,io) => {
     app.get('/webhook', function(req, res) {
         if (req.query['hub.mode'] === 'subscribe' &&
             req.query['hub.verify_token'] === 'mysecret') {
-            console.log("Validating webhook");
+            console.log('Validating webhook');
             res.status(200).send(req.query['hub.challenge']);
         } else {
-            console.error("Failed validation. Make sure the validation tokens match.");
+            console.error('Failed validation. Make sure the validation tokens match.');
             res.sendStatus(403);
         }
     });
@@ -41,7 +41,7 @@ module.exports = (app,io) => {
                     receivedPostback(esvent);
                     console.log('receivedPostback',event);
                 } else {
-                    console.log("Webhook received unknown event: ", event);
+                    console.log('Webhook received unknown event: ', event);
                 }
             });
         });
@@ -61,7 +61,7 @@ module.exports = (app,io) => {
         var timeOfMessage = event.timestamp;
         var message = event.message;
 
-        console.log("Received message for user %d and page %d at %d with message:",
+        console.log('Received message for user %d and page %d at %d with message:',
             senderID, recipientID, timeOfMessage);
         console.log(JSON.stringify(message));
 
@@ -74,15 +74,15 @@ module.exports = (app,io) => {
             // If we receive a text message, check to see if it matches a keyword
             // and send back the template example. Otherwise, just echo the text we received.
             switch (messageText) {
-                case 'generic':
-                    sendGenericMessage(senderID);
-                    break;
+            case 'generic':
+                sendGenericMessage(senderID);
+                break;
 
-                default:
-                    sendTextMessage(senderID, messageText);
+            default:
+                sendTextMessage(senderID, messageText);
             }
         } else if (messageAttachments) {
-            sendTextMessage(senderID, "Message with attachment received");
+            sendTextMessage(senderID, 'Message with attachment received');
         }
     }
 
@@ -95,12 +95,12 @@ module.exports = (app,io) => {
         // button for Structured Messages.
         var payload = event.postback.payload;
 
-        console.log("Received postback for user %d and page %d with payload '%s' " +
-            "at %d", senderID, recipientID, payload, timeOfPostback);
+        console.log('Received postback for user %d and page %d with payload \'%s\' ' +
+            'at %d', senderID, recipientID, payload, timeOfPostback);
 
         // When a postback is called, we'll send a message back to the sender to
         // let them know it was successful
-        sendTextMessage(senderID, "Postback called");
+        sendTextMessage(senderID, 'Postback called');
     }
 
 //////////////////////////
@@ -126,36 +126,36 @@ module.exports = (app,io) => {
             },
             message: {
                 attachment: {
-                    type: "template",
+                    type: 'template',
                     payload: {
-                        template_type: "generic",
+                        template_type: 'generic',
                         elements: [{
-                            title: "rift",
-                            subtitle: "Next-generation virtual reality",
-                            item_url: "https://www.oculus.com/en-us/rift/",
-                            image_url: "http://messengerdemo.parseapp.com/img/rift.png",
+                            title: 'rift',
+                            subtitle: 'Next-generation virtual reality',
+                            item_url: 'https://www.oculus.com/en-us/rift/',
+                            image_url: 'http://messengerdemo.parseapp.com/img/rift.png',
                             buttons: [{
-                                type: "web_url",
-                                url: "https://www.oculus.com/en-us/rift/",
-                                title: "Open Web URL"
+                                type: 'web_url',
+                                url: 'https://www.oculus.com/en-us/rift/',
+                                title: 'Open Web URL'
                             }, {
-                                type: "postback",
-                                title: "Call Postback",
-                                payload: "Payload for first bubble",
+                                type: 'postback',
+                                title: 'Call Postback',
+                                payload: 'Payload for first bubble',
                             }],
                         }, {
-                            title: "touch",
-                            subtitle: "Your Hands, Now in VR",
-                            item_url: "https://www.oculus.com/en-us/touch/",
-                            image_url: "http://messengerdemo.parseapp.com/img/touch.png",
+                            title: 'touch',
+                            subtitle: 'Your Hands, Now in VR',
+                            item_url: 'https://www.oculus.com/en-us/touch/',
+                            image_url: 'http://messengerdemo.parseapp.com/img/touch.png',
                             buttons: [{
-                                type: "web_url",
-                                url: "https://www.oculus.com/en-us/touch/",
-                                title: "Open Web URL"
+                                type: 'web_url',
+                                url: 'https://www.oculus.com/en-us/touch/',
+                                title: 'Open Web URL'
                             }, {
-                                type: "postback",
-                                title: "Call Postback",
-                                payload: "Payload for second bubble",
+                                type: 'postback',
+                                title: 'Call Postback',
+                                payload: 'Payload for second bubble',
                             }]
                         }]
                     }
@@ -178,10 +178,10 @@ module.exports = (app,io) => {
                 var recipientId = body.recipient_id;
                 var messageId = body.message_id;
 
-                console.log("Successfully sent generic message with id %s to recipient %s",
+                console.log('Successfully sent generic message with id %s to recipient %s',
                     messageId, recipientId);
             } else {
-                console.error("Unable to send message.");
+                console.error('Unable to send message.');
                 console.error(response);
                 console.error(error);
             }
@@ -208,4 +208,4 @@ module.exports = (app,io) => {
     </html>
   `;
     }
-}
+};
